@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+//Autoloader
+require __DIR__ . '/../vendor/autoload.php';
+
+//Run it! Let's Go!
+XtractPDF\App::main();
+
+/* EOF: run */

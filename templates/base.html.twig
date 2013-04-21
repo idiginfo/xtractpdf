@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block pagetitle %}XtractPDF{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {% block base_headers %}
+        <meta name='author' content='Casey McLaughlin' />
+        <meta name='description' content='A simple tool to convert PDFs to Text' />
+        <meta name='keywords' content='PDF, TXT, Text, Portable Document Format, Convert PDF, PDF to Text, Extract PDF' />
+
+        <link href="{{ base_url }}/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="{{ base_url }}/assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="{{ base_url }}/assets/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="{{ base_url }}/assets/main.css" rel="stylesheet">
+        {% endblock %}
+
+        {% block page_headers %}
+        {% endblock %}
+    </head>
+    <body class='{{ page_class | default('normal') }}'>
+        
+        {% block page_top %}
+        <div id='top'>
+            <div class='container'>
+                <div class='row'>
+
+                    <header class='span3' id='main-header'>
+
+                        <h1>XtractPDF</h1>  
+
+                        {% block page_top_content %}
+                        {% endblock %}
+                       
+                    </header>
+                    <div class='span9 ads'>
+                        <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+                        <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+                        <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        
+        {% block page_content %}
+        {% endblock %}
+ 
+        {% block base_js %}
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+            <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+            <script type='text/javascript' src='{{ base_url }}/assets/bootstrap/js/bootstrap.min.js'></script>
+            <script type='text/javascript' src='{{ base_url }}/assets/jquery-form.js'></script>
+            <script type='text/javascript' src='{{ base_url }}/assets/main.js'></script>
+        {% endblock %}
+        
+        {% block page_js %}
+        {% endblock %}
+    </body>
+</html>

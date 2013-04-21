@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block pagetitle %}
+{{ page_title }}
+{% endblock %}
+
+{% block page_top_content %}
+<a href='{{ url('front') }}' title='Main Interface' class='btn btn-primary'><i class="icon-arrow-left"></i> To Extraction Interface</a>
+{% endblock %}
+
+{% block page_content %}
+<div id='main'>
+    <div class='container fullpane'>
+        <div class='row'>
+            <div class='span12'>
+
+                <h1>{{ page_title }}</h1>
+
+                {{ page_content | raw }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
