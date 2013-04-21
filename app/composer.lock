@@ -3,8 +3,57 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "381fedb3e6df6a71e6fc059573661465",
+    "hash": "12a6cc4281f4d6fc59103729048b117a",
     "packages": [
+        {
+            "name": "caseyamcl/configula",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caseyamcl/Configula.git",
+                "reference": "v2.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/caseyamcl/Configula/archive/v2.1.0.zip",
+                "reference": "v2.1.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "symfony/yaml": ">=2.1.0"
+            },
+            "suggest": {
+                "symfony/yaml": "Allows parsing of .yaml configuration files"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Configula": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Casey McLaughlin",
+                    "email": "caseyamcl@gmail.com",
+                    "homepage": "http://caseymclaughlin.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple, flexible, read-only config library for PHP 5.3+",
+            "homepage": "http://github.com/caseyamcl/Configula",
+            "keywords": [
+                "config",
+                "configuration"
+            ],
+            "time": "2012-12-03 18:41:17"
+        },
         {
             "name": "codeguy/upload",
             "version": "1.3.1",
@@ -936,12 +985,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "cc72f44a00c9abc963e91a796db6166f0c7a7a7e"
+                "reference": "f0d465adfd157a254a856e9ef0302fc2239642d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/cc72f44a00c9abc963e91a796db6166f0c7a7a7e",
-                "reference": "cc72f44a00c9abc963e91a796db6166f0c7a7a7e",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/f0d465adfd157a254a856e9ef0302fc2239642d3",
+                "reference": "f0d465adfd157a254a856e9ef0302fc2239642d3",
                 "shasum": ""
             },
             "require": {
@@ -981,7 +1030,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2013-04-04 17:33:04"
+            "time": "2013-04-17 21:08:10"
         },
         {
             "name": "raveren/kint",

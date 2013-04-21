@@ -22,7 +22,8 @@
         "symfony/stopwatch"  : ">=2.2.0",
         "symfony/console"    : ">=2.2.0",
         "guzzle/guzzle"      : ">=3.3.1",
-        "filp/whoops"        : "1.0.1"
+        "filp/whoops"        : "1.0.1",
+        "caseyamcl/Configula": ">=2.1.0"
     },
     "require-dev": {
         "mockery/mockery"     : "dev-master",

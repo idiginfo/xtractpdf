@@ -1,0 +1,5 @@
+#
+# XtractPDF Configuration
+#
+deployed: false
+uploads:  uploads

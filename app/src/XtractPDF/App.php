@@ -12,6 +12,7 @@ use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Console\Application as ConsoleApp;
 use Whoops\Provider\Silex\WhoopsServiceProvider;
 use Whoops\Handler\JsonResponseHandler;
+use Configula\Config;
 use Pimple;
 
 /**
@@ -145,8 +146,15 @@ class App extends SilexApp
     {
         $app =& $this;
 
+        //Config
+        $app['config'] = new Config($this->basePath('config'));
+
         //Filepath
-        $app['pdf_filepath'] = $this->basePath('/uploads');
+        $app['pdf_filepath'] = $app->share(function() use ($app) {
+            return ($app['config']->uploads{0} == '/') 
+                ? $app['config']->uploads 
+                : $this->basePath($app['config']->uploads);
+        });
 
         //PDF Extractors
         $app['extractors'] = $this->share(function() use ($app) {

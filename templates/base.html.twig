@@ -34,9 +34,14 @@
                        
                     </header>
                     <div class='span9 ads'>
-                        <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
-                        <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
-                        <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+
+                        {% if deployed %}
+                            <!-- Ads go Here -->
+                        {% else %}
+                            <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+                            <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+                            <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
+                        {% endif %}
                     </div>
                 </div>
             </div>

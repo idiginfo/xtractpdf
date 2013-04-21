@@ -62,8 +62,8 @@ class MainInterface extends Controller
     {
         //Dynamic data for the main interface
         $data = array(
-            'title'            => 'XtractPDF',
-            'description'      => 'Extract text from PDFs',
+            'title'       => 'XtractPDF',
+            'description' => 'Extract text from PDFs',
         );
 
         //Display it
