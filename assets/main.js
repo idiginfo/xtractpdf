@@ -56,7 +56,9 @@ $(document).ready(function() {
 
     $('#pdf-upload #pdffile-input').bind('change dialogclose', function() {
         var fname = basename($(this).val());
-        $('#pdf-upload').submit();
+        if (fname != '') {
+            $('#pdf-upload').submit();
+        }
     }); 
 
     // ------------------------------------------------------------------

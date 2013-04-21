@@ -7,3 +7,6 @@ deployed: false
 
 #Uploads path (relative to application basepath, or with a preceding slash)
 uploads: uploads
+
+#Logpath Destination
+logpath: logs

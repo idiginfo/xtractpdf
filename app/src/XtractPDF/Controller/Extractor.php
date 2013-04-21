@@ -110,7 +110,7 @@ class Extractor extends Controller
             $filename = $f->getNameWithExtension();
             $filepath = $this->filepath. '/' . $filename;
 
-            //DO IT!!       
+            //DO IT!!
             $txtOutput = (string) $extractor->extract($filepath);
             $evt = $stopwatch->stop('pdfconvert');
 
@@ -121,6 +121,9 @@ class Extractor extends Controller
                 'extractor' => $extractor::getName(),
                 'time'      => $evt->getDuration() / 1000
             );
+
+            //@TODO: Need more info
+            $this->log('info', 'PDF Converted');
 
             return $this->json($output);
         }
@@ -149,17 +152,9 @@ class Extractor extends Controller
         //Get the filepath
         $filepath = $this->filepath . '/' . $file;
 
-        //Will remove the file after it is done streaming
-        //@TODO: DEBUG THIS... or find another way
-        // $app->finish(function() use ($filepath) {
-        //     if (file_exists($filepath)) {
-        //         unlink($filepath);
-        //     }
-        // });
-
         //If the file is readable, then send it; else 404
         if (is_readable($filepath)) {
-            return $this->sendFile($filepath);
+            return $this->sendFileOnce($filepath);
         }
         else {
             return $this->abort(410, "PDF file gone.  Uploaded PDFs are deleted immediately");
@@ -167,7 +162,6 @@ class Extractor extends Controller
     }
 
     // --------------------------------------------------------------
-
 
     /**
      * Get file upload validators

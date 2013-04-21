@@ -3,3 +3,4 @@
 #
 deployed: false
 uploads:  uploads
+logpath:  /tmp

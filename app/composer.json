@@ -23,7 +23,8 @@
         "symfony/console"    : ">=2.2.0",
         "guzzle/guzzle"      : ">=3.3.1",
         "filp/whoops"        : "1.0.1",
-        "caseyamcl/Configula": ">=2.1.0"
+        "caseyamcl/Configula": ">=2.1.0",
+        "monolog/monolog"    : "1.4.1"
     },
     "require-dev": {
         "mockery/mockery"     : "dev-master",

@@ -5,6 +5,7 @@ namespace XtractPDF;
 use Silex\Application as SilexApp;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\MonologServiceProvider;
 use XtractPDF\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Upload\Storage\FileSystem as UploadFileSystem;
@@ -12,6 +13,7 @@ use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Console\Application as ConsoleApp;
 use Whoops\Provider\Silex\WhoopsServiceProvider;
 use Whoops\Handler\JsonResponseHandler;
+use Monolog\Logger;
 use Configula\Config;
 use Pimple;
 
@@ -148,6 +150,19 @@ class App extends SilexApp
 
         //Config
         $app['config'] = new Config($this->basePath('config'));
+
+        //Logfile Path
+        $logFilePath = ($app['config']->logpath{0} == '/')
+            ? $app['config']->logpath
+            : $this->basePath($app['config']->logpath);
+        $logFilePath = rtrim($logFilePath, '/') . '/xtractpdf.log';
+
+        //Monolog
+        $app->register(new MonologServiceProvider(), array(
+            'monolog.name'    => 'xtractpdf',
+            'monolog.logfile' => $logFilePath,
+            'monolog.level'   => Logger::INFO
+        ));
 
         //Filepath
         $app['pdf_filepath'] = $app->share(function() use ($app) {
