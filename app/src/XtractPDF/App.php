@@ -89,7 +89,7 @@ class App extends SilexApp
         $consoleApp = new ConsoleApp('XtractPDF');
 
         //Load CLI Commands
-        $consoleApp->add(new Command\DeleteOldFiles($this['pdf_filepath']));
+        //NONE YET....
 
         //Run it
         $consoleApp->run();
@@ -137,9 +137,10 @@ class App extends SilexApp
         //
         // Controllers
         //
+        $app->mount('', new Controller\Uploader());
+        $app->mount('', new Controller\Workspace());
+        $app->mount('', new Controller\PdfViewer());
         $app->mount('', new Controller\MainInterface());
-        $app->mount('', new Controller\Extractor());
-        $app->mount('', new Controller\StaticPages());
     }
 
     // --------------------------------------------------------------
@@ -169,18 +170,6 @@ class App extends SilexApp
             return ($app['config']->uploads{0} == '/') 
                 ? $app['config']->uploads 
                 : $this->basePath($app['config']->uploads);
-        });
-
-        //PDF Extractors
-        $app['extractors'] = $this->share(function() use ($app) {
-            return new Library\ExtractorBag(array(
-                new Extractor\PopplerPDFtoTxt(),                
-                new Extractor\PDFMiner()
-
-                // IMPELMENT THESE LATER
-                // new Extractor\CrossRefExtractor(),
-                // new Extractor\LaPDFText(),
-            ));
         });
     }
 }

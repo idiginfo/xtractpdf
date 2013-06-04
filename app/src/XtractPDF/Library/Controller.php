@@ -198,23 +198,6 @@ abstract class Controller implements ControllerProviderInterface
     // --------------------------------------------------------------
 
     /**
-     * Use sendfile and then delete the file
-     */
-    protected function sendFileOnce($file, $status = 200, $headers = array(), $contentDisposition = null)
-    {
-        $ctrlr =& $this;
-        $this->app->finish(function() use ($file, $ctrlr) {
-            if (file_exists($file) && @unlink($file)) {
-                $ctrlr->log('info', "Deleted " . $file);
-            }
-        });
-
-        return $this->sendFile($file, $status, $headers, $contentDisposition);
-    }
-
-    // --------------------------------------------------------------
-
-    /**
      * Shortcut function for sendFile
      */
     protected function sendFile($file, $status = 200, $headers = array(), $contentDisposition = null)

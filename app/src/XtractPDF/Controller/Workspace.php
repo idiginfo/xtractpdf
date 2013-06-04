@@ -7,14 +7,14 @@ use XtractPDF\Library\Controller;
 use Silex\ControllerCollection;
 
 /**
- * Main Interface Controller
+ * Workspace Controller
  */
-class MainInterface extends Controller
+class Workspace extends Controller
 {
     /**
-     * @var Twig_Environment $twig
+     * @var string Filepath of uploads
      */
-    private $twig;
+    private $filepath;
 
     // --------------------------------------------------------------
 
@@ -30,7 +30,7 @@ class MainInterface extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/', array($this, 'indexAction'))->bind('front');
+        $routes->get('/workspace/{file}', array($this, 'renderWorkspaceAction'))->bind('workspace');
     }
 
     // --------------------------------------------------------------
@@ -42,20 +42,31 @@ class MainInterface extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->twig = $app['twig'];
+        $this->filepath = $app['pdf_filepath'];
     }
 
     // --------------------------------------------------------------
 
     /**
-     * Index HTML Page
+     * Render a PDF and then destroy it
      *
-     * GET /
+     * GET /pdf
+     * 
+     * @param string $file  The filename
      */
-    public function indexAction()
+    public function renderWorkspaceAction($file)
     {
-        return $this->twig->render('index.html.twig');
-    }
+        //Get the filepath
+        $filepath = $this->filepath . '/' . $file;
+
+        //If the file is readable, then send it; else 404
+        if (is_readable($filepath)) {
+            return "<p>Would render workspace for " . basename($filepath) . "</p>";
+        }
+        else {
+            return $this->abort(404, "Could not find PDF file");
+        }
+    }    
 }
 
-/* EOF: MainInterface.php */
+/* EOF: Workspace */

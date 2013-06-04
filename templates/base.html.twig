@@ -6,8 +6,8 @@
 
         {% block base_headers %}
         <meta name='author' content='Casey McLaughlin' />
-        <meta name='description' content='A simple tool to convert PDFs to Text' />
-        <meta name='keywords' content='PDF, TXT, Text, Portable Document Format, Convert PDF, PDF to Text, Extract PDF' />
+        <meta name='description' content='Convert scholarly PDFs to JATS-XML' />
+        <meta name='keywords' content='PDF, TXT, JATS, XML, Portable Document Format, Convert PDF, PDF to XML, Extract PDF' />
 
         <link href="{{ base_url }}/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="{{ base_url }}/assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
@@ -20,37 +20,63 @@
     </head>
     <body class='{{ page_class | default('normal') }}'>
         
-        {% block page_top %}
-        <div id='top'>
-            <div class='container'>
-                <div class='row'>
+        {% block page_sidebar %}
+            <div id='sidebar'>
 
-                    <header class='span3' id='main-header'>
+                <div id='sidebar-content'>
+                    <ul id='sidebar-top-list'>
+                        <li class='li-site-title'>
+                            <h1>XtractPDF</h1>
+                        </li>
+                        <li class='li-search-form'>
+                            <form id='pdf-upload' method='post' action='{{ site_url }}/upload'>
+                                <label for='pdffile-input'>Upload PDF</label>
+                                <input type='file' name='pdffile' id='pdffile-input' />
+                            </form>
+                        </li>
+                    </ul>
+                    <ul id='sidebar-pdf-list'>
+                        <li class='pdf-item status-working-on'>
+                            <a href='#' title='Edit Some PDF Tittle That is long'>
+                                <span class='pdf-icon'><i class='icon-file-alt'></i></span>
+                                <span class='pdf-title'>Some PDF Title&hellip;Long</span>
+                                <span class='pdf-status'><i class='icon-star-half-full'></i> Working On</span>
+                            </a>
+                        </li>
 
-                        <h1>XtractPDF</h1>  
+                        <li class='pdf-item status-new'>
+                            <a href='#' title='Edit Some PDF Tittle That is long'>
+                                <span class='pdf-icon'><i class='icon-file-alt'></i></span>
+                                <span class='pdf-title'>Another PDF Tit&hellip;Long</span>
+                                <span class='pdf-status'><i class='icon-star-empty'></i> New</span>
+                            </a>
+                        </li>  
 
-                        {% block page_top_content %}
-                        {% endblock %}
-                       
-                    </header>
-                    <div class='span9 ads'>
-
-                        {% if deployed %}
-                            <!-- Ads go Here -->
-                        {% else %}
-                            <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
-                            <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
-                            <img src='{{ base_url }}/assets/img/ad_dummy.png' alt='Dummy Ad' />
-                        {% endif %}
-                    </div>
+                        <li class='pdf-item status-complete'>
+                            <a href='#' title='Edit Some PDF Tittle That is long'>
+                                <span class='pdf-icon'><i class='icon-file-alt'></i></span>
+                                <span class='pdf-title'>Another PDF Tit&hellip;Long</span>
+                                <span class='pdf-status'><i class='icon-star'></i> Complete</span>
+                            </a>
+                        </li>                        
+                    </ul>
                 </div>
+
+                <div id='sidebar-tab'><p>XtractPDF</p></div>
             </div>
-        </div>
         {% endblock %}
-        
+
         {% block page_content %}
         {% endblock %}
  
+        {# Working Modal #}
+        <div id='working-modal' class='modal hide fade' tabindex='-1' role='dialog'>
+            <div class="modal-body">
+                <p>Working...</p>
+            </div>
+        </div>
+        {# End Working Modal #}
+
         {% block base_js %}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
             <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>

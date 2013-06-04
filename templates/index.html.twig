@@ -11,11 +11,6 @@
     </span>
 </form>             
 
-<ul class='pagelinks'>
-    <li><a href='#settings-modal' role='button' data-toggle='modal' id='settings-toggle'><i class="icon-cog"></i>Options</a></li>
-    <li><a data-toggle="modal" href="{{ url('about') }}" data-target="#about-modal"><i class="icon-question-sign"></i>Info</a></a>
-    <li><a data-toggle="modal" href="{{ url('apidocs') }}" data-target="#apidocs-modal"><i class="icon-globe"></i>API</a></li>
-</ul>
 {% endblock %}
     
 {% block page_content %}
@@ -26,63 +21,8 @@
 
 
     <div id='right' class='pane'>
-        <p class='placeholder'>Text will Appear Here</p>
+        <p class='placeholder'>Workspace will Appear Here</p>
     </div>
 </div>
 
-{# Settings Modal #}
-<div id='settings-modal' class='modal fade hide' tabindex='-1' role='dialog' aria-labelledby="settings-modal-label" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="settings-modal-label">Settings</h3>
-    </div>    
-    <form class='modal-body'>
-        <fieldset>
-            <legend>Select an Engine</legend>
-
-            {% for extractor in extractors %}
-                <div class='engine-type'>
-                    <label class='radio'>
-                        <input type='radio' name='engine' value='{{ extractor.getSlug() }}' {{ (extractor.getSlug() == defaultExtractor) ? 'checked' : '' }} /> 
-                        {{ extractor.getName() }}
-                    </label>
-
-                    <p>
-                        {{ extractor.getDescription() }}
-                        <a href='{{ extractor.getLink() }}' title='More Information about this Extraction Tool' target='_blank'>More Info &raquo;</a>
-                    </p>
-                </div>                        
-            {% endfor %}
-        </fieldset>
-    </form>
-    <div class="modal-footer">
-        <button data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Okay</button>
-    </div>    
-</div>
-
-{# About Modal #}
-<div id='about-modal' class='modal fw fade hide' tabindex='-1' role='dialog' aria-labelledby='about-modal-label' aria-hidden='true'>
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="about-modal-label">About XtractPDF <a class='breakout' href='{{ url('about') }}' title='view in FullScreen'><i class="icon-fullscreen"></i></a></h3>
-    </div>
-    <div class='modal-body'>
-    </div>
-    <div class="modal-footer">
-        <button data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Got it!</button>
-    </div>
-</div>
-
-{# API Docs Modal #}
-<div id='apidocs-modal' class='modal fw fade hide' tabindex='-1' role='dialog' aria-labelledby='apidocs-modal-label' aria-hidden='true'>
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="apidocs-modal-label">XtractPDF API <a class='breakout' href='{{ url('apidocs') }}' title='view in FullScreen'><i class="icon-fullscreen"></i></a></h3>
-    </div>
-    <div class='modal-body'>
-    </div>
-    <div class="modal-footer">
-        <button data-dismiss="modal" aria-hidden="true" class="btn btn-primary">Got it!</button>
-    </div>
-</div>
 {% endblock %}

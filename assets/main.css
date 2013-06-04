@@ -12,100 +12,126 @@ body.maininterface {
 
 /* Basic Layout Sections ------------------------------------------- */
 
-#top {
-    position: absolute;
-    background-color: #F1F1F1;
-    padding: 8px;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-}
-
-#main {
-    position: relative;
-}
-
-body.maininterface #main {
+#sidebar {
     position: absolute;
     margin: 0;
     padding: 0;
-    top: 90px;
+    background-color: #111;
+    top: 0;
     left: 0;
+    bottom: 0;
+    min-width: 20px;
+    color: #FFF;
+    z-index: 10;
+}
+
+#main {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 20px;
     right: 0;
     bottom: 0;
     z-index: 1;
 }
 
-/* Top Section ----------------------------------------------------- */
+/* Sidebar  ------------------------------------------------------ */
 
-#top #main-header {
+#sidebar > #sidebar-tab {
+    float: left;
+    background-color: #222;
+    position: relative;
+    height: 100%;
+    width:  20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px #000;
+}
+
+#sidebar > #sidebar-tab > p {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    position: absolute;
+    width: 20px;
     text-align: center;
-    margin-right: 0.5em;
+    top: 50%;
+    font-size: 16px;
+    margin-top: -38px;
+    padding: 1px 0 0 0;
 }
 
-#top #main-header h1 {
-    font-size: 1.3em;
-    line-height: 1.35em;
-    margin: 1px;
+#sidebar > #sidebar-content {
+    display: none;    
+    position: relative;
+    height: 100%;
+    width: 200px;
+    float: left;    
 }
 
-#top h3.noscript {
-    font-size: 1.1em;
-    font-weight: bold;
-    line-height: 1.15em;
-}
-
-#top form#pdf-upload {
-    margin: 0 auto 0.5em 0;
-    display: none;
-}
-
-#top #settings-toggle {
-    display: none;
-}
-
-#top form#pdf-upload label {
-    display: none;
-}
-
-#top form#pdf-upload input[type=file] {
-    font-size: 1.1em;
-    color: #FFF;
-    padding: 0;
-    width: 160px;
-    overflow: hidden;
-}
-
-#top form#pdf-upload label.btn {
-    width: 162px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-#top .pagelinks {
+#sidebar > #sidebar-content > ul {
     list-style-type: none;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
-#top .pagelinks > li {
-    display: inline;
-    margin: 0 5px 0 0;
+#sidebar > #sidebar-content > ul > li {
+    padding: 5px;
+    margin: 0;
 }
 
-#top .pagelinks > li a:hover {
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li {
+    border-bottom: 1px solid #444;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li:first-child {
+    border-top: 1px solid #444;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li > a {
+    display: block;
+    color: #FFF;
     text-decoration: none;
 }
 
-
-#top .ads {
-    margin: 0;
-    text-align: center;
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li > a:hover {
+    text-decoration: none;
 }
 
-#top .ads > * {
-    margin: 0.5em;
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-icon {
+    float: left;
+    font-size: 36px;
+    color: #666;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-title {
+    font-family: monospace;
+    font-size: 14px;
+    display: block;
+    margin-left: 30px;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-status {
+    display: block;
+    font-size: 12px;
+    margin-left: 30px;
+}
+
+#sidebar #pdf-upload {
+    margin-bottom: 0;
+}
+
+#sidebar #pdf-upload label[for='pdffile-input'] {
+    display: none;
 }
 
 /* Main Preview Panel -------------------------------------------- */
