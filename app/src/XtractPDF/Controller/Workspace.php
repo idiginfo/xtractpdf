@@ -5,6 +5,7 @@ namespace XtractPDF\Controller;
 use Silex\Application;
 use XtractPDF\Library\Controller;
 use Silex\ControllerCollection;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Workspace Controller
@@ -50,7 +51,7 @@ class Workspace extends Controller
     /**
      * Render a PDF and then destroy it
      *
-     * GET /pdf
+     * GET /workspace/{identifier}
      * 
      * @param string $file  The filename
      */
@@ -61,6 +62,11 @@ class Workspace extends Controller
 
         //If the file is readable, then send it; else 404
         if (is_readable($filepath)) {
+
+            //Run the PDFX converter to get the XML
+            //Process XML into data model
+            //Process data model into Twig View
+
             return "<p>Would render workspace for " . basename($filepath) . "</p>";
         }
         else {

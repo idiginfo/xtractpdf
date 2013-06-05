@@ -1,0 +1,84 @@
+<div id='workspace'>
+    <div class='ws-top'>
+
+        <span class='pull-right'>
+            <a href='#' class='btn btn-mini' title='Export as JATS'><i class="icon-share-alt"></i> Export (JATS)</a>
+        </span>
+
+        <ul class="nav nav-tabs">
+            <li><a href="#ws-form" data-toggle="tab">Edit</a></li>
+            <li><a href="#ws-xml" data-toggle="tab">XML</a></li>
+        </ul>
+    </div>
+
+    <div class='tab-content'>
+
+        <div class="tab-pane active" id="ws-form">
+                
+            <form class='ws-form' action='#' method='post'>
+
+                <fieldset>
+                    <div class='form-row'>
+                        <label for='ws-form-title'>Title</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-title' />
+                        </span>
+                    </div>
+                    <div class='form-row'>
+                        <label for='DOI'>DOI</label>
+
+                        <span class='input-item'>
+                            <input type='text' />
+                        </span>
+                    </div>
+                    <div class='form-row'>
+                        <label for='Journal'>Journal</label>
+
+                        <span class='input-item'>
+                            <input type='text' />
+                        </span>
+                    </div>        
+
+                    <div class='form-row'>
+                        <label for='Journal'>Paragraph</label>
+
+                        <span class='input-item'>
+                            <textarea></textarea>
+                        </span>
+                    </div>        
+                    <div class='form-row'>
+                        <label for='Journal'>Citation</label>
+
+                        <span class='input-item'>
+                            <textarea></textarea>
+                        </span>
+                    </div>   
+
+                </fieldset>
+
+
+            </form>
+
+
+        </div>
+
+
+        {# XML OUTPUT #}
+        <div class="tab-pane" id="ws-xml">
+            <pre class="prettyprint lang-xml">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Demo | Prettify.JS&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;                
+            </pre>
+        </div>
+
+    </div>
+
+</div>

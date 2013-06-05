@@ -13,6 +13,7 @@ use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Console\Application as ConsoleApp;
 use Whoops\Provider\Silex\WhoopsServiceProvider;
 use Whoops\Handler\JsonResponseHandler;
+use Guzzle;
 use Monolog\Logger;
 use Configula\Config;
 use Pimple;
@@ -87,9 +88,16 @@ class App extends SilexApp
     public function executeCli()
     {
         $consoleApp = new ConsoleApp('XtractPDF');
+        $app =& $this;
 
-        //Load CLI Commands
-        //NONE YET....
+        //Registration function
+        $register = function(Library\Command $command) use ($consoleApp, $app) {
+            $command->init($app);
+            $consoleApp->add($command);
+        };
+
+        //Add commands
+        $register(new Command\Extract());
 
         //Run it
         $consoleApp->run();
@@ -164,6 +172,21 @@ class App extends SilexApp
             'monolog.logfile' => $logFilePath,
             'monolog.level'   => Logger::INFO
         ));
+
+        //Guzzle
+        $app['guzzle'] = $app->share(function() use ($app) {
+            return new Guzzle\Service\Client();
+        });
+
+        //Document Model Factory
+        $app['doc_model_factory'] = $app->protect(function($filename) use ($app) {
+            return new Model\Document($filename);
+        });
+
+        //PDFX Extractor
+        $app['extractor'] = $app->share(function() use ($app) {
+            return new Extractor\PDFX($app['guzzle']);
+        });
 
         //Filepath
         $app['pdf_filepath'] = $app->share(function() use ($app) {

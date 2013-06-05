@@ -48,9 +48,9 @@ class PdfViewer extends Controller
     // --------------------------------------------------------------
 
     /**
-     * Render a PDF and then destroy it
+     * Render a PDF by its unique identifier
      *
-     * GET /pdf
+     * GET /pdf/{pdfIdentifier}
      * 
      * @param string $file  The filename
      */

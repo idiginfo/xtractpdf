@@ -1,7 +1,9 @@
 <?php
 
 namespace XtractPDF\Extractor;
+
 use XtractPDF\Library\ExtractorException;
+use XtractPDF\Model\Document as DocumentModel;
 
 /**
  * Extractor interface for different PDF extractors
@@ -44,4 +46,14 @@ interface ExtractorInterface
      */
     function extract($filepath);
 
+    // --------------------------------------------------------------
+
+    /**
+     * Map the extracted response to a model
+     *
+     * @param  mixed                    $output
+     * @param  XtractPDF\Model\Document $model
+     * @return XtractPDF\Model\Document
+     */
+    function map($output, DocumentModel $model);
 }

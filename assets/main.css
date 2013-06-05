@@ -4,9 +4,6 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
-}
-
-body.maininterface {
     overflow: hidden;
 }
 
@@ -223,20 +220,6 @@ body.maininterface {
 
 /* Widgets ------------------------------------------------------- */
 
-.dummyad {
-    width: 125px;
-    height: 125px;
-    float: right;
-    margin: 0 0.5em;
-}
-
-.dummyad > img {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
 .underline {
     margin-top: 2em;
     margin-bottom: 0.25em;
@@ -247,46 +230,86 @@ body.maininterface {
     border-top: none;
 }
 
-/* About Modal --------------------------------------------------- */
+/* Workspace ----------------------------------------------------- */
 
-.modal-header h3 a.breakout {
-    line-height: 1em;
-    font-size: 0.6em;
-    vertical-align: middle;
+#workspace .ws-top {
+    background-color: #EEE;
 }
 
-@media (min-width: 1200px) { 
-    .modal.fw {
-        width: 1100px;
-        margin-left: -620px;
-    }
- }
- 
-@media (min-width: 980px) and (max-width: 1199px) { 
-    .modal.fw {
-        width: 970px;
-        margin-left: -490px;
-    }
- }
+#workspace .ws-top ul.nav {
+    margin-bottom: 0;
+}
 
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) { 
-    .modal.fw {
-        width: 760px;
-        margin-left: -380px;
-    }
- }
- 
-/* Landscape phone to portrait tablet */
-/* @media (min-width: 481px) and (max-width: 767px) { /* ...  } */
- 
-/* Landscape phones and down */
-@media (max-width: 767px) { 
-    .modal.fw {
-        width: 460px;
-        margin-left: auto;
-        margin-right: auto;
-        /*margin-left: -230px;*/
-    }
- }
+#workspace .ws-top .pull-right {
+    display: block;
+    margin: 5px;
+} 
 
+#workspace .ws-form {
+    margin: 0;
+    padding: 0;
+}
+
+#workspace .ws-form .form-row {
+    border-bottom: 1px solid #CCC;
+    position: relative;
+}
+
+#workspace .ws-form .form-row label {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 90px;
+    font-size: 0.9em;
+    font-family: monospace;
+    color: #888;
+    margin: 0;
+    z-index: 1;
+    cursor: text;
+    padding: .25em 0 .25em 4px;
+}
+
+#workspace .ws-form .form-row .input-item {
+    display: block;
+    z-index: 2;
+    margin: 0;
+    padding: 0 0 0 90px;
+}
+
+#workspace .ws-form .form-row input,
+#workspace .ws-form .form-row select,
+#workspace .ws-form .form-row textarea {
+    width: 100%;
+    margin: 0;
+    padding: .25em 0;
+    border: none;
+    border-radius: 0;
+    z-index: 3;
+    outline: none;
+    box-shadow: none;
+}
+
+#workspace .ws-form .form-row input:focus,
+#workspace .ws-form .form-row select:focus,
+#workspace .ws-form .form-row textarea:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#workspace .ws-form .form-row textarea {
+    resize: vertical;
+}
+
+#workspace #ws-xml {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#workspace #ws-xml > pre {
+    margin: 0;
+    height: 100%;
+}

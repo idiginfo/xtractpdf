@@ -94,28 +94,32 @@ class Uploader extends Controller
             $filename = $f->getNameWithExtension();
             $filepath = $this->filepath. '/' . $filename;
 
-            //TODO: HERE USE PDFX TO EXTRACT ALL THE XML-Y GOODNEWSS
-            $txtOutput = 'Sample TEXT Output';
             $evt = $stopwatch->stop('pdfconvert');
 
             //Prepare the output
             $output = array(
-                'pdfurl'    => $this->urlGenerator->generate('viewpdf', array('file' => $filename)),
-                'xml'       => $txtOutput,
+                'pdfurl'    => $this->urlGenerator->generate('viewpdf',   array('file' => $filename)),
+                'wsurl'     => $this->urlGenerator->generate('workspace', array('file' => $filename)),
                 'time'      => $evt->getDuration() / 1000
             );
 
-            //@TODO: Need more info added here
-            $this->log('info', 'PDF Converted');
+            //@TODO: Add record to database
 
+            //Log it
+            $this->log('info', sprintf(
+                'PDF  Uploaded: %s -- %s',
+                $key,
+                $filename
+            ));
+
+            //Output
             return $this->json($output);
         }
         catch (UploadException $e) {
             return $this->abort(400, $f->getErrors());
         }
-        //TODO: CATCH A PDFX EXTRACTION EXCEPTION HERE
         catch (Exception $e) {
-            return $this->abort(500, "An internal error has occured.");
+            return $this->abort(500, sprintf("An internal error has occured. (%s)", $e->getMessage()));
         }
     }
 
@@ -128,9 +132,14 @@ class Uploader extends Controller
      */
     private function getValidators()
     {
+        //Size Validator
+        $sizeVal = new UploadVal\Size('5M');
+
+        //Mime Validator
         $mimeVal = new UploadVal\Mimetype('application/pdf');
-        $sizeVal = new UploadVal\Size('50M');
         $mimeVal->setMessage("The file does not appear to be a PDF");
+
+        //The end
         return array($mimeVal, $sizeVal);
     }
 }

@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    var uploadLocked = false;
+    // ------------------------------------------------------------------
 
     //
     // Disable '#' Links
@@ -25,13 +25,17 @@ $(document).ready(function() {
     // Sidebar functionality
     //
     $('#sidebar-tab').click(function() {
-        $('#sidebar-content').toggle(500);
+
+        if ( ! $(this).hasClass('locked')) {
+            $('#sidebar-content').toggle(500);
+        }
     });
 
     // ------------------------------------------------------------------
 
     //
-    // File upload button functionality
+    // File upload button
+    //
     $('#pdf-upload #pdffile-input').hide();
     $('#pdf-upload button[type=submit]').hide();
     $("#pdf-upload label[for='pdffile-input']").show();
@@ -40,7 +44,7 @@ $(document).ready(function() {
     $("#pdf-upload label[for='pdffile-input']").click(function(e) {
         e.preventDefault();
 
-        if (uploadLocked == false) {
+        if ( ! $('#sidebar-tab').hasClass('locked')) {
             $('#pdf-upload #pdffile-input').click();
         }
     });
@@ -61,43 +65,39 @@ $(document).ready(function() {
         dataType:     'json', 
         beforeSubmit: function(arr, $form, options) {
 
-            //Show a modal
-            $('#working-modal').modal({
-                keyboard: false
-            });
+            //Hide and Lock the sidebar
+            $('#sidebar-content').hide(500);
+            $('#sidebar-tab').addClass('locked');
 
+            //Set the left pane to a message
+            $('#left.pane').html("<p class='placeholder working'><i class='icon-spinner icon-spin'></i> Uploading PDF</p>");
         },        
 
         success: function(responseText, statusText, xhr, jq) {
 
+            //Unlock the sidebar
+            $('#sidebar-tab').removeClass('locked');
+
             //Set the display
-            $('#left.pane').html("<iframe src='" + responseText.pdfurl + "'></iframe>")
+            $('#left.pane').html("<iframe src='" + responseText.pdfurl + "'></iframe>");
 
-            if (responseText.txt != '') {
-                $('#right.pane').html("<textarea>" + responseText.txt + "</textarea>");
-            }
-            else {
-                $('#right.pane').html("<p class='placeholder error'>Could not Parse the Document<br/><br/>Some are simply unparsable.</p>");
-            }
+            //Invoke workspace routine
+            loadWorkspace(responseText.wsurl);
 
-            //Kill the modal & hide the sidebar
-            $('#working-modal').modal('hide'); 
-            $('#sidebar-content').hide(500);
+            //ADD TO TOP OF LIST...
+
         },
 
         error: function(jqXHR, textStatus, errorThrown) {
 
-            //Build the message
-            var msg = "<h2><i class='icon-exclamation-sign'></i> Whoops! Something went wrong.</h2><ul><li>Messages Here</li></ul>"            
+            //Unlock the sidebar
+            $('#sidebar-tab').removeClass('locked');
 
-            //Reset the PDF side
-            $('#left.pane').html("<p class='placeholder'>PDF will Appear Here</p>");
+            //Build the message
+            var msg = "<h2><i class='icon-exclamation-sign'></i> Whoops! Something went wrong.</h2><ul><li>Messages Here</li></ul>";        
 
             //Reset the text side with the errors
-            $('#right.pane').html("<div class='placeholder error'>" + msg + "</div>");
-
-            //Kill the modal
-            $('#working-modal').modal('hide');
+            $('#left.pane').html("<div class='placeholder error'>" + msg + "</div>");
         }
     });
 
@@ -105,6 +105,50 @@ $(document).ready(function() {
 
 // ------------------------------------------------------------------
 
+//
+// Workspace Loader
+//
+function loadWorkspace(wsUrl)
+{
+    //Do an ajax request
+    $.ajax(
+        wsUrl,
+        {
+            beforeSend: function() {
+
+                //Hide and Lock the sidebar
+                $('#sidebar-content').hide(500);
+                $('#sidebar-tab').addClass('locked');
+
+                //Loading message
+                $('#right.pane').html("<p class='placeholder working'><i class='icon-spinner icon-spin'></i> Converting and Rendering Workspace<br />(this may take a moment)</p>");
+
+            },
+            success: function(data, textStatus, jqXHR) {
+
+                //Unlock the sidebar
+                $('#sidebar-tab').removeClass('locked');
+
+                //Load the HTML content from the request
+                $('#right.pane').html(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+
+                //Unlock the sidebar
+                $('#sidebar-tab').removeClass('locked');
+
+                //Error Message
+                $('#right.pane').html("<p class='placeholder error'><i class='icon-exclamation-sign'></i> Converting Failed<br/>Perhaps add some notes here</p>");                
+            }
+        }
+    );    
+}
+
+// ------------------------------------------------------------------
+
+//
+// Fix position of main workspace
+//
 function fixMainPos()
 {
     var topHeight = $('#top').outerHeight();
@@ -113,6 +157,9 @@ function fixMainPos()
 
 // ------------------------------------------------------------------
 
+//
+// Get file basename
+//
 function basename(path, suffix) 
 {
     // http://kevin.vanzonneveld.net
