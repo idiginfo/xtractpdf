@@ -1,9 +1,0 @@
-#
-# XtractPDF Configuration
-#
-deployed: false
-uploads:  uploads
-logpath:  /tmp
-mongodb: 
-    connstring: mongodb://localhost:27017
-    dbname:     xtractpdf
