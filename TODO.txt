@@ -1,0 +1,7 @@
+Left off:
+1. implement Mongo ODM annotations on Models
+2. refactor upload class to use the Models and Persist
+   - if the document already exists (do an MD5 on the actual file contents itself), then don't overwrite
+3. add persist feature to command (again, don't overwrite)
+4. build workspace builder from model
+5. implement JATS-XML export from model capability

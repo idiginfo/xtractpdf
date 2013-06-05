@@ -103,8 +103,6 @@ class Uploader extends Controller
                 'time'      => $evt->getDuration() / 1000
             );
 
-            //@TODO: Add record to database
-
             //Log it
             $this->log('info', sprintf(
                 'PDF  Uploaded: %s -- %s',

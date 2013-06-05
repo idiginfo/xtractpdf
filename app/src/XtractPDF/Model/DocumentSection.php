@@ -2,6 +2,7 @@
 
 namespace XtractPDF\Model;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use XtractPDF\Library\Model as BaseModel;
 
 /**

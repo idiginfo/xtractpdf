@@ -59,7 +59,7 @@ class Extract extends BaseCommand
         $extractResult = $this->extractor->extract(realpath($file));
 
         //Run the mapper
-        $model = $this->extractor->map($extractResult, new DocumentModel($file));
+        $model = $this->extractor->map($extractResult, new DocumentModel($file, md5_file($file)));
 
         //Output the result as tables
         

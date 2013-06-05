@@ -13,9 +13,9 @@ use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Console\Application as ConsoleApp;
 use Whoops\Provider\Silex\WhoopsServiceProvider;
 use Whoops\Handler\JsonResponseHandler;
-use Guzzle;
-use Monolog\Logger;
 use Configula\Config;
+use Monolog\Logger;
+use Guzzle;
 use Pimple;
 
 /**
@@ -172,6 +172,9 @@ class App extends SilexApp
             'monolog.logfile' => $logFilePath,
             'monolog.level'   => Logger::INFO
         ));
+
+        //$app['mongo'] - DocumentManager
+        $this->register(new Provider\DoctrineMongoServiceProvider());
 
         //Guzzle
         $app['guzzle'] = $app->share(function() use ($app) {

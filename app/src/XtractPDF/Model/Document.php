@@ -2,11 +2,13 @@
 
 namespace XtractPDF\Model;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use XtractPDF\Library\Model as BaseModel;
 use DateTime;
 
 /**
  * Document
+ * @ODM\Document
  */
 class Document extends BaseModel
 {
@@ -14,6 +16,11 @@ class Document extends BaseModel
      * @var string
      */
     protected $id;
+
+    /**
+     * @var string
+     */
+    protected $md5;
 
     /**
      * @var string
@@ -47,9 +54,10 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function __construct($filename)
+    public function __construct($filename, $md5)
     {
         $this->filename   = $filename;
+        $this->md5        = $md5;
         $this->biblioMeta = new DocumentBiblioMeta();
         $this->created    = new DateTime();
         $this->citations  = array();

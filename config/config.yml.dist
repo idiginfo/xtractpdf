@@ -10,3 +10,8 @@ uploads: uploads
 
 #Logpath Destination
 logpath: logs
+
+# Mongo Database Settings
+mongodb: 
+    connstring: mongodb://localhost:27017
+    dbname:     xtractpdf
