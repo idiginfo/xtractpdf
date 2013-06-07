@@ -22,6 +22,11 @@ class Extract extends BaseCommand
      */
     private $extrator;
 
+    /**
+     * @var XtractPDF\Library\DocumentMgr
+     */
+    private $docMgr;
+
     // --------------------------------------------------------------
 
     protected function configure()
@@ -29,7 +34,6 @@ class Extract extends BaseCommand
         $this->setName('extract')->setDescription('Clear all documents in the system');
         $this->addOption('persist', 'p', InputOption::VALUE_NONE, 'Persist this model to the database');
         $this->addArgument('file',  InputArgument::REQUIRED, 'Path to the PDF to extract');
-
     }
 
     // --------------------------------------------------------------
@@ -37,6 +41,7 @@ class Extract extends BaseCommand
     public function init(Application $app)
     {
         $this->extractor  = $app['extractor'];
+        $this->docMgr     = $app['doc_mgr'];        
     }
 
     // --------------------------------------------------------------
@@ -54,12 +59,26 @@ class Extract extends BaseCommand
             throw new RuntimeException("Can not read file (check path and permissions): " . $file);
         }
 
+        //Get File MD5
+        $fileMd5  = md5_file($file);
+        $filePath = realpath($file);
+
         //Run the extractor
         $output->writeln(sprintf("Extracting %s (this may take a few moments)", basename($file)));
         $extractResult = $this->extractor->extract(realpath($file));
 
         //Run the mapper
-        $model = $this->extractor->map($extractResult, new DocumentModel($file, md5_file($file)));
+        $model = $this->extractor->map($extractResult, new DocumentModel($fileMd5));
+
+        //If persist, do it
+        if ($persist) {
+            $result = $this->docMgr->saveNewDocument($model, $filePath);
+
+            $output->writeln($result 
+                ? "Persisted new document to storage ID (" . $model->uniqId . ")" 
+                : "Skipped persisting document.  It already exists"
+            );
+        }
 
         //Output the result as tables
         

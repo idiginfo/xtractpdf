@@ -64,6 +64,30 @@ class DocumentMgr
 
     // --------------------------------------------------------------
 
+    /**
+     * Save a new document - Same as create document, but does not dispense a new document object
+     *
+     * @param XtractPDF\Model\Document  $document  Document Object
+     * @param string                    $streamId  Stream location to be sent to fopen('', 'r')
+     * @return XtractPDF\Model\Document|false     
+     */
+    public function saveNewDocument(DocumentModel $document, $streamId)
+    {
+        //If the unique ID already exists in the database, return false
+        if ($this->checkDocumentExists($document->uniqId)) {
+            return false;
+        }
+
+        //Persist it
+        $this->dataHandler->save($document->uniqId, $streamId);
+        $this->updateDocument($doc);
+
+        //Return the saved version
+        return $doc;
+    }
+
+    // --------------------------------------------------------------
+
     public function updateDocument(DocumentModel $document, $flush = true)
     {
         $this->dm->persist($document);

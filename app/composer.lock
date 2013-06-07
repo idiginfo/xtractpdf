@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "91f370b8ab05a688fe3991b9c48a6a6c",
+    "hash": "3f13b31f0f54160158fb519ea94a5d0c",
     "packages": [
         {
             "name": "caseyamcl/configula",
@@ -53,53 +53,6 @@
                 "configuration"
             ],
             "time": "2012-12-03 18:41:17"
-        },
-        {
-            "name": "codeguy/upload",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/codeguy/Upload.git",
-                "reference": "4524dadee1920eef44fcc3cbb52585f438253ea3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/codeguy/Upload/zipball/4524dadee1920eef44fcc3cbb52585f438253ea3",
-                "reference": "4524dadee1920eef44fcc3cbb52585f438253ea3",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Upload": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Josh Lockhart",
-                    "email": "info@joshlockhart.com",
-                    "homepage": "https://github.com/codeguy/"
-                }
-            ],
-            "description": "Handle file uploads with extensible validation and storage strategies",
-            "homepage": "http://github.com/codeguy/Upload",
-            "keywords": [
-                "file",
-                "upload",
-                "validation"
-            ],
-            "time": "2013-05-29 20:21:18"
         },
         {
             "name": "doctrine/common",
@@ -1023,7 +976,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "codeguy/upload": 20,
         "doctrine/mongodb-odm": 20,
         "mockery/mockery": 20,
         "firephp/firephp-core": 20,
