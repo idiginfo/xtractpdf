@@ -47,6 +47,8 @@ $(document).ready(function() {
         //This is a cruddy hack.  Consider improving how this works...
         pdfUrl = wsUrl.replace('/workspace/', '/pdf/');
 
+        $(this).parent('li').addClass('active').siblings('li').removeClass('active');
+
         //Invoke workspaces
         loadPdfView(pdfUrl);
         loadWorkspace(wsUrl);
