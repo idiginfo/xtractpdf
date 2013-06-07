@@ -16,6 +16,11 @@ class MainInterface extends Controller
      */
     private $twig;
 
+    /**
+     * @var XtractPDF\Library\DocumentMgr
+     */
+    private $docMgr;
+
     // --------------------------------------------------------------
 
     /**
@@ -30,7 +35,7 @@ class MainInterface extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/', array($this, 'indexAction'))->bind('front');
+        $routes->get('/', array($this, 'indexAction'))->bind('front');    
     }
 
     // --------------------------------------------------------------
@@ -42,7 +47,8 @@ class MainInterface extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->twig = $app['twig'];
+        $this->twig   = $app['twig'];
+        $this->docMgr = $app['doc_mgr'];        
     }
 
     // --------------------------------------------------------------
@@ -52,9 +58,15 @@ class MainInterface extends Controller
      *
      * GET /
      */
-    public function indexAction()
+    public function indexAction($id = null)
     {
-        return $this->twig->render('index.html.twig');
+        //Get a list of documents in the system
+        $data = array(
+            'doc_list' => $this->docMgr->listDocuments()
+        );
+
+        //Show the view
+        return $this->twig->render('index.html.twig', $data);
     }
 }
 

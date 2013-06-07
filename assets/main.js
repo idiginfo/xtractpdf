@@ -34,6 +34,28 @@ $(document).ready(function() {
     // ------------------------------------------------------------------
 
     //
+    // Click links on sidebar
+    //
+    $('#sidebar-pdf-list a.doc-link').click(function(e) {
+
+        //Don't go to the link
+        e.preventDefault();
+
+        var wsUrl = $(this).attr('href');
+
+        //Derive pdf view URL from workspace URL
+        //This is a cruddy hack.  Consider improving how this works...
+        pdfUrl = wsUrl.replace('/workspace/', '/pdf/');
+
+        //Invoke workspaces
+        loadPdfView(pdfUrl);
+        loadWorkspace(wsUrl);
+
+    });
+
+    // ------------------------------------------------------------------
+
+    //
     // File upload button
     //
     $('#pdf-upload #pdffile-input').hide();
@@ -78,14 +100,17 @@ $(document).ready(function() {
             //Unlock the sidebar
             $('#sidebar-tab').removeClass('locked');
 
-            //Set the display
-            $('#left.pane').html("<iframe src='" + responseText.pdfurl + "'></iframe>");
+            //Load PDF Preview
+            loadPdfView(responseText.pdfurl);
 
-            //Invoke workspace routine
+            //Add to list on sidebar
+            if (responseText.isNew) {
+                $('#sidebar-pdf-list').prepend(responseText.listHtml);
+                $('#sidebar-pdf-list li:first-child').addClass('active').siblings('li').removeClass('active');
+            }
+
+            //Load Workspace
             loadWorkspace(responseText.wsurl);
-
-            //ADD TO TOP OF LIST...
-
         },
 
         error: function(jqXHR, textStatus, errorThrown) {
@@ -102,6 +127,18 @@ $(document).ready(function() {
     });
 
 });
+
+// ------------------------------------------------------------------
+
+function loadPdfView(pdfUrl)
+{
+    //Just hide the sidebar
+    $('#sidebar-content').hide(500);
+
+    //Loading message
+    $('#left.pane').html("<iframe src='" + pdfUrl + "'></iframe>");
+}
+
 
 // ------------------------------------------------------------------
 

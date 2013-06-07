@@ -43,6 +43,12 @@ class Document extends BaseModel
     protected $isExtracted;
 
     /**
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $isComplete;
+
+    /**
      * @var array
      * @ODM\EmbedMany(targetDocument="DocumentSection")
      */
@@ -72,6 +78,7 @@ class Document extends BaseModel
     {
         $this->uniqId      = $uniqId;
         $this->isExtracted = false;
+        $this->isComplete  = false;
         $this->biblioMeta  = new DocumentBiblioMeta();
         $this->created     = new DateTime();
         $this->citations   = array();
@@ -84,6 +91,13 @@ class Document extends BaseModel
     public function markExtracted()
     {
         $this->isExtracted = true;
+    }
+
+    // --------------------------------------------------------------
+
+    public function markComplete($isComplete)
+    {
+        $this->isComplete = (boolean) $isComplete;
     }
 
     // --------------------------------------------------------------

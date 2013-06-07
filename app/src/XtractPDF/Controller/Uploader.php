@@ -9,8 +9,11 @@ use Upload\Storage\FileSystem as UploadFileSystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Upload\Exception\UploadException;
 use RuntimeException, Exception;
-use XtractPDF\Core\Controller;
 use Silex\ControllerCollection;
+
+use XtractPDF\Core\Controller;
+use XtractPDF\Model\Document;
+
 
 /**
  * Uploader Controller
@@ -31,6 +34,11 @@ class Uploader extends Controller
      * @var XtractPDF\Library\DocumentMgr
      */
     private $docMgr;
+
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
 
     // --------------------------------------------------------------
 
@@ -58,6 +66,7 @@ class Uploader extends Controller
      */
     protected function init(Application $app)
     {        
+        $this->twig         = $app['twig'];
         $this->request      = $app['request'];
         $this->urlGenerator = $app['url_generator'];
         $this->docMgr       = $app['doc_mgr'];
@@ -90,26 +99,43 @@ class Uploader extends Controller
         //Create the document (returns false if already exists)
         $doc = $this->docMgr->createDocument($md5, $fileInfo->getRealPath());
         
-        //Log upload
+        //Setup Output
+        $output = array(
+            'id'       => $md5,
+            'pdfurl'   => $this->urlGenerator->generate('viewpdf',   array('id' => $md5)),
+            'wsurl'    => $this->urlGenerator->generate('workspace', array('id' => $md5)),
+        );
+
+        //If new...
         if ($doc) {
+
             $this->log('info', sprintf('Uploaded new document: %s', $md5));
+
+            $output['isNew']    = true;
+            $output['listHtml'] = $this->renderListItem($doc);
         }
-        else { //if it already exists, then set notice that it exists and get that object
+        else { //if already existing...
+
             //@TODO: SET NOTICE HERE...
             $doc = $this->docMgr->getDocument($md5);
             $this->log('info', sprintf('Attempted to upload existing document: %s', $md5));
+
+            $output['isNew']    = false;
         }
 
         //Remove the temporary uploaded file (does PHP do this autmoatically?)
         unlink($fileInfo->getRealPath());
 
-        $output = array(
-            'pdfurl' => $this->urlGenerator->generate('viewpdf',   array('id' => $md5)),
-            'wsurl'  => $this->urlGenerator->generate('workspace', array('id' => $md5))
-        );
-
+        //Return output
         return $this->json($output, 201);
     }
+
+    // --------------------------------------------------------------
+
+    private function renderListItem(Document $docObj)
+    {
+        return $this->twig->render('p_sidebar_item.html.twig', array('doc' => $docObj));
+    }    
 }
 
 /* EOF: Uploader.php */

@@ -11,6 +11,13 @@ use XtractPDF\PdfDataHandler\PdfDataHandlerInterface;
  */
 class DocumentMgr
 {
+    const DOC_CLASSNAME = '\XtractPDF\Model\Document';
+
+    const ASC  = 1;
+    const DESC = -1;
+
+    // --------------------------------------------------------------
+
     /**
      * @var Doctrine\ODM\MongoDB\DocumentManager
      */
@@ -79,7 +86,7 @@ class DocumentMgr
     public function getDocument($uniqId)
     {
         return $this->dm
-            ->getRepository('\XtractPDF\Model\Document')
+            ->getRepository(self::DOC_CLASSNAME)
             ->findOneBy(array('uniqId' => $uniqId));
     }
 
@@ -109,6 +116,26 @@ class DocumentMgr
 
         return $streamer;
     }
+
+    // --------------------------------------------------------------
+
+    /**
+     * List Documents
+     *
+     * @param int    $limit
+     * @param string $sortField
+     * @param int    $sortDir
+     * @return Doctrine\ODM\MongoDB\Cursor
+     */
+    public function listDocuments($limit = null, $sortField = 'created', $sortDir = self::DESC)
+    {
+        //Set sort
+        $sort = ($sortField)
+            ? array($sortField, $sortDir)
+            : array();
+
+        return $this->dm->getRepository(self::DOC_CLASSNAME)->findBy(array(), $sort, (int) $limit);
+    }    
 }
 
 /* EOF: DocumentMgr.php */

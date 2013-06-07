@@ -17,6 +17,11 @@ class Workspace extends Controller
      */
     private $docMgr;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
     // --------------------------------------------------------------
 
     /**
@@ -43,7 +48,8 @@ class Workspace extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->docMgr   = $app['doc_mgr'];
+        $this->twig   = $app['twig'];        
+        $this->docMgr = $app['doc_mgr'];
     }
 
     // --------------------------------------------------------------
@@ -65,7 +71,15 @@ class Workspace extends Controller
             //Process XML into data model
             //Process data model into Twig View
 
-            return "<p>Would render workspace for " . $id . "</p>";
+            //Temporary for testing - Delete me when the above is completed...
+            $docs = $this->docMgr->listDocuments(1);
+            $doc = reset($docs);
+
+            //Return workspace
+            return $this->twig->render(
+                'p_workspace.html.twig',
+                array('doc' => $doc)
+            );
         }
         else {
             return $this->abort(404, "Could not find document");

@@ -1,0 +1,24 @@
+<div id='sidebar'>
+
+    <div id='sidebar-content'>
+        <ul id='sidebar-top-list'>
+            <li class='li-site-title'>
+                <h1>XtractPDF</h1>
+            </li>
+            <li class='li-search-form'>
+                <form id='pdf-upload' method='post' action='{{ site_url }}/upload'>
+                    <label for='pdffile-input'>Upload PDF</label>
+                    <input type='file' name='pdffile' id='pdffile-input' />
+                </form>
+            </li>
+        </ul>
+        
+        <ul id='sidebar-pdf-list'>
+            {% for doc in doc_list %}
+                {% include 'p_sidebar_item.html.twig' %}       
+            {% endfor %}                      
+        </ul>
+    </div>
+
+    <div id='sidebar-tab'><p>XtractPDF</p></div>
+</div>

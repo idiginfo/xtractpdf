@@ -22,49 +22,7 @@
     <body class='{{ page_class | default('normal') }}'>
         
         {% block page_sidebar %}
-            <div id='sidebar'>
-
-                <div id='sidebar-content'>
-                    <ul id='sidebar-top-list'>
-                        <li class='li-site-title'>
-                            <h1>XtractPDF</h1>
-                        </li>
-                        <li class='li-search-form'>
-                            <form id='pdf-upload' method='post' action='{{ site_url }}/upload'>
-                                <label for='pdffile-input'>Upload PDF</label>
-                                <input type='file' name='pdffile' id='pdffile-input' />
-                            </form>
-                        </li>
-                    </ul>
-                    <ul id='sidebar-pdf-list'>
-                        <li class='pdf-item status-working-on'>
-                            <a href='#' title='Edit Some PDF Tittle That is long'>
-                                <span class='pdf-icon'><i class='icon-file-alt'></i></span>
-                                <span class='pdf-title'>Some PDF Title&hellip;Long</span>
-                                <span class='pdf-status'><i class='icon-star-half-full'></i> Working On</span>
-                            </a>
-                        </li>
-
-                        <li class='pdf-item status-new'>
-                            <a href='#' title='Edit Some PDF Tittle That is long'>
-                                <span class='pdf-icon'><i class='icon-file-alt'></i></span>
-                                <span class='pdf-title'>Another PDF Tit&hellip;Long</span>
-                                <span class='pdf-status'><i class='icon-star-empty'></i> New</span>
-                            </a>
-                        </li>  
-
-                        <li class='pdf-item status-complete'>
-                            <a href='#' title='Edit Some PDF Tittle That is long'>
-                                <span class='pdf-icon'><i class='icon-file-alt'></i></span>
-                                <span class='pdf-title'>Another PDF Tit&hellip;Long</span>
-                                <span class='pdf-status'><i class='icon-star'></i> Complete</span>
-                            </a>
-                        </li>                        
-                    </ul>
-                </div>
-
-                <div id='sidebar-tab'><p>XtractPDF</p></div>
-            </div>
+            {% include 'p_sidebar.html.twig' %}
         {% endblock %}
 
         {% block page_content %}

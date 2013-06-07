@@ -1,0 +1,15 @@
+ <li id='doc-{{ doc.uniqId }}' class='pdf-item {{ doc.isExtracted ? 'status-working-on' : 'status-new' }}'>
+    <a href='{{ url('workspace', {id: doc.uniqId }) }}' class='doc-link' title='Edit {{ doc.getMeta('title') ? doc.getMeta('title') : 'Document' }}'>
+        <span class='pdf-icon'><i class='icon-file-alt'></i></span>
+        <span class='pdf-title'>{{ doc.getMeta('title') ? doc.getMeta('title') : 'Untitled Document: ' ~ doc.uniqId }}</span>
+        <span class='pdf-status'>
+            {% if doc.isComplete %}
+                <i class='icon-star'></i> New
+            {% elseif doc.isExtracted %}
+                <i class='icon-star-half-full'></i> Working On
+            {% else %}
+                <i class='icon-star-empty'></i> New
+            {% endif %}
+        </span>
+    </a>
+</li>    
