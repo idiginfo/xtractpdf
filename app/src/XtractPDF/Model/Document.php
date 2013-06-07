@@ -3,7 +3,7 @@
 namespace XtractPDF\Model;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use XtractPDF\Library\Model as BaseModel;
+use XtractPDF\Core\Model as BaseModel;
 use DateTime;
 
 /**
@@ -12,56 +12,78 @@ use DateTime;
  */
 class Document extends BaseModel
 {
-    /**
-     * @var string
+    /** 
+     * @ODM\Id
      */
     protected $id;
 
     /**
      * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex
      */
-    protected $md5;
+    protected $uniqId;
 
     /**
-     * @var string
-     */
-    protected $filename;
-
-    /**
-     *  @var DateTime
+     * @var DateTime
+     * @ODM\Date
      */
     protected $created;
 
     /**
-     *  @var DateTime
+     * @var DateTime
+     * @ODM\Date
      */
     protected $extracted;
 
     /**
+     * @var boolean
+     * @ODM\Boolean
+     */
+    protected $isExtracted;
+
+    /**
      * @var array
+     * @ODM\EmbedMany(targetDocument="DocumentSection")
      */
     protected $sections;
 
     /**
      * @var array
+     * @ODM\Collection
      */
     protected $citatations;
 
     /**
      * @var XtractPDF\Model\DcoumentBiblioMeta
+     * @ODM\EmbedOne(targetDocument="DocumentBiblioMeta")
      */
     protected $biblioMeta;
 
     // --------------------------------------------------------------
 
-    public function __construct($filename, $md5)
+    /**
+     * Constructor
+     *
+     * @param string $filename  Relative filename
+     * @param string $md5       An identifier that uniquely identifies PDF content
+     */
+    public function __construct($uniqId)
     {
-        $this->filename   = $filename;
-        $this->md5        = $md5;
-        $this->biblioMeta = new DocumentBiblioMeta();
-        $this->created    = new DateTime();
-        $this->citations  = array();
-        $this->sections   = array();
+        $this->uniqId      = $uniqId;
+        $this->isExtracted = false;
+        $this->biblioMeta  = new DocumentBiblioMeta();
+        $this->created     = new DateTime();
+        $this->citations   = array();
+        $this->sections    = array();
+    }
+
+
+    // --------------------------------------------------------------
+
+    public function markExtracted()
+    {
+        $this->isExtracted = true;
     }
 
     // --------------------------------------------------------------

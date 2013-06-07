@@ -49,7 +49,7 @@ class DoctrineMongoServiceProvider implements ServiceProviderInterface
 
             $docPath = isset($app['mongo.documents_path'])
                 ? $app['mongo.documents_path']
-                : $app->basePath('app/src/XtractPDF/Model');
+                : __DIR__ . '/../Model';
 
             //Config
             $config = new MongoConfiguration();

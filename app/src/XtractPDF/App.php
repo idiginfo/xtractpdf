@@ -105,10 +105,14 @@ class App extends SilexApp
 
     // --------------------------------------------------------------
 
-    protected function basePath($subPath = '')
+    protected function resolvePath($path = '')
     {
-        $subPath = trim($subPath, '/');
-        return realpath(__DIR__ . '/../../../' . $subPath);
+        //If not absolute path, precede with basepath
+        if ($path{0} != '/') {
+            $path = realpath(__DIR__ . '/../../../') . '/' . ltrim($path, '/');
+        }
+
+        return rtrim($path, '/');
     }
 
     // --------------------------------------------------------------
@@ -134,13 +138,8 @@ class App extends SilexApp
 
         //Twig
         $app->register(new TwigServiceProvider(), array(
-            'twig.path' => $this->basePath('/templates')
+            'twig.path' => $this->resolvePath('templates')
         ));
-
-        //Uploader (overwrite = true)
-        $app['uploader'] = $app->share(function() use ($app) {
-            return new UploadFileSystem($this['pdf_filepath'], true);
-        });
 
         //
         // Controllers
@@ -158,44 +157,29 @@ class App extends SilexApp
         $app =& $this;
 
         //Config
-        $app['config'] = new Config($this->basePath('config'));
-
-        //Logfile Path
-        $logFilePath = ($app['config']->logpath{0} == '/')
-            ? $app['config']->logpath
-            : $this->basePath($app['config']->logpath);
-        $logFilePath = rtrim($logFilePath, '/') . '/xtractpdf.log';
+        $app['config'] = new Config($this->resolvePath('config'));
 
         //Monolog
         $app->register(new MonologServiceProvider(), array(
             'monolog.name'    => 'xtractpdf',
-            'monolog.logfile' => $logFilePath,
+            'monolog.logfile' => $this->resolvePath($app['config']->logpath) . '/xtractpdf.log',
             'monolog.level'   => Logger::INFO
         ));
 
         //$app['mongo'] - DocumentManager
         $this->register(new Provider\DoctrineMongoServiceProvider());
 
-        //Guzzle
-        $app['guzzle'] = $app->share(function() use ($app) {
-            return new Guzzle\Service\Client();
+        //Upload Filepath
+        $app['pdf_filepath'] = $this->resolvePath($app['config']->uploads);
+
+        //Document Manager
+        $app['doc_mgr'] = $app->share(function() use ($app) {
+            return new Library\DocumentMgr($app['mongo'], new PdfDataHandler\FilePdfHandler($app['pdf_filepath']));
         });
 
-        //Document Model Factory
-        $app['doc_model_factory'] = $app->protect(function($filename) use ($app) {
-            return new Model\Document($filename);
-        });
-
-        //PDFX Extractor
+        //PDFX XML Extractor
         $app['extractor'] = $app->share(function() use ($app) {
-            return new Extractor\PDFX($app['guzzle']);
-        });
-
-        //Filepath
-        $app['pdf_filepath'] = $app->share(function() use ($app) {
-            return ($app['config']->uploads{0} == '/') 
-                ? $app['config']->uploads 
-                : $this->basePath($app['config']->uploads);
+            return new Extractor\PDFX(new Guzzle\Service\Client());
         });
     }
 }

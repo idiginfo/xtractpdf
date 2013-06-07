@@ -1,6 +1,6 @@
 <?php
 
-namespace XtractPDF\Library;
+namespace XtractPDF\Core;
 
 /**
  * Abstract Model Class

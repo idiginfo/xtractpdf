@@ -3,7 +3,7 @@
 namespace XtractPDF\Controller;
 
 use Silex\Application;
-use XtractPDF\Library\Controller;
+use XtractPDF\Core\Controller;
 use Silex\ControllerCollection;
 
 /**
@@ -12,9 +12,9 @@ use Silex\ControllerCollection;
 class PdfViewer extends Controller
 {
     /**
-     * @var string Filepath of uploads
+     * @var XtractPDF\Library\DocumentMgr
      */
-    private $filepath;
+    private $docMgr;
 
     // --------------------------------------------------------------
 
@@ -30,7 +30,7 @@ class PdfViewer extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/pdf/{file}', array($this, 'renderPdfAction'))->bind('viewpdf');
+        $routes->get('/pdf/{id}', array($this, 'renderPdfAction'))->bind('viewpdf');
     }
 
     // --------------------------------------------------------------
@@ -42,7 +42,7 @@ class PdfViewer extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->filepath = $app['pdf_filepath'];
+        $this->docMgr = $app['doc_mgr'];
     }
 
     // --------------------------------------------------------------
@@ -50,21 +50,18 @@ class PdfViewer extends Controller
     /**
      * Render a PDF by its unique identifier
      *
-     * GET /pdf/{pdfIdentifier}
+     * GET /pdf/{id}
      * 
-     * @param string $file  The filename
+     * @param string $id  Identifier for the document
      */
-    public function renderPdfAction($file)
+    public function renderPdfAction($id)
     {
-        //Get the filepath
-        $filepath = $this->filepath . '/' . $file;
-
         //If the file is readable, then send it; else 404
-        if (is_readable($filepath)) {
-            return $this->sendFile($filepath);
+        if ($this->docMgr->checkDocumentExists($id)) {
+            return $this->stream($this->docMgr->streamPdf($id), 200, array('Content-type' => 'application/pdf'));
         }
         else {
-            return $this->abort(404, "Could not find PDF file");
+            return $this->abort(404, "Could not find document");
         }
     }    
 }

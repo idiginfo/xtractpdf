@@ -3,7 +3,7 @@
 namespace XtractPDF\Controller;
 
 use Silex\Application;
-use XtractPDF\Library\Controller;
+use XtractPDF\Core\Controller;
 use Silex\ControllerCollection;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -13,9 +13,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class Workspace extends Controller
 {
     /**
-     * @var string Filepath of uploads
+     * @var XtractPDF\Library\DocumentMgr
      */
-    private $filepath;
+    private $docMgr;
 
     // --------------------------------------------------------------
 
@@ -31,7 +31,7 @@ class Workspace extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/workspace/{file}', array($this, 'renderWorkspaceAction'))->bind('workspace');
+        $routes->get('/workspace/{id}', array($this, 'renderWorkspaceAction'))->bind('workspace');
     }
 
     // --------------------------------------------------------------
@@ -43,7 +43,7 @@ class Workspace extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->filepath = $app['pdf_filepath'];
+        $this->docMgr   = $app['doc_mgr'];
     }
 
     // --------------------------------------------------------------
@@ -51,26 +51,24 @@ class Workspace extends Controller
     /**
      * Render a PDF and then destroy it
      *
-     * GET /workspace/{identifier}
+     * GET /workspace/{id}
      * 
-     * @param string $file  The filename
+     * @param string $id  Unique Identifier of the document
      */
-    public function renderWorkspaceAction($file)
+    public function renderWorkspaceAction($id)
     {
-        //Get the filepath
-        $filepath = $this->filepath . '/' . $file;
 
         //If the file is readable, then send it; else 404
-        if (is_readable($filepath)) {
+        if ($this->docMgr->checkDocumentExists($id)) {
 
             //Run the PDFX converter to get the XML
             //Process XML into data model
             //Process data model into Twig View
 
-            return "<p>Would render workspace for " . basename($filepath) . "</p>";
+            return "<p>Would render workspace for " . $id . "</p>";
         }
         else {
-            return $this->abort(404, "Could not find PDF file");
+            return $this->abort(404, "Could not find document");
         }
     }    
 }

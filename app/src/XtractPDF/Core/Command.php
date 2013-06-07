@@ -1,6 +1,6 @@
 <?php
 
-namespace XtractPDF\Library; 
+namespace XtractPDF\Core; 
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Silex\Application;

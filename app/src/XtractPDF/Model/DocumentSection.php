@@ -3,20 +3,23 @@
 namespace XtractPDF\Model;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use XtractPDF\Library\Model as BaseModel;
+use XtractPDF\Core\Model as BaseModel;
 
 /**
  * Document Section
+ * @ODM\EmbeddedDocument 
  */
 class DocumentSection extends BaseModel
 {
     /**
      * @var string
+     * @ODM\String
      */
     protected $title;
 
     /**
      * @var array
+     * @ODM\Collection
      */
     protected $paragraphs;
 

@@ -3,7 +3,7 @@
 namespace XtractPDF\Controller;
 
 use Silex\Application;
-use XtractPDF\Library\Controller;
+use XtractPDF\Core\Controller;
 use Silex\ControllerCollection;
 
 /**

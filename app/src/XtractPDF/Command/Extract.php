@@ -2,7 +2,7 @@
 
 namespace XtractPDF\Command;
 
-use XtractPDF\Library\Command as BaseCommand;
+use XtractPDF\Core\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

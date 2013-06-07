@@ -1,6 +1,6 @@
 <?php
 
-namespace XTractPDF\Library;
+namespace XTractPDF\Core;
 
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -204,6 +204,17 @@ abstract class Controller implements ControllerProviderInterface
     {
         return $this->app->sendfile($file, $status, $headers, $contentDisposition);
     }
+
+    // --------------------------------------------------------------
+
+    /**
+     * Shortcut function for stream
+     */
+    protected function stream($callback, $status = 200, $headers = array())
+    {
+        return $this->app->stream($callback, $status, $headers);
+    }
+
 
     // --------------------------------------------------------------
 
