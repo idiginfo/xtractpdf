@@ -119,7 +119,7 @@ class PDFX implements ExtractorInterface
         if ($biblioSection) {
 
             foreach($this->extractBiblio($biblioSection) as $cit) {
-                $model->addCitation($cit);
+                $model->addNewCitation($cit);
             }
         }
 

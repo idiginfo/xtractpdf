@@ -19,7 +19,7 @@ class DocumentSection extends BaseModel
 
     /**
      * @var array
-     * @ODM\Collection
+     * @ODM\EmbedMany(targetDocument="DocumentParagraph")
      */
     protected $paragraphs;
 
@@ -47,9 +47,19 @@ class DocumentSection extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function addParagraph($content, $after = null)
+    public function addParagraph(Paragraph $paragraph, $after = null)
     {
-        $this->paragraphs[] = $content;
+        if ($after && isset($this->paragraphs[$after])) {
+            
+            $before = array_slice($this->paragraphs, 0, $after + 1);
+            $after  = array_slice($this->paragraphs, $after + 1);
+
+            $this->paragraphs = array_merge($before, array($paragraph), $after);
+        }
+        else {
+            $this->paragraphs[] = $paragraph;    
+        }
+        
     }    
 }
 

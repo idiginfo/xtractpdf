@@ -91,7 +91,7 @@ class App extends SilexApp
         $app =& $this;
 
         //Registration function
-        $register = function(Library\Command $command) use ($consoleApp, $app) {
+        $register = function(Core\Command $command) use ($consoleApp, $app) {
             $command->init($app);
             $consoleApp->add($command);
         };

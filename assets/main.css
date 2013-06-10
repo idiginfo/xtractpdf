@@ -262,6 +262,19 @@ body {
 #workspace .ws-form {
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+}
+
+#workspace .ws-form legend {
+    margin-bottom: 0;
+    font-size: 1em;
+    padding-left: 4px;
+    border-bottom: 1px solid #CCC;
+    background-color: #e4e4e4;
+    color: #666;
+    font-family: monospace;
+    font-weight: bold;
+    line-height: 2em;
 }
 
 #workspace .ws-form .form-row {
@@ -282,6 +295,18 @@ body {
     z-index: 1;
     cursor: text;
     padding: .25em 0 .25em 4px;
+}
+
+#workspace .ws-form .form-row .input-actions {
+    z-index: 4;
+    display: block;
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    background-color: #F1F1F1;
+    border: 1px solid #F1F1F1;
+    border-radius: 10px;
+    padding: 0 4px;
 }
 
 #workspace .ws-form .form-row .input-item {

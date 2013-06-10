@@ -18,12 +18,15 @@
             <form class='ws-form' action='#' method='post'>
 
                 <fieldset>
+                    <legend>Bibliographic Metadata</legend>
+
                     <div class='form-row'>
                         <label for='ws-form-title'>Title</label>
 
                         <span class='input-item'>
                             <input type='text' id='ws-form-title' />
                         </span>
+
                     </div>
                     <div class='form-row'>
                         <label for='DOI'>DOI</label>
@@ -38,7 +41,26 @@
                         <span class='input-item'>
                             <input type='text' />
                         </span>
-                    </div>        
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Content</legend>
+
+                    <div class='form-row'>
+                        <label for='heading'>Heading</label>
+
+                        <span class='input-item'>
+                            <input type='text' />
+                        </span>
+
+                       <span class='input-actions'>
+                            <i class='icon-arrow-up' title='Move section up'></i>
+                            <i class='icon-arrow-down' title='Move section down'></i>
+                            <i class='icon-plus' title='Add paragraph'></i>                            
+                            <i class='icon-remove-sign' title='Remove section heading'></i>
+                        </span>
+
+                    </div>
 
                     <div class='form-row'>
                         <label for='Journal'>Paragraph</label>
@@ -46,15 +68,19 @@
                         <span class='input-item'>
                             <textarea></textarea>
                         </span>
-                    </div>        
+                    </div>          
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Citations</legend>
                     <div class='form-row'>
                         <label for='Journal'>Citation</label>
 
                         <span class='input-item'>
                             <textarea></textarea>
                         </span>
-                    </div>   
-
+                    </div>                     
                 </fieldset>
 
 

@@ -56,7 +56,7 @@ class Document extends BaseModel
 
     /**
      * @var array
-     * @ODM\Collection
+     * @ODM\EmbedMany(targetDocument="DocumentCitation")
      */
     protected $citatations;
 
@@ -121,7 +121,14 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function addCitation($citation)
+    public function addNewCitation($citationContent)
+    {
+        $this->addCitation(new DocumentCitation($citationContent));
+    }
+
+    // --------------------------------------------------------------
+
+    public function addCitation(DocumentCitation $citation)
     {
         $this->citations[] = $citation;
     }
