@@ -68,7 +68,7 @@ class PDFX implements ExtractorInterface
     /**
      * Extract text from PDF file
      *
-     * @param string  $file    Realpath to file
+     * @param string  $file    Realpath to file or other readble stream
      * @return string|boolean  False if could not be converted
      */
     public function extract($filepath)

@@ -9,7 +9,7 @@ use XtractPDF\Core\Model as BaseModel;
  * Document Paragraph
  * @ODM\EmbeddedDocument 
  */
-class DocumentParagraph
+class DocumentParagraph extends BaseModel
 {
     /**
      * @var string

@@ -109,11 +109,10 @@ class Extract extends BaseCommand
         $table = new TableHelper();
         $table->setHeaders(array('#', 'Citation'));
         foreach($model->citations as $n => $cite) {            
-            $table->addRow(array($n, substr($cite, 0, 60) . '...' ));
+            $table->addRow(array($n, substr($cite->content, 0, 60) . '...' ));
         }
         $output->writeln('Citations');
         $table->render($output);
-
     }
 }
 

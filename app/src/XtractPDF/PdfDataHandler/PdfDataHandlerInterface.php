@@ -2,7 +2,7 @@
 
 namespace XtractPDF\PdfDataHandler;
 
-interface PdfDataHandlerInterface
+abstract class PdfDataHandlerInterface
 {
     /**
      * Save the data PDF

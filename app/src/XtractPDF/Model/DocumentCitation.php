@@ -9,7 +9,7 @@ use XtractPDF\Core\Model as BaseModel;
  * Document Citation
  * @ODM\EmbeddedDocument 
  */
-class DocumentCitation
+class DocumentCitation extends BaseModel
 {
     /**
      * @var string

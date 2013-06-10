@@ -22,6 +22,11 @@ class Workspace extends Controller
      */
     private $twig;
 
+    /**
+     * @var XtractPDF\Extractor\ExtractorInterface
+     */
+    private $extractor;
+
     // --------------------------------------------------------------
 
     /**
@@ -48,8 +53,9 @@ class Workspace extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->twig   = $app['twig'];        
-        $this->docMgr = $app['doc_mgr'];
+        $this->twig      = $app['twig'];        
+        $this->docMgr    = $app['doc_mgr'];
+        $this->extractor = $app['extractor'];
     }
 
     // --------------------------------------------------------------
@@ -67,19 +73,18 @@ class Workspace extends Controller
         //If the file is readable, then send it; else 404
         if ($this->docMgr->checkDocumentExists($id)) {
 
-            //Run the PDFX converter to get the XML
-            //Process XML into data model
+            $doc = $this->docMgr->getDocument($id);
+
+            if ( ! $doc->isExtracted) {
+
+                //Run the PDFX converter to get the XML
+                $this->extractor->extract();
+
+                //Process XML into data model
+            }
+            
             //Process data model into Twig View
-
-            //Temporary for testing - Delete me when the above is completed...
-            $docs = $this->docMgr->listDocuments(1);
-            $doc = reset($docs);
-
-            //Return workspace
-            return $this->twig->render(
-                'p_workspace.html.twig',
-                array('doc' => $doc)
-            );
+            $this->twig->render('worksapce.html.twig', array('doc' => $doc));
         }
         else {
             return $this->abort(404, "Could not find document");
