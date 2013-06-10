@@ -14,12 +14,6 @@ class DocumentCitation extends BaseModel
     /**
      * @var string
      * @ODM\String
-     */    
-    protected $uuid;
-
-    /**
-     * @var string
-     * @ODM\String
      */ 
     protected $content;
 

@@ -1,5 +1,11 @@
 Left off:
-
-1. build workspace builder from model
-2. build workspace interface and AJAX functionatlies
-3. implement JATS-XML render and export from model capability
+1. build workspace interface and AJAX functionatlies
+   - Implement Jquery UI drag-and-drop capability: http://api.jqueryui.com/sortable/#option-handle
+   - Implement Jquery AJAX calls with as little redundancy as possible
+   - Auto-remove line breaks (?) on copy/paste
+   - Fix default height for paragraphs and citations in form
+   - Make actions only visible on :hover for form items
+   - Add "Mark Complete" checkbox
+2. Implement JATS-XML render and export from model capability
+3. Style fixes to the left-hand sidebar when the list grows too long
+4. Cross-browser testing on many PDFs

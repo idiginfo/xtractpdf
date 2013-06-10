@@ -24,7 +24,7 @@
         "filp/whoops"         : ">=1.0.6",
         "caseyamcl/Configula" : ">=2.1.0",
         "monolog/monolog"     : ">=1.5.0",
-        "doctrine/mongodb-odm": "1.0.*@dev"
+        "doctrine/mongodb-odm": ">=1.0.0-BETA9"
     },
     "require-dev": {
         "mockery/mockery"     : "dev-master",

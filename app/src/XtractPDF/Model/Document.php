@@ -58,7 +58,7 @@ class Document extends BaseModel
      * @var array
      * @ODM\EmbedMany(targetDocument="DocumentCitation")
      */
-    protected $citatations;
+    protected $citations;
 
     /**
      * @var XtractPDF\Model\DcoumentBiblioMeta
@@ -85,7 +85,6 @@ class Document extends BaseModel
         $this->sections    = array();
     }
 
-
     // --------------------------------------------------------------
 
     public function markExtracted()
@@ -102,6 +101,15 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
+    public function setSections(array $sections)
+    {
+        foreach($sections as $sec) {
+            $this->addSection($section);
+        }
+    }
+
+    // --------------------------------------------------------------
+
     public function addNewSection($title, array $paragraphs)
     {
         $this->addSection(new DocumentSection($title, $paragraphs));
@@ -109,13 +117,17 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function addSection(DocumentSection $section, $pos = null)
+    public function addSection(DocumentSection $section)
     {
-        if ($pos) {
-            $this->sections[$pos] = $section;    
-        }
-        else {
-            $this->sections[] = $section;
+        $this->sections[] = $section;
+    }
+
+    // --------------------------------------------------------------
+
+    public function setCitations(array $citations)
+    {
+        foreach($citations as $cite) {
+            $this->addCitation($cite);
         }
     }
 
@@ -147,6 +159,26 @@ class Document extends BaseModel
         $this->biblioMeta->$name = $value;
     }
 
+    // --------------------------------------------------------------
+
+    public function setAuthors(array $authors)
+    {
+        $this->biblioMeta->setAuthors($authors);
+    }
+
+    // --------------------------------------------------------------
+
+    public function addNewAuthor($authorName)
+    {
+        $this->biblioMeta->addNewAuthor($authorName);
+    }
+
+    // --------------------------------------------------------------
+
+    public function addAuthor(DocumentAuthor $author)
+    {
+        $this->biblioMeta->addAuthor($author);        
+    }
 }
 
 /* EOF: Document.php */

@@ -15,42 +15,120 @@
 
         <div class="tab-pane active" id="ws-form">
                 
-            <form class='ws-form' action='#' method='post'>
+            <form class='ws-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
 
-                <fieldset>
+                <fieldset class='ws-form-biblio-meta'>
                     <legend>Bibliographic Metadata</legend>
 
                     <div class='form-row'>
                         <label for='ws-form-title'>Title</label>
 
                         <span class='input-item'>
-                            <input type='text' id='ws-form-title' />
+                            <input type='text' id='ws-form-title' value='{{ doc.getMeta('title') }}' />
                         </span>
-
                     </div>
+
                     <div class='form-row'>
-                        <label for='DOI'>DOI</label>
+                        <label for='ws-form-doi'>DOI</label>
 
                         <span class='input-item'>
-                            <input type='text' />
+                            <input type='text' id='ws-form-doi' value='{{ doc.getMeta('doi') }}' />
                         </span>
                     </div>
+
+
                     <div class='form-row'>
-                        <label for='Journal'>Journal</label>
+                        <label for='ws-form-journal'>Journal</label>
 
                         <span class='input-item'>
-                            <input type='text' />
+                            <input type='text' id='ws-form-journal' value='{{ doc.getMeta('journal') }}' />
                         </span>
                     </div>
+
+                    <div class='form-row'>
+                        <label for='ws-form-pmid'><abbr title='Pubmed ID'>PMID</abbr></label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-pmid' value='{{ doc.getMeta('pmid') }}' />
+                        </span>
+                    </div>
+
+                    <div class='form-row'>
+                        <label for='ws-form-isbn'>ISBN</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-isbn' value='{{ doc.getMeta('isbn') }}' />
+                        </span>
+                    </div>
+
+                    <div class='form-row'>
+                        <label for='ws-form-journal'>Journal</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-journal' value='{{ doc.getMeta('journal') }}' />
+                        </span>
+                    </div>                                                            
+
+                    <div class='form-row'>
+                        <label for='ws-form-startPage'>Start Page</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-startPage' value='{{ doc.getMeta('startPage') }}' />
+                        </span>
+                    </div>
+
+                    <div class='form-row'>
+                        <label for='ws-form-endPage'>EndPage</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-endPage' value='{{ doc.getMeta('endPage') }}' />
+                        </span>
+                    </div>
+
+                    <div class='form-row'>
+                        <label for='ws-form-year'>Year</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-year' value='{{ doc.getMeta('year') }}' />
+                        </span>
+                    </div>                                   
+
+                    <div class='form-row'>
+                        <label for='abstract'>Abstract</label>
+
+                        <span class='input-item'>
+                            <textarea id='ws-form-abstract'>{{ doc.getMeta('abstract') }}</textarea>
+                        </span>
+                    </div>   
+
                 </fieldset>
-                <fieldset>
+
+                <fieldset class='ws-form-authors'>
+                    <legend>Authors</legend>
+
+                    {% for n, author in doc.getMeta('authors') %}
+
+                    <div class='form-row'>
+                        <label for='ws-form-author-{{ n }}'>Author</label>
+
+                        <span class='input-item'>
+                            <input type='text' id='ws-form-author-{{ n }}' value='{{ author.name }}' />
+                        </span>
+                    </div>     
+
+                    {% endfor %}
+                </fieldset>
+
+                <fieldset class='ws-form-content'>
                     <legend>Content</legend>
 
+                    {% for n, section in doc.sections %}
+
                     <div class='form-row'>
-                        <label for='heading'>Heading</label>
+                        <label for='ws-form-section-{{ n }}'>Heading</label>
 
                         <span class='input-item'>
-                            <input type='text' />
+                            <input type='text' id='ws-form-section-{{ n }}' value='{{ section.title }}' />
                         </span>
 
                        <span class='input-actions'>
@@ -62,17 +140,22 @@
 
                     </div>
 
+                    {% for np, para in section.paragraphs %}
+
                     <div class='form-row'>
-                        <label for='Journal'>Paragraph</label>
+                        <label for='ws-form-paragraph-{{ n ~ '.' ~ np }}'>Paragraph</label>
 
                         <span class='input-item'>
-                            <textarea></textarea>
+                            <textarea id='ws-form-paragraph-{{ n ~ '.' ~ np }}'>{{ para.content }}</textarea>
                         </span>
                     </div>          
+                    {% endfor %} {# Paragraphs #}
+
+                    {% endfor %} {# Sections #}
 
                 </fieldset>
 
-                <fieldset>
+                <fieldset class='ws-form-citations'>
                     <legend>Citations</legend>
                     <div class='form-row'>
                         <label for='Journal'>Citation</label>

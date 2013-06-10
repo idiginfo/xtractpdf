@@ -96,7 +96,7 @@ class DocumentBiblioMeta extends BaseModel
                     }
                 break;
                 case 'authors':
-                    throw new InvalidArgumentException("Use " . get_called_class() . "::setAuthor() or " . get_called_class() . "::addAuthor() to set authors");
+                    throw new InvalidArgumentException("Use " . get_called_class() . "::setAuthors() or " . get_called_class() . "::addAuthor() to set authors");
                 break;
             }
 
@@ -107,16 +107,25 @@ class DocumentBiblioMeta extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function setAuthor($pos, $name)
+    public function setAuthors(array $authors)
     {
-        $this->authors[$pos] = $name;
-    }    
+        foreach($authors as $author) {
+            $this->addAuthor($author);
+        }
+    }
 
     // --------------------------------------------------------------
 
-    public function addAuthor($name)
+    public function addNewAuthor($authorName)
     {
-        $this->authors[] = $name;
+        $this->addAuthor(new DocumentAuthor($authorName));
+    }
+
+    // --------------------------------------------------------------
+
+    public function addAuthor(DocumentAuthor $author)
+    {
+        $this->authors[] = $author;
     }
 }
 

@@ -41,10 +41,10 @@ interface ExtractorInterface
     /**
      * Extract information from PDF
      *
-     * @param  string  $filepath  Path to resource or other readable stream
-     * @return string|boolean     Serialized version of extracted data (false upon fail)
+     * @param  string $stream  Stream or filepath
+     * @return string|boolean  Serialized version of extracted data (false upon fail)
      */
-    function extract($filepath);
+    function extract($stream);
 
     // --------------------------------------------------------------
 

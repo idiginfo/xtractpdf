@@ -6,32 +6,30 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use XtractPDF\Core\Model as BaseModel;
 
 /**
- * Document Paragraph
+ * Document Author
  * @ODM\EmbeddedDocument 
  */
-class DocumentParagraph extends BaseModel
+class DocumentAuthor
 {
     /**
      * @var string
      * @ODM\String
-     */    
-    protected $content;
+     */
+    protected $name;
 
     // --------------------------------------------------------------
 
-    public function __construct($content)
+    public function __construct($authorName)
     {
-        $this->uuid    = uniqid();
-        $this->content = $content;
+        $this->name = $authorName;
     }
 
     // --------------------------------------------------------------
 
-    public function setContent($content)
+    public function __toString()
     {
-        $this->content = $content;
+        return $this->name;
     }
 }
 
-
-/* EOF: DocumentParagraph.php */
+/* EOF: DocumentAuthor.php */

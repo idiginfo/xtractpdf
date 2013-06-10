@@ -68,16 +68,16 @@ class PDFX implements ExtractorInterface
     /**
      * Extract text from PDF file
      *
-     * @param string  $file    Realpath to file or other readble stream
+     * @param  string $stream  Stream or filepath
      * @return string|boolean  False if could not be converted
      */
-    public function extract($filepath)
+    public function extract($stream)
     {
         //Setup a new request
         $req = $this->guzzle->post(
             self::API_URL,
             array('Content-type' => 'application/pdf'),
-            fopen($filepath, 'r')
+            fopen($stream, 'r')
         );
         
         //Send it
