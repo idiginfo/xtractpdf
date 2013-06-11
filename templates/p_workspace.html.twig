@@ -2,6 +2,9 @@
     <div class='ws-top'>
 
         <span class='pull-right'>
+            <form class='ws-mc-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
+                <label><input type='checkbox' name='isComplete' /> Completed</label>
+            </form>
             <a href='#' class='btn btn-mini' title='Export as JATS'><i class="icon-share-alt"></i> Export (JATS)</a>
         </span>
 

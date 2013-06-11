@@ -120,91 +120,26 @@ class Workspace extends Controller
 
             $doc = $this->docMgr->getDocument($id);
 
-            //Update metadata
-            if ($this->getPostParams('meta')) {
-                $this->updateDocMetadata($this->getPostParams('meta'));
+            //Are we updating the content of the model, or marking it complete?
+            if ($this->getPostParams('mark')) {
+                $doc->markComplete($this->getPostParams('isComplete'));
+                
             }
-            
-            //Update authors
-            if ($this->getPostParams('authors')) {
-                $this->updateDocAuthors($this->getPostParams('authors'));
-            }            
+            else {
+                //TODO: Rebuild model from form data
+            }
 
-            //Update content
-            if ($this->getPostParams('content')) {
-                $this->updateDocContent($this->getPostParams('content'));
-            }            
-
-            //Update citations
-            if ($this->getPostParams('citations')) {
-                $this->updateDocCitations($this->getPostParams('citations'));
-            }       
-
-            //Persist the update
+            //Update
             $this->docMgr->updateDocument($doc);
 
-            //Return a response
-            return $this->json(array('message' => 'Updated document', 'id' => $id));
+            //Result
+            return $this->json(array('message' => 'Updated document'), 200);
         }
         else {
-            return $this->json(array('message' => 'Could not find document', 404));
+            return $this->json(array('message' => 'Could not find document'), 404);
         }        
     }  
 
-    // --------------------------------------------------------------
 
-    protected function updateDocMetadata(array $data, Model\Document $doc)
-    {
-        foreach($data as $metaName => $metaValue) {
-            $doc->setMeta($metaName, $metaValue);
-        }
-
-        return $doc;
-    }
-
-    // --------------------------------------------------------------
-
-    protected function updateDocAuthors(array $data, Model\Document $doc)
-    {
-        $authors = array();
-
-        foreach($data as $authorName) {
-            $authors[] = new Model\DocumentAuthor($authorName);
-        }
-
-        $doc->setAuthors($authors);
-        return $doc;
-    }
-
-    // --------------------------------------------------------------
-
-    protected function updateDocContent(array $data, Model\Document $doc)
-    {
-        $sections = array();
-
-        $data = json_decode($data, true);
-        foreach ($data as $sectionTitle => $paragraphs) {
-            $sections[] = new Model\DocumentSection($sectionTitle, $paragraphs);
-        }
-
-        $doc->setSections($sections);
-        return $doc;
-    }
-
-    // --------------------------------------------------------------
-
-    protected function updateDocCitations(array $data, Model\Document $doc)
-    {
-        $citations = array();
-
-        foreach ($data as $citation) {
-            $citations[] = new Model\DocumentCitation($citation);
-        }
-
-        $doc->setCitations($citations);
-        return $doc;
-    }
-
-}
 
 /* EOF: Workspace */

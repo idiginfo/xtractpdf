@@ -28,15 +28,7 @@ class DocumentSection extends BaseModel
     public function __construct($title, array $paragraphs = array())
     {
         $this->title = $title;
-        foreach($paragraphs as $paragraph) {
-
-            if ($paragraph instanceOf DocumentParagraph) {
-                $this->addParagraph($paragraph);
-            }
-            else {
-                $this->addParagraph(new DocumentParagraph($paragraph));    
-            }
-        }
+        $this->setParagraphs($paragraphs);
     }
 
     // --------------------------------------------------------------
@@ -44,6 +36,18 @@ class DocumentSection extends BaseModel
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+
+    // --------------------------------------------------------------
+
+    public function setParagraphs(array $paragraphs)
+    {
+        $this->paragraphs = array();
+
+        foreach ($paragraphs as $paragraph) {
+            $this->addParagraph($paragraph);            
+        }
     }
 
     // --------------------------------------------------------------

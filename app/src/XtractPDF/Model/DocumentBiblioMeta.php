@@ -109,16 +109,11 @@ class DocumentBiblioMeta extends BaseModel
 
     public function setAuthors(array $authors)
     {
+        $this->authors = array();
+
         foreach($authors as $author) {
             $this->addAuthor($author);
         }
-    }
-
-    // --------------------------------------------------------------
-
-    public function addNewAuthor($authorName)
-    {
-        $this->addAuthor(new DocumentAuthor($authorName));
     }
 
     // --------------------------------------------------------------

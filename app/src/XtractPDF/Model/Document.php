@@ -50,15 +50,21 @@ class Document extends BaseModel
 
     /**
      * @var array
-     * @ODM\EmbedMany(targetDocument="DocumentSection")
-     */
-    protected $sections;
-
-    /**
-     * @var array
      * @ODM\EmbedMany(targetDocument="DocumentCitation")
      */
     protected $citations;
+
+    /**
+     * @var DocumentAbstract
+     * @ODM\EmbedOne(targetDocument="DocumentAbstract")
+     */
+    protected $abstract;
+
+    /**
+     * @var DocumentContent
+     * @ODM\EmbedOne(targetDocument="DocumentContent")
+     */
+    protected $content;
 
     /**
      * @var XtractPDF\Model\DcoumentBiblioMeta
@@ -89,6 +95,7 @@ class Document extends BaseModel
 
     public function markExtracted()
     {
+        $this->extracted = new DateTime();
         $this->isExtracted = true;
     }
 
@@ -101,48 +108,16 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function setSections(array $sections)
+    public function setContent(DocumentContent $content)
     {
-        foreach($sections as $sec) {
-            $this->addSection($section);
-        }
+        $this->content = $content;
     }
 
     // --------------------------------------------------------------
 
-    public function addNewSection($title, array $paragraphs)
+    public function setAbstract(DocumentAbstract $abstract)
     {
-        $this->addSection(new DocumentSection($title, $paragraphs));
-    }
-
-    // --------------------------------------------------------------
-
-    public function addSection(DocumentSection $section)
-    {
-        $this->sections[] = $section;
-    }
-
-    // --------------------------------------------------------------
-
-    public function setCitations(array $citations)
-    {
-        foreach($citations as $cite) {
-            $this->addCitation($cite);
-        }
-    }
-
-    // --------------------------------------------------------------
-
-    public function addNewCitation($citationContent)
-    {
-        $this->addCitation(new DocumentCitation($citationContent));
-    }
-
-    // --------------------------------------------------------------
-
-    public function addCitation(DocumentCitation $citation)
-    {
-        $this->citations[] = $citation;
+        $this->abstract = $abstract;
     }
 
     // --------------------------------------------------------------
@@ -168,17 +143,28 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function addNewAuthor($authorName)
-    {
-        $this->biblioMeta->addNewAuthor($authorName);
-    }
-
-    // --------------------------------------------------------------
-
     public function addAuthor(DocumentAuthor $author)
     {
         $this->biblioMeta->addAuthor($author);        
     }
+
+    // --------------------------------------------------------------
+
+    public function setCitations(array $citations)
+    {
+        $this->citations = array();
+        
+        foreach($citations as $cite) {
+            $this->addCitation($cite);
+        }
+    }
+
+    // --------------------------------------------------------------
+
+    public function addCitation(DocumentCitation $citation)
+    {
+        $this->citations[] = $citation;
+    }    
 }
 
 /* EOF: Document.php */
