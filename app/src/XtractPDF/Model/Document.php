@@ -37,6 +37,12 @@ class Document extends BaseModel
     protected $extracted;
 
     /**
+     * @var DateTime
+     * @ODM\Date
+     */
+    protected $modified;
+
+    /**
      * @var boolean
      * @ODM\Boolean
      */
@@ -89,7 +95,15 @@ class Document extends BaseModel
         $this->abstract    = new DocumentAbstract();
         $this->content     = new DocumentContent();
         $this->created     = new DateTime();
+        $this->modified    = new DateTime();
         $this->citations   = array();
+    }
+
+    // --------------------------------------------------------------
+
+    public function markModified()
+    {
+        $this->modified = new DateTime();
     }
 
     // --------------------------------------------------------------

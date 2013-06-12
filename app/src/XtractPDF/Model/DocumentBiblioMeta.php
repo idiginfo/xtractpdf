@@ -91,7 +91,7 @@ class DocumentBiblioMeta extends BaseModel
                 case 'endPage':
                 case 'startPage':
                 case 'year':
-                    if ((string) abs((int) $val) !== (string) $val) {
+                    if ( ! empty($val) && ((string) abs((int) $val) !== (string) $val)) {
                         throw new InvalidArgumentException(get_called_class() . "::" . $item . " must be a positive integer");
                     }
                 break;

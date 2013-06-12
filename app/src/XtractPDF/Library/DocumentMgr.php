@@ -90,10 +90,11 @@ class DocumentMgr
 
     public function updateDocument(DocumentModel $document, $flush = true)
     {
+        $document->markModified();
         $this->dm->persist($document);
 
         if ($flush) {
-            $this->dm->flush();    
+            $this->dm->flush();
         }
     }
 
