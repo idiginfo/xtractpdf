@@ -31,6 +31,13 @@ class DocumentCitation extends BaseModel
     {
         $this->content = $content;
     }
+
+    // --------------------------------------------------------------
+
+    public function __tostring()
+    {
+        return $this->content;
+    }      
 }
 
 /* EOF: DocumentCitation.php */

@@ -86,9 +86,10 @@ class Document extends BaseModel
         $this->isExtracted = false;
         $this->isComplete  = false;
         $this->biblioMeta  = new DocumentBiblioMeta();
+        $this->abstract    = new DocumentAbstract();
+        $this->content     = new DocumentContent();
         $this->created     = new DateTime();
         $this->citations   = array();
-        $this->sections    = array();
     }
 
     // --------------------------------------------------------------

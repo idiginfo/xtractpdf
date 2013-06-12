@@ -2,11 +2,17 @@
 
 namespace XtractPDF\Core;
 
+use IteratorAggregate, ArrayIterator, Countable;
+
 /**
  * Abstract Model Class
  */
-abstract class Model
+abstract class Model implements IteratorAggregate, Countable
 {
+    private $iterator;
+
+    // --------------------------------------------------------------
+
     public function __get($item)
     {
         if ($item{0} != '_') {
@@ -23,6 +29,20 @@ abstract class Model
 
     // --------------------------------------------------------------
 
+    public function getIterator()
+    {
+        return new ArrayIterator($this->toArray());
+    }
+
+    // --------------------------------------------------------------
+
+    public function count()
+    {
+        return count($this->toArray());
+    }
+
+    // --------------------------------------------------------------
+
     public function toArray()
     {
         $arr = array();
@@ -34,7 +54,7 @@ abstract class Model
         }
 
         return $arr;
-    }    
+    } 
 }
 
 /* EOF: Model.php */

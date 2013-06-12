@@ -20,7 +20,14 @@ class DocumentContent extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function setSections(array $sections)
+    public function __construct(array $sections = array())
+    {
+        $this->setSections($sections);
+    }
+
+    // --------------------------------------------------------------
+
+    public function setSections(array $sections = array())
     {
         //Empty out existing sections
         $this->sections = array();

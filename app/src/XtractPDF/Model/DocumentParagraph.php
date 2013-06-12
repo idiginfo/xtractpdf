@@ -31,6 +31,13 @@ class DocumentParagraph extends BaseModel
     {
         $this->content = $content;
     }
+
+    // --------------------------------------------------------------
+
+    public function __tostring()
+    {
+        return $this->content;
+    }    
 }
 
 

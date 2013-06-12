@@ -68,51 +68,51 @@ class Extract extends BaseCommand
         $extractResult = $this->extractor->extract(realpath($file));
 
         //Run the mapper
-        $model = $this->extractor->map($extractResult, new DocumentModel($fileMd5));
+        $doc = $this->extractor->map($extractResult, new DocumentModel($fileMd5));
 
         //If persist, do it
         if ($persist) {
-            $result = $this->docMgr->saveNewDocument($model, $filePath);
+            $result = $this->docMgr->saveNewDocument($doc, $filePath);
 
             $output->writeln($result 
-                ? "Persisted new document to storage ID (" . $model->uniqId . ")" 
+                ? "Persisted new document to storage ID (" . $doc->uniqId . ")" 
                 : "Skipped persisting document.  It already exists"
             );
         }
 
-        //Output the result as tables
-        
-        //Basic information
+        //Output
+
+        //Basic information Table
         $table = new TableHelper();
         $table->setHeaders(array('Item', 'Value'));
-        foreach($model->toArray() as $k => $val) {
+        foreach($doc->toArray() as $k => $val) {
             if (is_scalar($val)) {
                 $table->addRow(array($k, $val));
             }
         }
-        foreach($model->biblioMeta as $k => $val) {
-            $table->addRow(array($k, $val));
+        foreach($doc->biblioMeta as $k => $val) {
+            if (is_scalar($val)) {
+                $table->addRow(array($k, $val));
+            }
+            elseif (is_array($val)) {
+                $table->addRow(array($k, implode(', ', $val) ));
+            }
         }
-        $output->writeln('Basic Information');
+        $output->writeln('Basic Information' . "\n" . '------------------------');
         $table->render($output);
 
         //Sections
-        $table = new TableHelper();
-        $table->setHeaders(array('Section', 'Paragraphs'));
-        foreach($model->sections as $sec) {            
-            $table->addRow(array($sec->title, count($sec->paragraphs)));
-        }
-        $output->writeln('Sections');
-        $table->render($output);
+        $output->writeln("\n\n" . 'Sections' . "\n" . '------------------------');
+        foreach($doc->content->sections as $section) {
+            $output->writeln("Section: " . $section->title);
+            $output->writeln(implode("\n\n", $section->paragraphs));
+        } 
 
         //Citations
-        $table = new TableHelper();
-        $table->setHeaders(array('#', 'Citation'));
-        foreach($model->citations as $n => $cite) {            
-            $table->addRow(array($n, substr($cite->content, 0, 60) . '...' ));
-        }
-        $output->writeln('Citations');
-        $table->render($output);
+        $output->writeln("\n\n" . 'Citations' . "\n" . '------------------------');
+        foreach($doc->citations as $cite) {
+            $output->writeln((string) $cite);
+        } 
     }
 }
 

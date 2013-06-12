@@ -139,7 +139,6 @@ class Workspace extends Controller
             return $this->json(array('message' => 'Could not find document'), 404);
         }        
     }  
-
-
+}
 
 /* EOF: Workspace */

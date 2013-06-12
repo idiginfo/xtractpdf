@@ -4,7 +4,7 @@ namespace XtractPDF\Extractor;
 
 use Guzzle\Http\Client as GuzzleClient;
 use XtractPDF\Library\ExtractorException;
-use XtractPDF\Model\Document as DocumentModel;
+use XtractPDF\Model;
 use SimpleXMLElement;
 
 /**
@@ -89,19 +89,20 @@ class PDFX implements ExtractorInterface
 
     // --------------------------------------------------------------
 
-    public function map($output, DocumentModel $model)
+    public function map($output, Model\Document $doc)
     {
         //Convert the output to XML
         $xml = new SimpleXMLElement($output);
         $xml->registerXPathNamespace('DoCO', 'http://purl.org/spar/doco');
 
         //Metadata Mappings
-        $model->setMeta('title', (string) $xml->xpath('//article/front//article-title')[0]);
+        $doc->setMeta('title', (string) $xml->xpath('//article/front//article-title')[0]);
 
         //Holder for biblio section
         $biblioSection = null;
 
-        //Document Sections
+        //Document Content
+        $docContent = new Model\DocumentContent();
         foreach($xml->xpath('//article/body//h1/parent::section') as $sec) {
 
             //Grab the bibliography section and move on
@@ -110,21 +111,24 @@ class PDFX implements ExtractorInterface
                 continue;
             }
 
-            //Add it to the document
+            //Extract section
             list($title, $paras) = $this->extractSection($sec);
-            $model->addNewSection($title, $paras);
+
+            //Add it to the content  
+            $docContent->addSection(new Model\DocumentSection($title, $paras));
         }
+        $doc->setContent($docContent);
 
         //Document bibliography
         if ($biblioSection) {
-
             foreach($this->extractBiblio($biblioSection) as $cit) {
-                $model->addNewCitation($cit);
+                $doc->addCitation(new Model\DocumentCitation($cit));
             }
         }
 
+
         //Return the document
-        return $model;
+        return $doc;
     }    
 
     // --------------------------------------------------------------
@@ -164,8 +168,10 @@ class PDFX implements ExtractorInterface
             }
         }
 
-        //Clean out the empties
-        $paragraphs = array_filter($paragraphs);
+        //Clean out the empties and convert them into paragraph objects
+        $paragraphs = array_map(function($ptext) {
+            return new Model\DocumentParagraph($ptext);
+        }, array_filter($paragraphs));
         
         //Return the title and paragraphs
         return array($sectionTitle, $paragraphs);
