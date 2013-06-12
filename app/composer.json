@@ -29,6 +29,7 @@
     "require-dev": {
         "mockery/mockery"     : "dev-master",
         "firephp/firephp-core": "dev-master",
+        "ccampbell/chromephp" : ">=4.0.0",
         "raveren/kint"        : "dev-master",
         "symfony/browser-kit" : ">=v2.2.0",
         "symfony/css-selector": ">=v2.2.0"

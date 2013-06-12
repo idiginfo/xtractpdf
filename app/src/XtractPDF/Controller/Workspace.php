@@ -118,26 +118,72 @@ class Workspace extends Controller
         //If the file is readable, then send it; else 404
         if ($this->docMgr->checkDocumentExists($id)) {
 
+            //Get the doc
             $doc = $this->docMgr->getDocument($id);
 
-            //Are we updating the content of the model, or marking it complete?
+            //404 if no doc
+            if ( ! $doc) {
+                return $this->json(array('message' => 'Could not find document'), 404);
+            }      
+
+            //Mark complete (if doing that) or submit content (if doing that)
             if ($this->getPostParams('mark')) {
-                $doc->markComplete($this->getPostParams('isComplete'));
-                
+                $doc->markComplete($this->getPostParams('isComplete'));                
             }
             else {
-                //TODO: Rebuild model from form data
+
+                $meta      = $this->getPostParams('meta');
+                $authors   = array_filter($this->getPostParams('authors'));
+                $citations = array_filter($this->getPostParams('citations'));
+                $content   = json_decode($this->getPostParams('content'));
+
+                $this->debug($meta);
+                $this->debug($authors);
+                $this->debug($citations);
+                $this->debug($content);
+
+                //Missing anything?
+                if ( ! is_array($meta) OR ! is_array($authors) OR ! is_array($citations) OR ! is_array($content)) {
+                    return $this->json(array('message' => "Invalid submission"), 400);
+                }
+
+                //Set meta
+                foreach($meta as $k => $v) {
+                    $doc->setMeta($k, $v);
+                }
+
+                //Set authors
+                $authorsArr = array();
+                foreach($authors as $auth) {
+                    $authorsArr[] = new Model\DocumentAuthor($auth);
+                }
+                $doc->setAuthors($authorsArr);
+
+                //Set citations
+                $citationsArr = array();
+                foreach($citations as $cite) {
+                    $citationsArr[] = new Model\DocumentCitation($cite);
+                }
+                $doc->setCitations($citationsArr);
+
+                //Set content
+                $contentObj = new Model\DocumentContent();
+                foreach($content as $sec) {
+                    $secObj = new Model\DocumentSection($sec->title);
+                    foreach(array_filter($sec->paragraphs) as $para) {
+                        $secObj->addParagraph(new Model\DocumentParagraph($para));
+                    }
+                    $contentObj->addSection($secObj);
+                }
+                $doc->setContent($contentObj);
             }
 
             //Update
             $this->docMgr->updateDocument($doc);
 
             //Result
-            return $this->json(array('message' => 'Updated document'), 200);
+            return $this->json(array('message' => 'Updated document', 'markedComplete' => $doc->isComplete), 200);
         }
-        else {
-            return $this->json(array('message' => 'Could not find document'), 404);
-        }        
     }  
 }
 

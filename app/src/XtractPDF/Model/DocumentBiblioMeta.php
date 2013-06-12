@@ -68,7 +68,7 @@ class DocumentBiblioMeta extends BaseModel
 
     /**
      * @var array
-     * @ODM\Collection
+     * @ODM\EmbedMany(targetDocument="DocumentAuthor")
      */
     protected $authors;
 

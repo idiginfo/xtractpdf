@@ -65,6 +65,8 @@ class MainInterface extends Controller
             'doc_list' => $this->docMgr->listDocuments()
         );
 
+        $this->debug("test");
+
         //Show the view
         return $this->twig->render('index.html.twig', $data);
     }

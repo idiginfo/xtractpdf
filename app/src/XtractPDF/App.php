@@ -5,7 +5,7 @@ namespace XtractPDF;
 use Silex\Application as SilexApp;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
-use Silex\Provider\MonologServiceProvider;
+use XtractPDF\Provider\MonologServiceProvider;
 use XtractPDF\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Upload\Storage\FileSystem as UploadFileSystem;

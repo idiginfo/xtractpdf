@@ -265,6 +265,21 @@ body {
     margin: 5px;
 } 
 
+#workspace .ws-top .ws-mc-form {
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+
+#workspace .ws-top .ws-mc-form > label {
+    font-size: 12px;
+    display: inline-block;
+    margin: 0;
+}
+
+#workspace .ws-top .ws-mc-form > label > input[type=checkbox] {
+    margin-top: 0;
+}
+
 #workspace .ws-form {
     margin: 0;
     padding: 0;
@@ -284,12 +299,34 @@ body {
     line-height: 2em;
 }
 
+#workspace .ws-form .form-rows {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 #workspace .ws-form .form-row {
+    padding: 0;
+    margin: 0;
     border-bottom: 1px solid #CCC;
     position: relative;
 }
 
+#workspace .ws-form .form-row .ws-form-pending {
+    position: absolute;
+    z-index: 5;
+    right: 4px;
+    top: 2px;
+    padding: 4px;
+}
+
 #workspace .ws-form .form-row label {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#workspace .ws-form .form-row .input-label {
     display: block;
     position: absolute;
     left: 0;
@@ -306,14 +343,28 @@ body {
 
 #workspace .ws-form .form-row .input-actions {
     z-index: 4;
-    display: block;
+    display: none;
     position: absolute;
     right: 4px;
     top: 2px;
-    background-color: #F1F1F1;
+    background-color: rgba(241, 241, 241, 0.5);
     border: 1px solid #F1F1F1;
     border-radius: 10px;
     padding: 0 4px;
+}
+
+#workspace .ws-form .form-row:hover .input-actions,
+#workspace .ws-form .form-row:focus .input-actions {
+    display: block;
+}
+
+#workspace .ws-form .form-row:hover .input-actions *[class^="icon-"] {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#workspace .ws-form .form-row:hover .input-actions *[class^="icon-"]:hover {
+    color: blue;
 }
 
 #workspace .ws-form .form-row .input-item {
@@ -348,14 +399,14 @@ body {
     resize: vertical;
 }
 
-#workspace #ws-xml {
+#workspace #ws-xml-pane {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
 }
 
-#workspace #ws-xml > pre {
+#workspace #ws-xml-pane > pre {
     margin: 0;
     height: 100%;
 }

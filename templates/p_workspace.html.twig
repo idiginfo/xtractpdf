@@ -1,8 +1,146 @@
+<script type='text/javascript'>
+
+$(document).ready(function() {
+
+    //
+    // Auto-submit form every 5 seconds if dirty
+    //
+    setInterval("submitWsForm()", 5000);
+
+    //
+    // Submit form on exit if dirty
+    //
+    $(window).unload("submitWsForm()");
+
+    //
+    // Mark Complete Submit
+    //
+    $('#ws-mc-form').ajaxForm({
+        dataType:     'json',
+        data: {'mark': true },
+        success: function(responseText, statusText, xhr, jq) {
+            console.log(responseText);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+        }        
+    });
+
+    $('#ws-mc-form :input').change(function() {
+        $('#ws-mc-form').submit();
+    });
+
+    //
+    // Content Submit
+    //
+    $('#ws-form').ajaxForm({
+        dataType:     'json',
+        beforeSubmit: function(arr, $form, options) {
+
+            //Convert sectionsandparagraphs to JSON object
+            var secsAndParagraphs = [];
+            var thisSection = { title: '', paragraphs: []};
+
+            $.each($form.find(':input[name="secsandparagraphs[]"]'), function(k, v) {
+
+                if ($(v).attr('class') == 'section-head') {
+                    //Save last section
+                    if (thisSection.title != '' || thisSection.paragraphs.length > 0) {
+                        secsAndParagraphs.push(thisSection);
+                    }
+                    //Reset thisSection
+                    thisSection = { title: $(v).val(), paragraphs: []};
+                }
+                else { //its a paragraph
+                    thisSection.paragraphs.push($(v).val());
+                }
+            });
+
+            arr.push({name: 'content', value: JSON.stringify(secsAndParagraphs) });
+        },
+        success: function(responseText, statusText, xhr, jq) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+        }         
+    });
+
+    //
+    // On form change, set form to dirty
+    //
+    $('#ws-form .input-item :input').change(function() {
+        $('#ws-form').addClass('dirty');
+    });
+
+    //
+    // Workspace click 'move' button (sortable list)
+    // Set form 'dirty' on change list order
+    //
+    $("#ws-form .form-rows.sortable").sortable({
+        handle: ".input-actions > .icon-move",
+        cursor: "move",
+        change: function(event, ui) {
+            $('#ws-form').addClass('dirty');            
+        }
+    });
+
+    //
+    // Workspace click 'add' button
+    //
+    $('#ws-form').find('.form-rows .input-actions i.icon-plus').click(function() {
+        var newItem = $(this).parents('li.form-row').clone(true);
+        $(newItem).find('.input-item :input').val('');
+        $(this).parents('li.form-row').after(newItem);
+    });
+
+    //
+    // Workspace click 'delete' button
+    //
+    $('#ws-form').find('.form-rows .input-actions i.icon-remove').dblclick(function() {
+        if ($(this).parents('ul.form-rows').children('li.form-row').size() == 1) {
+            $(this).parents('li.form-row').find('.input-item :input').val("");
+        }
+        else {
+            $(this).parents('li.form-row').remove();
+        }
+    });    
+
+    //
+    // Autosize textareas
+    //
+    $('#ws-form .form-rows .input-item textarea').autosize();
+
+    //
+    // On Paste Event
+    //
+    $('#ws-form .form-rows .input-item :input').bind('paste', function() {
+        var element = this;
+        setTimeout(function () {
+            var text = $(element).val();
+            text = text.replace(/(\r\n|\n|\r)/gm," ");
+            text = text.replace(/\s+/g," ");
+            $(element).val(text);
+        }, 100);
+
+    });
+});
+
+// ------------------------------------------------------------------
+
+function submitWsForm() {
+    if ($('#ws-form').hasClass('dirty')) {
+
+        $('#ws-form').removeClass('dirty');
+        $('#ws-form').submit();
+    }
+}
+
+</script>
+
+
 <div id='workspace'>
     <div class='ws-top'>
 
         <span class='pull-right'>
-            <form class='ws-mc-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
+            <form class='ws-mc-form' id='ws-mc-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
                 <label><input type='checkbox' name='isComplete' /> Completed</label>
             </form>
             <a href='#' class='btn btn-mini' title='Export as JATS'><i class="icon-share-alt"></i> Export (JATS)</a>
@@ -16,168 +154,270 @@
 
     <div class='tab-content'>
 
-        <div class="tab-pane active" id="ws-form">
+        <div class="tab-pane active" id="ws-form-pane">
                 
-            <form class='ws-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
+            <form class='ws-form' id='ws-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
 
+                {# Meta #}
                 <fieldset class='ws-form-biblio-meta'>
                     <legend>Bibliographic Metadata</legend>
 
-                    <div class='form-row'>
-                        <label for='ws-form-title'>Title</label>
+                    <ul class='form-rows'>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Title</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('title') }}' name='meta[title]' placeholder='e.g. Title of Paper' />
+                                </span>
+                            </label>
+                        </li>
 
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-title' value='{{ doc.getMeta('title') }}' />
-                        </span>
-                    </div>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>DOI</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('doi') }}' name='meta[doi]' placeholder='e.g. 10.1186/1471-244X-13-25' />
+                                </span>
+                            </label>
+                        </li>
 
-                    <div class='form-row'>
-                        <label for='ws-form-doi'>DOI</label>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Journal</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('journal') }}' name='meta[journal]' placeholder='e.g. Title of Journal' />
+                                </span>
+                            </label>
+                        </li>
 
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-doi' value='{{ doc.getMeta('doi') }}' />
-                        </span>
-                    </div>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'><abbr title='Pubmed ID'>PMID</abbr></span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('pmid') }}' name='meta[pmid]' placeholder='e.g. 234567890' />
+                                </span>
+                            </label>
+                        </li>
 
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>ISBN</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('isbn') }}' name='meta[isbn]' placeholder='e.g. 1234-5679X' />
+                                </span>
+                            </label>
+                        </li>                                                         
 
-                    <div class='form-row'>
-                        <label for='ws-form-journal'>Journal</label>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Start Page</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('startPage') }}' name='meta[startPage]' placeholder='e.g. 123' />
+                                </span>
+                            </label>
+                        </li>
 
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-journal' value='{{ doc.getMeta('journal') }}' />
-                        </span>
-                    </div>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>EndPage</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('endPage') }}' name='meta[endPage]' placeholder='e.g. 456' />
+                                </span>
+                            </label>
+                        </li>
 
-                    <div class='form-row'>
-                        <label for='ws-form-pmid'><abbr title='Pubmed ID'>PMID</abbr></label>
-
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-pmid' value='{{ doc.getMeta('pmid') }}' />
-                        </span>
-                    </div>
-
-                    <div class='form-row'>
-                        <label for='ws-form-isbn'>ISBN</label>
-
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-isbn' value='{{ doc.getMeta('isbn') }}' />
-                        </span>
-                    </div>
-
-                    <div class='form-row'>
-                        <label for='ws-form-journal'>Journal</label>
-
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-journal' value='{{ doc.getMeta('journal') }}' />
-                        </span>
-                    </div>                                                            
-
-                    <div class='form-row'>
-                        <label for='ws-form-startPage'>Start Page</label>
-
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-startPage' value='{{ doc.getMeta('startPage') }}' />
-                        </span>
-                    </div>
-
-                    <div class='form-row'>
-                        <label for='ws-form-endPage'>EndPage</label>
-
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-endPage' value='{{ doc.getMeta('endPage') }}' />
-                        </span>
-                    </div>
-
-                    <div class='form-row'>
-                        <label for='ws-form-year'>Year</label>
-
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-year' value='{{ doc.getMeta('year') }}' />
-                        </span>
-                    </div>                                   
-
-                    <div class='form-row'>
-                        <label for='abstract'>Abstract</label>
-
-                        <span class='input-item'>
-                            <textarea id='ws-form-abstract'>{{ doc.getMeta('abstract') }}</textarea>
-                        </span>
-                    </div>   
-
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Year</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('year') }}' name='meta[year]' placeholder='e.g. 2003' />
+                                </span>
+                            </label>
+                        </li>
+                    </ul>                               
                 </fieldset>
 
+                {# Meta - Authors #}
                 <fieldset class='ws-form-authors'>
                     <legend>Authors</legend>
 
-                    {% for n, author in doc.getMeta('authors') %}
+                    <ul class='form-rows sortable'>
+                        {% for n, author in doc.getMeta('authors') %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Author</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ author.name }}' name='authors[]' placeholder='Author Name' />
+                                </span>
 
-                    <div class='form-row'>
-                        <label for='ws-form-author-{{ n }}'>Author</label>
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Author'></i>                            
+                                    <i class='icon-remove' title='Remove Author'></i>
+                                </span>                        
+                            </label>
+                        </li>     
+                        {% endfor %}
 
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-author-{{ n }}' value='{{ author.name }}' />
-                        </span>
-                    </div>     
+                        {# Blank Row #}
+                        {% if doc.getMeta('authors')|length == 0 %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Author</span>
+                                <span class='input-item'>
+                                    <input type='text' value='' name='authors[]' placeholder='Author Name' />
+                                </span>
 
-                    {% endfor %}
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Author'></i>                            
+                                    <i class='icon-remove' title='Remove Author'></i>
+                                </span>      
+                            </label>
+                        </li>
+                        {% endif %}
+                    </ul>
+
                 </fieldset>
 
+                {# Main Content #}
                 <fieldset class='ws-form-content'>
                     <legend>Content</legend>
 
-                    {% for n, section in doc.sections %}
+                    <ul class='form-rows sortable'>
+                        {% for n, section in doc.content.sections %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Heading</span>
+                                <span class='input-item'>
+                                    <input type='text' placeholder='Section Title' name='secsandparagraphs[]' class='section-head' value='{{ section.title }}' />
+                                </span>
 
-                    <div class='form-row'>
-                        <label for='ws-form-section-{{ n }}'>Heading</label>
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Section Heading'></i>                            
+                                    <i class='icon-remove' title='Remove section heading'></i>
+                                </span>  
+                            </label>
+                        </li>
 
-                        <span class='input-item'>
-                            <input type='text' id='ws-form-section-{{ n }}' value='{{ section.title }}' />
-                        </span>
+                            {% for np, para in section.paragraphs %}
+                            <li class='form-row'>
+                                <label>
+                                    <span class='input-label'>Paragraph</span>
+                                    <span class='input-item'>
+                                        <textarea placeholder='Content' name='secsandparagraphs[]' class='paragraph'>{{ para.content }}</textarea>
+                                    </span>
 
-                       <span class='input-actions'>
-                            <i class='icon-arrow-up' title='Move section up'></i>
-                            <i class='icon-arrow-down' title='Move section down'></i>
-                            <i class='icon-plus' title='Add paragraph'></i>                            
-                            <i class='icon-remove-sign' title='Remove section heading'></i>
-                        </span>
+                                    <span class='input-actions'>
+                                        <i class='icon-move' title='Move'></i>
+                                        <i class='icon-plus' title='Add Paragraph'></i>                            
+                                        <i class='icon-remove' title='Remove Paragraph'></i>
+                                    </span>
+                                </label>                        
+                            </li>          
+                            {% endfor %} {# Paragraphs #}
 
-                    </div>
+                            {% if section.paragraphs|length == 0 %}
+                            <li class='form-row'>
+                                <label>
+                                    <span class='input-label'>Paragraph</span>
+                                    <span class='input-item'>
+                                        <textarea placeholder='Content' name='secsandparagraphs[]' class='paragraph'></textarea>
+                                    </span>
 
-                    {% for np, para in section.paragraphs %}
+                                    <span class='input-actions'>
+                                        <i class='icon-move' title='Move'></i>
+                                        <i class='icon-plus' title='Add Paragraph'></i>                            
+                                        <i class='icon-remove' title='Remove Paragraph'></i>
+                                    </span>
+                                </label>                        
+                            </li>   
+                            {% endif %}
 
-                    <div class='form-row'>
-                        <label for='ws-form-paragraph-{{ n ~ '.' ~ np }}'>Paragraph</label>
+                        {% endfor %} {# Sections #}
 
-                        <span class='input-item'>
-                            <textarea id='ws-form-paragraph-{{ n ~ '.' ~ np }}'>{{ para.content }}</textarea>
-                        </span>
-                    </div>          
-                    {% endfor %} {# Paragraphs #}
+                        {# Blank Section #}
+                        {% if doc.content.sections|length == 0 %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Heading</span>
+                                <span class='input-item'>
+                                    <input type='text' value='' name='secsandparagraphs[]' class='section-head' placeholder='Section Title' />
+                                </span>
 
-                    {% endfor %} {# Sections #}
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Section'></i>                            
+                                    <i class='icon-remove' title='Remove Section'></i>
+                                </span>
+                            </label>
+                        </li>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Paragraph</span>
+                                <span class='input-item'>
+                                    <textarea placeholder='Content' name='secsandparagraphs[]' class='paragraph'></textarea>
+                                </span>
 
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Paragraph'></i>                            
+                                    <i class='icon-remove' title='Remove Paragraph'></i>
+                                </span>
+                            </label>                        
+                        </li>                           
+                        {% endif %}
+                    </ul>
                 </fieldset>
 
+
+                {# Citations #}
                 <fieldset class='ws-form-citations'>
                     <legend>Citations</legend>
-                    <div class='form-row'>
-                        <label for='Journal'>Citation</label>
 
-                        <span class='input-item'>
-                            <textarea></textarea>
-                        </span>
-                    </div>                     
+                    <ul class='form-rows sortable'>
+                    {% for n, cite in doc.citations %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Citation</span>
+                                <span class='input-item'>
+                                    <textarea name='citations[]' placeholder='Citation Content'>{{ cite.content }}</textarea>
+                                </span>
+
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Citation'></i>                            
+                                    <i class='icon-remove' title='Remove Citation'></i>
+                                </span>
+                            </label>                          
+                        </li>                     
+                        {% endfor %}
+
+                        {# Blank Row #}
+                        {% if doc.citations|length == 0 %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Citation</span>
+                                <span class='input-item'>
+                                    <textarea name='citations[]' placeholder='Citation Content'></textarea>
+                                </span>
+
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Citation'></i>                            
+                                    <i class='icon-remove' title='Remove Citation'></i>
+                                </span>                             
+                            </label>
+                        </li>
+                        {% endif %}
+                    </ul>
                 </fieldset>
-
-
             </form>
-
-
         </div>
 
-
         {# XML OUTPUT #}
-        <div class="tab-pane" id="ws-xml">
+        <div class="tab-pane" id="ws-xml-pane">
             <pre class="prettyprint lang-xml">
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;

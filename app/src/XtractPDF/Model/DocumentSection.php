@@ -38,7 +38,6 @@ class DocumentSection extends BaseModel
         $this->title = $title;
     }
 
-
     // --------------------------------------------------------------
 
     public function setParagraphs(array $paragraphs)

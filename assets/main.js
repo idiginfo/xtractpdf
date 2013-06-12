@@ -133,29 +133,8 @@ $(document).ready(function() {
     //
     // Workspace Biblio-Metadata Update
     //
-    $('#right.pane').on('.ws-form-biblio-meta input').change(function() {
-
-        //LEFT OFF HERE LEFT OFF HERE
-        
-        //Lock the field in the row, show a loading icon, do the ajax request,
-        //then unlock the field and show a checkmark (for updated), then make
-        //the checkmark disappear after a few seconds
-
-        //Derive the URL from the form.action attribute
-    });
-
-    // ------------------------------------------------------------------
-
-    //
-    // Workspace Sections Update
-    //
-
-    // ------------------------------------------------------------------
-
-    //
-    // Workspace Citations Update
-    //
-
+    //$('#right.pane').on('.ws-form :input').change(function() {
+    //});
 });
 
 // ------------------------------------------------------------------
