@@ -1,11 +1,12 @@
-2. Re-add Abstract Section
-3. Style fixes to the left-hand sidebar when the list grows too long (Jquery scroll API)
-4. Cross-browser testing on many PDFs
-5. Implement JATS-XML render and export from model capability
-6. Clear button on certain sections to erase all non-necessary content
-7. Upload!!
-8. If PDFX extraction fails, just generate a new document
-9. Move JavaScript that is currently in the workspace template to main template
+1. Re-add Abstract Section
+2. Style fixes to the left-hand sidebar when the list grows too long (Jquery scroll API)
+3. Clear button on certain sections to erase all non-necessary content
+4. Upload and test on FF + Chrome!!
+5. If PDFX extraction fails, just generate a new document
+6. Move JavaScript that is currently in the workspace template to main template
+7. Workspace header perhaps should be fixed
+8. Implement JATS-XML render and export from model capability
+
 
 DONE:
 0. Reworking Data Model - Need to also rework the PDFX extractor to use the new model
