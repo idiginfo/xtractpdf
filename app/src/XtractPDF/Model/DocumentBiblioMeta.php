@@ -90,6 +90,12 @@ class DocumentBiblioMeta extends BaseModel
      */
     protected $authors;
 
+    /**
+     * @var string
+     * @ODM\Collection
+     */
+    protected $keywords;
+
     // --------------------------------------------------------------
 
     public function __construct()
@@ -107,6 +113,11 @@ class DocumentBiblioMeta extends BaseModel
             switch($item) {
                 case 'authors':
                     throw new InvalidArgumentException("Use " . get_called_class() . "::setAuthors() or " . get_called_class() . "::addAuthor() to set authors");
+                break;
+                case 'keywords':
+                    if ( ! is_array($val)) {
+                        $val = array_filter(array_map('trim', explode(",", $val) ));
+                    }
                 break;
             }
 

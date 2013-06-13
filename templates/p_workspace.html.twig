@@ -18,13 +18,19 @@ $(document).ready(function() {
     $('#workspace .ws-top .nav-tabs a:first').tab('show');
 
     //
+    // 
+    //
+    $('#workspace .ws-top #doc-saver').click(function() {
+        $('#ws-form').submit();
+    })
+
+    //
     // Mark Complete Submit
     //
     $('#ws-mc-form').ajaxForm({
         dataType:     'json',
         data: {'mark': true },
         success: function(responseText, statusText, xhr, jq) {
-            console.log(responseText);
         },
         error: function(jqXHR, textStatus, errorThrown) {
         }        
@@ -49,11 +55,16 @@ $(document).ready(function() {
                 name: 'abstract',
                 value: serializeSections($form, ':input[name="abstsecsandparas[]"]')
             });
+
+            $('#workspace .ws-top #doc-saver').addClass('disabled');
+            $('#workspace .ws-top #doc-saver i').removeClass('icon-save').addClass('icon-spinner').addClass('icon-spin');
         },
         success: function(responseText, statusText, xhr, jq) {
-
+            $('#workspace .ws-top #doc-saver').removeClass('disabled');
+            $('#workspace .ws-top #doc-saver i').removeClass('icon-spinner').removeClass('icon-spin').addClass('icon-save');
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            $('#workspace .ws-top #doc-saver').removeClass('disabled');            
         }         
     });
 
@@ -62,7 +73,10 @@ $(document).ready(function() {
     //
     $('#ws-form').on('change', '.input-item :input', function(e) {
         $('#ws-form').addClass('dirty');
-        $(e.target).parents('li.form-row').find('.input-label').append(" <span class='pending-submit'><i class='icon-spinner icon-spin'></i></span>");
+
+        if ( ! $.contains($(e.target).parents('li.form-row').find('.input-label'), $('.pending-submit'))) {
+            $(e.target).parents('li.form-row').find('.input-label').append(" <span class='pending-submit'><i class='icon-spinner icon-spin'></i></span>");
+        }        
     });
 
     //
@@ -107,13 +121,21 @@ $(document).ready(function() {
     //
     // On Paste Event
     //
-    $('#ws-form .form-rows').on('paste', '.input-item textarea', function() {
+    $('#ws-form .form-rows').on('paste', '.input-item :input', function(e) {
         var element = this;
         setTimeout(function () {
+
             var text = $(element).val();
             text = text.replace(/(\r\n|\n|\r)/gm," ");
             text = text.replace(/\s{2,}/g," ");
             $(element).val(text).trigger('autosize');
+
+            //Add dirty
+            $('#ws-form').addClass('dirty');
+
+            if ( ! $.contains($(e.target).parents('li.form-row').find('.input-label'), $('.pending-submit'))) {
+                $(e.target).parents('li.form-row').find('.input-label').append(" <span class='pending-submit'><i class='icon-spinner icon-spin'></i></span>");
+            }
         }, 100);
 
     });
@@ -149,10 +171,6 @@ function serializeSections($form, identifier) {
         secsAndParagraphs.push(thisSection);
     }
 
-
-    //Test
-    console.log(secsAndParagraphs);
-
     return JSON.stringify(secsAndParagraphs);
 }
 
@@ -180,6 +198,7 @@ function submitWsForm() {
             <div class='btn-group'>
                 {#<a href='#' class='btn btn-mini' title='Delete Document'><i class="icon-remove"></i> Delete Dcoument</a>
                 <a href='#' class='btn btn-mini' title='Mark as Complete'><i class="icon-check-sign"></i> Mark Complete</a>#}
+                <a href='#' class='btn btn-mini' title='Save' id='doc-saver'><i class='icon-save'></i> Save</a>
                 <a href='#' class='btn btn-mini' title='Export as JATS'><i class="icon-share-alt"></i> Export (JATS)</a>
             </div>
         </span>
@@ -299,6 +318,15 @@ function submitWsForm() {
                                 </span>
                             </label>
                         </li>
+
+                    <li class='form-row'>
+                            <label>
+                                <span class='input-label'><abbr title='Comma-Separated List'>Keywords</abbr></span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('keywords')|join(', ') }}' name='meta[keywords]' placeholder='e.g. comma, separated, list' />
+                                </span>
+                            </label>
+                        </li>                        
                     </ul>                               
                 </fieldset>
 
