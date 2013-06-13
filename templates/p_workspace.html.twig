@@ -66,7 +66,7 @@ $(document).ready(function() {
     //
     // On form change, set form to dirty
     //
-    $('#ws-form .input-item :input').change(function() {
+    $('#ws-form').on('change', '.input-item :input', function() {
         $('#ws-form').addClass('dirty');
     });
 
@@ -111,7 +111,7 @@ $(document).ready(function() {
     //
     // On Paste Event
     //
-    $('#ws-form .form-rows .input-item :input').bind('paste', function() {
+    $('#ws-form .form-rows').on('paste', '.input-item textarea', function() {
         var element = this;
         setTimeout(function () {
             var text = $(element).val();
@@ -147,8 +147,8 @@ function submitWsForm() {
         </span>
 
         <ul class="nav nav-tabs">
-            <li><a href="#ws-form" data-toggle="tab">Edit</a></li>
-            <li><a href="#ws-xml" data-toggle="tab">XML</a></li>
+            <li><a href="#ws-form-pane" data-toggle="tab">Edit</a></li>
+            <li><a href="#ws-xml-pane" data-toggle="tab">XML</a></li>
         </ul>
     </div>
 
@@ -183,15 +183,6 @@ function submitWsForm() {
 
                         <li class='form-row'>
                             <label>
-                                <span class='input-label'>Journal</span>
-                                <span class='input-item'>
-                                    <input type='text' value='{{ doc.getMeta('journal') }}' name='meta[journal]' placeholder='e.g. Title of Journal' />
-                                </span>
-                            </label>
-                        </li>
-
-                        <li class='form-row'>
-                            <label>
                                 <span class='input-label'><abbr title='Pubmed ID'>PMID</abbr></span>
                                 <span class='input-item'>
                                     <input type='text' value='{{ doc.getMeta('pmid') }}' name='meta[pmid]' placeholder='e.g. 234567890' />
@@ -207,6 +198,42 @@ function submitWsForm() {
                                 </span>
                             </label>
                         </li>                                                         
+
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Journal</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('journal') }}' name='meta[journal]' placeholder='e.g. Title of Journal' />
+                                </span>
+                            </label>
+                        </li>
+
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>ISSN</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('issn') }}' name='meta[issn]' placeholder='e.g. 1234-567A' />
+                                </span>
+                            </label>
+                        </li>
+
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Volume</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('volume') }}' name='meta[volume]' placeholder='e.g. 23' />
+                                </span>
+                            </label>
+                        </li>
+
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Issue</span>
+                                <span class='input-item'>
+                                    <input type='text' value='{{ doc.getMeta('issue') }}' name='meta[issue]' placeholder='e.g. 17' />
+                                </span>
+                            </label>
+                        </li>
 
                         <li class='form-row'>
                             <label>
@@ -419,10 +446,10 @@ function submitWsForm() {
         {# XML OUTPUT #}
         <div class="tab-pane" id="ws-xml-pane">
             <pre class="prettyprint lang-xml">
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;Demo | Prettify.JS&lt;/title&gt;
+&lt;ADD&gt;
+&lt;this&gt;
+  &lt;when&gt;
+    &lt;ready&gt;Demo | Prettify.JS&lt;/title&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;h1&gt;Hello, World!&lt;/h1&gt;

@@ -1,6 +1,7 @@
 <div id='sidebar'>
 
     <div id='sidebar-content'>
+
         <ul id='sidebar-top-list'>
             <li class='li-site-title'>
                 <h1>XtractPDF</h1>
@@ -11,13 +12,18 @@
                     <input type='file' name='pdffile' id='pdffile-input' />
                 </form>
             </li>
+            <li>
+                <input type='text' name='search' id='pdflist-search' placeholder='Find Document' />
+            </li>
         </ul>
         
+        <div id='sidebar-pdf-scroll-up' class='sidebar-scroll'><i class='icon-chevron-up'></i></div>
         <ul id='sidebar-pdf-list'>
             {% for doc in doc_list %}
                 {% include 'p_sidebar_item.html.twig' %}       
             {% endfor %}                      
         </ul>
+        <div id='sidebar-pdf-scroll-down' class='sidebar-scroll'><i class='icon-chevron-down'></i></div>
     </div>
 
     <div id='sidebar-tab'><p>XtractPDF</p></div>

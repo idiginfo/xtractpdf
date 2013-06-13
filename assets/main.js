@@ -58,6 +58,20 @@ $(document).ready(function() {
     // ------------------------------------------------------------------
 
     //
+    // Sidebar scroll
+    //
+    $('#sidebar-pdf-scroll-down').on('click', function() {
+        $('#sidebar-content').scrollTop(50);
+        $(this).css({ bottom: '0px' });
+    });
+
+    $('#sidebar-pdf-scroll-up').on('click', function() {
+        $('#sidebar-content').scrollTop(-50);
+    });
+
+    // ------------------------------------------------------------------
+
+    //
     // File upload button
     //
     $('#pdf-upload #pdffile-input').hide();
@@ -117,11 +131,15 @@ $(document).ready(function() {
 
         error: function(jqXHR, textStatus, errorThrown) {
 
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+
             //Unlock the sidebar
             $('#sidebar-tab').removeClass('locked');
 
             //Build the message
-            var msg = "<h2><i class='icon-exclamation-sign'></i> Whoops! Something went wrong.</h2><ul><li>Messages Here</li></ul>";        
+            var msg = "<h2><i class='icon-exclamation-sign'></i> Whoops! Something went wrong.</h2><ul><li>" + jqXHR.responseJSON.msg +"</li></ul>";        
 
             //Reset the text side with the errors
             $('#left.pane').html("<div class='placeholder error'>" + msg + "</div>");

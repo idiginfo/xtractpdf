@@ -120,7 +120,7 @@ class Uploader extends Controller
             $doc = $this->docMgr->getDocument($md5);
             $this->log('info', sprintf('Attempted to upload existing document: %s', $md5));
 
-            $output['isNew']    = false;
+            $output['isNew'] = false;
         }
 
         //Remove the temporary uploaded file (does PHP do this autmoatically?)

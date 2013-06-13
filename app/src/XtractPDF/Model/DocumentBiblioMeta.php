@@ -49,6 +49,24 @@ class DocumentBiblioMeta extends BaseModel
     protected $journal;
 
     /**
+     * @var string
+     * @ODM\String
+     */
+    protected $issn;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $volume;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $issue;
+
+    /**
      * @var int
      * @ODM\Int
      */

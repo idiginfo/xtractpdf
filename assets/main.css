@@ -65,25 +65,75 @@ body {
     position: relative;
     height: 100%;
     width: 200px;
-    float: left;    
+    float: left;
+    overflow: hidden;
 }
+
 
 #sidebar > #sidebar-content > ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
+
+#sidebar > #sidebar-content > ul#sidebar-top-list {
+    z-index: 20;
+    height: 150px;
+    width: 200px;
+    overflow: hidden;
+    position: fixed;
+    background-color: #111;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list {
+    position: absolute;
+    top: 170px;
+    bottom: 20px;
+    padding-bottom: 20px;
+}
+
+#sidebar .sidebar-scroll {
+    z-index: 20;
+    display: block;
+    background-color: #151515;
+    text-align: center;
+    cursor: pointer;
+    width: 200px;
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar #sidebar-pdf-scroll-up {
+    position: fixed;
+    top: 150px;
+    left: 0;
+}
+
+#sidebar #sidebar-pdf-scroll-down {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#sidebar #pdf-upload {
+    margin-bottom: 0;
+}
+
+#sidebar #pdf-upload label[for='pdffile-input'] {
+    display: none;
+}
+
+#sidebar #pdflist-search {
+    width: 175px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
 
 #sidebar > #sidebar-content > ul > li {
     padding: 5px;
     margin: 0;
-}
-
-
-#sidebar > #sidebar-content > ul#sidebar-pdf-list {
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
 #sidebar > #sidebar-content > ul#sidebar-pdf-list > li {
@@ -136,14 +186,6 @@ body {
     display: block;
     font-size: 12px;
     margin-left: 30px;
-}
-
-#sidebar #pdf-upload {
-    margin-bottom: 0;
-}
-
-#sidebar #pdf-upload label[for='pdffile-input'] {
-    display: none;
 }
 
 /* Main Preview Panel -------------------------------------------- */
