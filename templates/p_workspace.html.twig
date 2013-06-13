@@ -116,7 +116,7 @@ $(document).ready(function() {
         setTimeout(function () {
             var text = $(element).val();
             text = text.replace(/(\r\n|\n|\r)/gm," ");
-            text = text.replace(/\s+/g," ");
+            text = text.replace(/\s{2,}/g," ");
             $(element).val(text).trigger('autosize');
         }, 100);
 
