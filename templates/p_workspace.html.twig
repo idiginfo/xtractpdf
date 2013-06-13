@@ -76,7 +76,9 @@ $(document).ready(function() {
 
         if ( ! $.contains($(e.target).parents('li.form-row').find('.input-label'), $('.pending-submit'))) {
             $(e.target).parents('li.form-row').find('.input-label').append(" <span class='pending-submit'><i class='icon-spinner icon-spin'></i></span>");
-        }        
+        }   
+
+        $(e.target).trigger('autosize');
     });
 
     //
