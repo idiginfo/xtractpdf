@@ -135,8 +135,9 @@ class DocumentMgr
 
     public function streamPdf($uniqId)
     {  
-        $streamer = function() use ($uniqId) {
-            $this->dataHandler->stream($uniqId);
+        $obj =& $this;
+        $streamer = function() use ($uniqId, $obj) {
+            $obj->dataHandler->stream($uniqId);
         };
 
         return $streamer;
