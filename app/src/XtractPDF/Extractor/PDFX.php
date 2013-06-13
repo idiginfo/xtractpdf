@@ -97,7 +97,8 @@ class PDFX implements ExtractorInterface
 
         //Metadata Mappings
         if ($xml->xpath('//article/front//article-title')) {
-            $doc->setMeta('title', (string) $xml->xpath('//article/front//article-title')[0]);
+            $tmp = $xml->xpath('//article/front//article-title');
+            $doc->setMeta('title', (string) $tmp[0]);
         }
 
         //Holder for biblio section
@@ -151,19 +152,22 @@ class PDFX implements ExtractorInterface
     private function extractSection(SimpleXMLElement $sec)
     {
         //Get the section title and setup the paragraphs
-        $sectionTitle = (string) $sec->xpath('h1')[0];
+        $tmp = $sec->xpath('h1');
+        $sectionTitle = (string) $tmp[0];
         $paragraphs   = array();
 
         //If there is a text-chunk directly under the section, add that
         if ($sec->xpath('region')) {
-            $paragraphs[] = $this->extractTextChunkRegion($sec->xpath('region')[0]);
+            $tmp = $sec->xpath('region');
+            $paragraphs[] = $this->extractTextChunkRegion($tmp[0]);
         }
 
         //If there are subregions, then go through those
         foreach($sec->xpath('section') as $subSec) {
 
             //Add the header as its own paragraph
-            $paragraphs[]  = (string) $subSec->xpath('h2')[0];
+            $tmp = $subSec->xpath('h2');
+            $paragraphs[]  = (string) $tmp[0];
             
             foreach($subSec->xpath('region') as $ssReg) {
                 $paragraphs[] = $this->extractTextChunkRegion($ssReg);
