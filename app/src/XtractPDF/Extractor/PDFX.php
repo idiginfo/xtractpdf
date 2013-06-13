@@ -96,7 +96,9 @@ class PDFX implements ExtractorInterface
         $xml->registerXPathNamespace('DoCO', 'http://purl.org/spar/doco');
 
         //Metadata Mappings
-        $doc->setMeta('title', (string) $xml->xpath('//article/front//article-title')[0]);
+        if ($xml->xpath('//article/front//article-title')) {
+            $doc->setMeta('title', (string) $xml->xpath('//article/front//article-title')[0]);
+        }
 
         //Holder for biblio section
         $biblioSection = null;
