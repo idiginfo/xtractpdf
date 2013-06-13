@@ -1,9 +1,10 @@
-2. Bug with uploading regenerates same PDF in library
-3. Clear button on certain sections to erase all non-necessary content
-5. If PDFX extraction fails, just generate a new document
-6. Move JavaScript that is currently in the workspace template to main template
-8. Implement JATS-XML render and export from model capability
-
+0. UPLOAD and restrict access (via .htaccess)...
+1. Bug with uploading regenerates same PDF in library
+2. Clear button on certain sections to erase all non-necessary content
+3. If PDFX extraction fails, just generate a new document
+4. Move JavaScript that is currently in the workspace template to main template
+5. Implement JATS-XML render and export from model capability
+6. Sidebar should update when title or mark complete is changed in workspace form
 
 DONE:
 0. Reworking Data Model - Need to also rework the PDFX extractor to use the new model
