@@ -1,10 +1,7 @@
-1. Re-add Abstract Section
-2. Style fixes to the left-hand sidebar when the list grows too long (Jquery scroll API)
+2. Bug with uploading regenerates same PDF in library
 3. Clear button on certain sections to erase all non-necessary content
-4. Upload and test on FF + Chrome!!
 5. If PDFX extraction fails, just generate a new document
 6. Move JavaScript that is currently in the workspace template to main template
-7. Workspace header perhaps should be fixed
 8. Implement JATS-XML render and export from model capability
 
 
@@ -16,3 +13,7 @@ DONE:
 3. Fix default height for paragraphs and citations in form
 4. Fix submitter so that it submits the entire form when doing an AJAX POST (build a new class to resolve it from the POST model)
 5. Link the "Mark Complete Checkbox" to API endpoint with 'mark'=true added-on datafield to serialized form and test
+6. Style fixes to the left-hand sidebar when the list grows too long (Jquery scroll API)
+7. Upload and test on FF + Chrome!!
+8. Workspace header perhaps should be fixed
+9. Re-add Abstract Section

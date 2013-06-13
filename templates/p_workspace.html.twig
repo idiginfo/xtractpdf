@@ -41,26 +41,14 @@ $(document).ready(function() {
         dataType:     'json',
         beforeSubmit: function(arr, $form, options) {
 
-            //Convert sectionsandparagraphs to JSON object
-            var secsAndParagraphs = [];
-            var thisSection = { title: '', paragraphs: []};
-
-            $.each($form.find(':input[name="secsandparagraphs[]"]'), function(k, v) {
-
-                if ($(v).attr('class') == 'section-head') {
-                    //Save last section
-                    if (thisSection.title != '' || thisSection.paragraphs.length > 0) {
-                        secsAndParagraphs.push(thisSection);
-                    }
-                    //Reset thisSection
-                    thisSection = { title: $(v).val(), paragraphs: []};
-                }
-                else { //its a paragraph
-                    thisSection.paragraphs.push($(v).val());
-                }
+            arr.push({
+                name: 'content',
+                value: serializeSections($form, ':input[name="secsandparagraphs[]"]')
             });
-
-            arr.push({name: 'content', value: JSON.stringify(secsAndParagraphs) });
+            arr.push({
+                name: 'abstract',
+                value: serializeSections($form, ':input[name="abstsecsandparas[]"]')
+            });
         },
         success: function(responseText, statusText, xhr, jq) {
 
@@ -108,6 +96,7 @@ $(document).ready(function() {
         else {
             $(this).parents('li.form-row').remove();
         }
+        $('#ws-form').addClass('dirty');
     });    
 
     //
@@ -132,6 +121,43 @@ $(document).ready(function() {
 
 // ------------------------------------------------------------------
 
+function serializeSections($form, identifier) {
+
+    //Convert sectionsandparagraphs to JSON object
+    var secsAndParagraphs = [];
+    var thisSection = { title: '', paragraphs: []};
+
+    $.each($form.find(identifier), function(k, v) {
+
+        if ($(v).attr('class') == 'section-head') {
+
+            //Save last section if there is any content
+            if (thisSection.title != '' || thisSection.paragraphs.length > 0) {
+                secsAndParagraphs.push(thisSection);
+            }
+            
+            //Start a new section
+            thisSection = { title: $(v).val(), paragraphs: []};
+        }
+        else if ($(v).val().length > 0) { //its a paragraph (does it have content?)
+            thisSection.paragraphs.push($(v).val());
+        }
+    });
+
+    //Don't foget to save the last (or only section)
+    if (thisSection.title != '' || thisSection.paragraphs.length > 0) {
+        secsAndParagraphs.push(thisSection);
+    }
+
+
+    //Test
+    console.log(secsAndParagraphs);
+
+    return JSON.stringify(secsAndParagraphs);
+}
+
+// ------------------------------------------------------------------
+
 function submitWsForm() {
     if ($('#ws-form').hasClass('dirty')) {
 
@@ -151,7 +177,11 @@ function submitWsForm() {
             <form class='ws-mc-form' id='ws-mc-form' action='{{ url('ws-docupdate', { id: doc.uniqId }) }}' method='post'>
                 <label><input type='checkbox' name='isComplete' /> Completed</label>
             </form>
-            <a href='#' class='btn btn-mini' title='Export as JATS'><i class="icon-share-alt"></i> Export (JATS)</a>
+            <div class='btn-group'>
+                {#<a href='#' class='btn btn-mini' title='Delete Document'><i class="icon-remove"></i> Delete Dcoument</a>
+                <a href='#' class='btn btn-mini' title='Mark as Complete'><i class="icon-check-sign"></i> Mark Complete</a>#}
+                <a href='#' class='btn btn-mini' title='Export as JATS'><i class="icon-share-alt"></i> Export (JATS)</a>
+            </div>
         </span>
 
         <ul class="nav nav-tabs">
@@ -314,6 +344,99 @@ function submitWsForm() {
                     </ul>
 
                 </fieldset>
+
+                {# Abstract Section #}
+                <fieldset class='ws-form-abstract'>
+                    <legend>Abstract</legend>
+
+                    <ul class='form-rows sortable'>
+                        {% for n, section in doc.abstract.sections %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Heading</span>
+                                <span class='input-item'>
+                                    <input type='text' placeholder='Section Title' name='abstsecsandparas[]' class='section-head' value='{{ section.title }}' />
+                                </span>
+
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Section Heading'></i>                            
+                                    <i class='icon-remove' title='Remove section heading'></i>
+                                </span>  
+                            </label>
+                        </li>
+
+                            {% for np, para in section.paragraphs %}
+                            <li class='form-row'>
+                                <label>
+                                    <span class='input-label'>Paragraph</span>
+                                    <span class='input-item'>
+                                        <textarea placeholder='Content' name='abstsecsandparas[]' class='paragraph'>{{ para.content }}</textarea>
+                                    </span>
+
+                                    <span class='input-actions'>
+                                        <i class='icon-move' title='Move'></i>
+                                        <i class='icon-plus' title='Add Paragraph'></i>                            
+                                        <i class='icon-remove' title='Remove Paragraph'></i>
+                                    </span>
+                                </label>                        
+                            </li>          
+                            {% endfor %} {# Paragraphs #}
+
+                            {% if section.paragraphs|length == 0 %}
+                            <li class='form-row'>
+                                <label>
+                                    <span class='input-label'>Paragraph</span>
+                                    <span class='input-item'>
+                                        <textarea placeholder='Content' name='abstsecsandparas[]' class='paragraph'></textarea>
+                                    </span>
+
+                                    <span class='input-actions'>
+                                        <i class='icon-move' title='Move'></i>
+                                        <i class='icon-plus' title='Add Paragraph'></i>                            
+                                        <i class='icon-remove' title='Remove Paragraph'></i>
+                                    </span>
+                                </label>                        
+                            </li>   
+                            {% endif %}
+
+                        {% endfor %} {# Sections #}
+
+                        {# Blank Section #}
+                        {% if doc.abstract.sections|length == 0 %}
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Heading</span>
+                                <span class='input-item'>
+                                    <input type='text' value='' name='abstsecsandparas[]' class='section-head' placeholder='Section Title' />
+                                </span>
+
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Section'></i>                            
+                                    <i class='icon-remove' title='Remove Section'></i>
+                                </span>
+                            </label>
+                        </li>
+                        <li class='form-row'>
+                            <label>
+                                <span class='input-label'>Paragraph</span>
+                                <span class='input-item'>
+                                    <textarea placeholder='Content' name='abstsecsandparas[]' class='paragraph'></textarea>
+                                </span>
+
+                                <span class='input-actions'>
+                                    <i class='icon-move' title='Move'></i>
+                                    <i class='icon-plus' title='Add Paragraph'></i>                            
+                                    <i class='icon-remove' title='Remove Paragraph'></i>
+                                </span>
+                            </label>                        
+                        </li>                           
+                        {% endif %}
+                    </ul>
+                </fieldset>
+
+
 
                 {# Main Content #}
                 <fieldset class='ws-form-content'>

@@ -136,14 +136,12 @@ class Workspace extends Controller
                 $authors   = array_filter($this->getPostParams('authors'));
                 $citations = array_filter($this->getPostParams('citations'));
                 $content   = json_decode($this->getPostParams('content'));
+                $abstract  = json_decode($this->getPostParams('abstract'));
 
-                $this->debug($meta);
-                $this->debug($authors);
-                $this->debug($citations);
-                $this->debug($content);
+                $this->debug($abstract);
 
                 //Missing anything?
-                if ( ! is_array($meta) OR ! is_array($authors) OR ! is_array($citations) OR ! is_array($content)) {
+                if ( ! is_array($abstract) OR ! is_array($meta) OR ! is_array($authors) OR ! is_array($citations) OR ! is_array($content)) {
                     return $this->json(array('message' => "Invalid submission"), 400);
                 }
 
@@ -165,6 +163,17 @@ class Workspace extends Controller
                     $citationsArr[] = new Model\DocumentCitation($cite);
                 }
                 $doc->setCitations($citationsArr);
+
+                //Set Abstract
+                $abstractObj = new Model\DocumentAbstract();
+                foreach($abstract as $sec) {
+                    $secObj = new Model\DocumentSection($sec->title);
+                    foreach(array_filter($sec->paragraphs) as $para) {
+                        $secObj->addParagraph(new Model\DocumentParagraph($para));
+                    }
+                    $abstractObj->addSection($secObj);
+                }
+                $doc->setAbstract($abstractObj);                
 
                 //Set content
                 $contentObj = new Model\DocumentContent();
