@@ -117,7 +117,7 @@ $(document).ready(function() {
             var text = $(element).val();
             text = text.replace(/(\r\n|\n|\r)/gm," ");
             text = text.replace(/\s+/g," ");
-            $(element).val(text);
+            $(element).val(text).trigger('autosize');
         }, 100);
 
     });
@@ -136,7 +136,7 @@ function submitWsForm() {
 </script>
 
 
-<div id='workspace'>
+<div id='workspace' class='ws-{{ doc.uniqId }}'>
     <div class='ws-top'>
 
         <span class='pull-right'>

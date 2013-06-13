@@ -126,7 +126,8 @@ body {
 
 #sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-title {
     font-family: monospace;
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 13px;
     display: block;
     margin-left: 30px;
 }

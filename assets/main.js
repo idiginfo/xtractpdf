@@ -36,7 +36,7 @@ $(document).ready(function() {
     //
     // Click links on sidebar
     //
-    $('#sidebar-pdf-list a.doc-link').click(function(e) {
+    $('#sidebar-pdf-list').on('click', 'a.doc-link', function(e) {
 
         //Don't go to the link
         e.preventDefault();

@@ -13,8 +13,8 @@ class DocumentMgr
 {
     const DOC_CLASSNAME = '\XtractPDF\Model\Document';
 
-    const ASC  = 1;
-    const DESC = -1;
+    const ASC  = 'asc';
+    const DESC = 'desc';
 
     // --------------------------------------------------------------
 
@@ -159,7 +159,12 @@ class DocumentMgr
             ? array($sortField, $sortDir)
             : array();
 
-        return $this->dm->getRepository(self::DOC_CLASSNAME)->findBy(array(), $sort, (int) $limit);
+        $qb = $this->dm->createQueryBuilder(self::DOC_CLASSNAME)->sort($sortField, $sortDir);
+        if ($limit) {
+            $qb->limit((int) $limit);
+        }
+
+        return $qb->getQuery()->execute();
     }    
 }
 
