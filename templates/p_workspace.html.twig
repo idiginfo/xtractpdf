@@ -13,6 +13,11 @@ $(document).ready(function() {
     $(window).unload("submitWsForm()");
 
     //
+    // Show first nav tab
+    //
+    $('#workspace .ws-top .nav-tabs a:first').tab('show');
+
+    //
     // Mark Complete Submit
     //
     $('#ws-mc-form').ajaxForm({
@@ -58,6 +63,7 @@ $(document).ready(function() {
             arr.push({name: 'content', value: JSON.stringify(secsAndParagraphs) });
         },
         success: function(responseText, statusText, xhr, jq) {
+
         },
         error: function(jqXHR, textStatus, errorThrown) {
         }         
@@ -66,8 +72,9 @@ $(document).ready(function() {
     //
     // On form change, set form to dirty
     //
-    $('#ws-form').on('change', '.input-item :input', function() {
+    $('#ws-form').on('change', '.input-item :input', function(e) {
         $('#ws-form').addClass('dirty');
+        $(e.target).parents('li.form-row').find('.input-label').append(" <span class='pending-submit'><i class='icon-spinner icon-spin'></i></span>");
     });
 
     //
@@ -128,6 +135,7 @@ $(document).ready(function() {
 function submitWsForm() {
     if ($('#ws-form').hasClass('dirty')) {
 
+        $('#ws-form .pending-submit').remove();
         $('#ws-form').removeClass('dirty');
         $('#ws-form').submit();
     }

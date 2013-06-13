@@ -105,14 +105,6 @@ class DocumentBiblioMeta extends BaseModel
 
             //Basic Validations
             switch($item) {
-
-                case 'endPage':
-                case 'startPage':
-                case 'year':
-                    if ( ! empty($val) && ((string) abs((int) $val) !== (string) $val)) {
-                        throw new InvalidArgumentException(get_called_class() . "::" . $item . " must be a positive integer");
-                    }
-                break;
                 case 'authors':
                     throw new InvalidArgumentException("Use " . get_called_class() . "::setAuthors() or " . get_called_class() . "::addAuthor() to set authors");
                 break;
