@@ -1,6 +1,6 @@
 <?php
 
-namespace XtractPDF\Builder;
+namespace XtractPDF\DocBuilder;
 
 use Guzzle\Http\Client as GuzzleClient;
 use XtractPDF\Model;

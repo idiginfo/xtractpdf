@@ -1,20 +1,4 @@
-0. UPLOAD and restrict access (via .htaccess)...
-1. Bug with uploading regenerates same PDF in library
-2. Clear button on certain sections to erase all non-necessary content
-3. If PDFX extraction fails, just generate a new document
-4. Move JavaScript that is currently in the workspace template to main template
-5. Implement JATS-XML render and export from model capability
-6. Sidebar should update when title or mark complete is changed in workspace form
-
-DONE:
-0. Reworking Data Model - Need to also rework the PDFX extractor to use the new model
-   and the workspace builder to pull from the new model.  It is hierarchal:
-1. Implement Jquery UI drag-and-drop capability: http://api.jqueryui.com/sortable/#option-handle
-2. Auto-remove line breaks (?) on c!opy/paste (http://goo.gl/iXPtA)
-3. Fix default height for paragraphs and citations in form
-4. Fix submitter so that it submits the entire form when doing an AJAX POST (build a new class to resolve it from the POST model)
-5. Link the "Mark Complete Checkbox" to API endpoint with 'mark'=true added-on datafield to serialized form and test
-6. Style fixes to the left-hand sidebar when the list grows too long (Jquery scroll API)
-7. Upload and test on FF + Chrome!!
-8. Workspace header perhaps should be fixed
-9. Re-add Abstract Section
+1. TODO: Write unit test that ensure that the same exact PDF uploaded twice doesn't generate two documents in the DB
+2. CURRENTLY WORKING ON: Knockout representation of document -- This URL Works:
+   - http://localhost:8850/xtractpdf/dev.php/library/fd6ffef8028de9b6db576142c3a77af2?response_format=json
+   - Look for assets/library-single.js for Knockout model

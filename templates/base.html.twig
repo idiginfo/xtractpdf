@@ -14,7 +14,7 @@
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">
 
         {# Local Resources #}
-        <link href="{{ base_url }}/assets/prettify-bs.css" type="text/css" rel="stylesheet" />
+        <link href="{{ base_url }}/assets/vendor/prettify-bs.css" type="text/css" rel="stylesheet" />
         <link href="{{ base_url }}/assets/main.css" type="text/css" rel="stylesheet">
         {% endblock %}
 
@@ -28,7 +28,7 @@
                 <div class='header-content'>
                     <h1 id='main-title'>XtractPDF</h1>
                     <ul id='main-nav' rel='navigation' class="nav nav-pills">
-                        <li><a href='#'>Workspace</a></li>
+                        <li><a href='#'>Library</a></li>
                         <li><a href="#">About</a></li>
                     </ul>
                 </div>
@@ -36,7 +36,7 @@
 
             <div id='header-right'>
                 <div class='header-content'>                
-                {% block page_header_content %}
+                {% block page_topbar_content %}
                 {% endblock %}
                 </div>
             </div>
@@ -48,18 +48,18 @@
         </div>
  
         {% block base_js %}
-            {# Jquery CDN #}
+            {# CDN Resources #}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
             <script src='//code.jquery.com/ui/1.10.3/jquery-ui.min.js'></script>
-            {# Bootstrap CDN #}
             <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-            {# Knockout CDN #}
             <script src='//cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js'></script>
-            {# Addons (local) #}
-            <script type='text/javascript' src='{{ base_url }}/assets/jquery-form.js'></script>
-            <script type='text/javascript' src='{{ base_url }}/assets/jquery-autosize.js'></script>
-            <script type='text/javascript' src='{{ base_url }}/assets/prettify/prettify.js'></script>
-            {# App Scripts (local) #}
+
+            {# Local Vendor Scripts #}
+            <script type='text/javascript' src='{{ base_url }}/assets/vendor/jquery-form.js'></script>
+            <script type='text/javascript' src='{{ base_url }}/assets/vendor/jquery-autosize.js'></script>
+            <script type='text/javascript' src='{{ base_url }}/assets/vendor/prettify/prettify.js'></script>
+
+            {# Local Application Scripts #}
             <script type='text/javascript' src='{{ base_url }}/assets/main.js'></script>
         {% endblock %}
         

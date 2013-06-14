@@ -28,9 +28,24 @@ class Library extends Controller
     private $builders;
 
     /**
+     * @var XtractPDF\DocRenderer\JsonRenderer
+     */
+    private $jsonRenderer;
+
+    /**
      * @var array
      */
-    private $viewData = array();
+    private $viewData;
+
+    // --------------------------------------------------------------
+
+    /**
+     * Constructor - Set Initial State
+     */
+    public function __construct()
+    {
+        $this->viewData = array();
+    }
 
     // --------------------------------------------------------------
 
@@ -64,9 +79,10 @@ class Library extends Controller
     protected function init(Application $app)
     {        
         //Load dependencies
-        $this->twig      = $app['twig'];        
-        $this->docMgr    = $app['doc_mgr'];
-        $this->builders  = $app['builders'];
+        $this->twig         = $app['twig'];        
+        $this->docMgr       = $app['doc_mgr'];
+        $this->builders     = $app['builders'];
+        $this->jsonRenderer = $app['renderers']->get('json');
 
         //Set the page class for twig views
         $this->viewData['page_class'] = 'workspace';
@@ -112,15 +128,23 @@ class Library extends Controller
      */
     public function singleAction($uniqId)
     {
-        if ($this->clientExpects('json')) {
+        //Get the item from the database (or 404 if it doesn't exist)        
+        $doc = $this->docMgr->getDocument($uniqId);
 
-            //Get the item from the database (or 404 if it doesn't exist)
-
-            //Render it as a JSON object
-
-            //Return it as JSON
+        //If not found, abort
+        if ( ! $doc) {
+            return $this->abort(404, 'Document Not Found');
         }
-        else { //Do HTML
+
+        //If JSON, return the document
+        if ($this->clientExpects('json')) {
+            return $this->jsonRenderer->render($doc);
+        }
+        else { //Load the interface
+
+            //Add doc to the viewData
+            $this->viewData['doc'] = $doc;
+
             return $this->twig->render('pages/library-single.html.twig', $this->viewData);
         }
     }    

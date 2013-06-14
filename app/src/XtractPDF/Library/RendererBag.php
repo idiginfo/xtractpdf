@@ -2,13 +2,13 @@
 
 namespace XtractPDF\Library;
 
-use XtractPDF\DocBuilder\BuilderInterface;
+use XtractPDF\DocRenderer\RendererInterface;
 use Pimple;
 
 /**
- * Doc Builder Bag
+ * Doc Renderer Bag
  */
-class BuilderBag extends Pimple
+class RendererBag extends Pimple
 {
     /**
      * @param Pimple
@@ -17,26 +17,26 @@ class BuilderBag extends Pimple
 
     // --------------------------------------------------------------
 
-    public function __construct(array $builders = array())
+    public function __construct(array $renderers = array())
     {
-        $this->set($builders);
+        $this->set($renderers);
     }
 
     // --------------------------------------------------------------
 
-    public function set(array $builders)
+    public function set(array $renderers)
     {
         $this->bag = new Pimple();
-        foreach($builders as $builder) {
-            $this->add($builder);
+        foreach($renderers as $renderer) {
+            $this->add($renderer);
         }
     }   
 
     // --------------------------------------------------------------
 
-    public function add(BuilderInterface $builder)
+    public function add(RendererInterface $renderer)
     {
-        $this->bag[$builder::getSlug()] = $builder;
+        $this->bag[$renderer::getSlug()] = $renderer;
     }
 
     // --------------------------------------------------------------
@@ -60,4 +60,4 @@ class BuilderBag extends Pimple
     }
 }
 
-/* EOF: BuilderBag.php */
+/* EOF: RendererBag.php */

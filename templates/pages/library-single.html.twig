@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
-{% block page_header_content %}
+
+{% block page_js %}
+<script src='{{ base_url }}/assets/library-single.js'></script>
+{% endblock %}
+
+{% block page_topbar_content %}
     <div id='doc-actions'>
         <a href='#' class='btn btn-mini'><i class='icon-check-empty'></i> Mark Complete</a>
         <a href='#' class='btn btn-mini'><i class='icon-save'></i> Save</a>

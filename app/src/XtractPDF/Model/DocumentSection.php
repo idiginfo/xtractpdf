@@ -20,6 +20,8 @@ class DocumentSection extends BaseModel
         'heading'    => 'Heading',
         'subheading' => 'Subheading'
     );
+    
+    // --------------------------------------------------------------
 
     /**
      * @var string

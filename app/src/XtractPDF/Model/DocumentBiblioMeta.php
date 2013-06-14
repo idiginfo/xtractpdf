@@ -85,12 +85,6 @@ class DocumentBiblioMeta extends BaseModel
     protected $year;
 
     /**
-     * @var array
-     * @ODM\EmbedMany(targetDocument="DocumentAuthor")
-     */
-    protected $authors;
-
-    /**
      * @var string
      * @ODM\Collection
      */
@@ -100,7 +94,7 @@ class DocumentBiblioMeta extends BaseModel
 
     public function __construct()
     {
-        $this->authors = array();
+        $this->keywords = array();
     }
 
     // --------------------------------------------------------------
@@ -115,8 +109,8 @@ class DocumentBiblioMeta extends BaseModel
                     throw new InvalidArgumentException("Use " . get_called_class() . "::setAuthors() or " . get_called_class() . "::addAuthor() to set authors");
                 break;
                 case 'keywords':
-                    if ( ! is_array($val)) {
-                        $val = array_filter(array_map('trim', explode(",", $val) ));
+                    if ( ! is_array($keywords)) {
+                        throw new InvalidArgumentException( sprintf("%s::keywords must be an array!", get_called_class() ));
                     }
                 break;
             }
@@ -126,23 +120,6 @@ class DocumentBiblioMeta extends BaseModel
         }
     }
 
-    // --------------------------------------------------------------
-
-    public function setAuthors(array $authors)
-    {
-        $this->authors = array();
-
-        foreach($authors as $author) {
-            $this->addAuthor($author);
-        }
-    }
-
-    // --------------------------------------------------------------
-
-    public function addAuthor(DocumentAuthor $author)
-    {
-        $this->authors[] = $author;
-    }
 }
 
 /* EOF: DocumentBiblioMeta.php */

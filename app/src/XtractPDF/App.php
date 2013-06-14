@@ -176,11 +176,18 @@ class App extends SilexApp
             return new Library\DocumentMgr($app['mongo'], new PdfDataHandler\FilePdfHandler($app['pdf_filepath']));
         });
 
-        //PDFX XML Extractor
+        //Document Builders
         $app['builders'] = $app->share(function() use ($app) {
             return new Library\BuilderBag(array(
-                new Builder\PDFX(new Guzzle\Service\Client()),
-                new Builder\Blank()
+                new DocBuilder\PDFX(new Guzzle\Service\Client()),
+                new DocBuilder\Blank()
+            ));
+        });
+
+        //Document Renderers
+        $app['renderers'] = $app->share(function() use ($app) {
+            return new Library\RendererBag(array(
+                new DocRenderer\JsonRenderer()
             ));
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace XtractPDF\Builder;
+namespace XtractPDF\DocBuilder;
 
 use XtractPDF\Model\Document as DocumentModel;
 

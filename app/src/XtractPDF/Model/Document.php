@@ -73,6 +73,12 @@ class Document extends BaseModel
     protected $content;
 
     /**
+     * @var array
+     * @ODM\EmbedMany(targetDocument="DocumentAuthor")
+     */
+    protected $authors;
+
+    /**
      * @var XtractPDF\Model\DcoumentBiblioMeta
      * @ODM\EmbedOne(targetDocument="DocumentBiblioMeta")
      */
@@ -151,20 +157,6 @@ class Document extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function setAuthors(array $authors)
-    {
-        $this->biblioMeta->setAuthors($authors);
-    }
-
-    // --------------------------------------------------------------
-
-    public function addAuthor(DocumentAuthor $author)
-    {
-        $this->biblioMeta->addAuthor($author);        
-    }
-
-    // --------------------------------------------------------------
-
     public function setCitations(array $citations)
     {
         $this->citations = array();
@@ -179,6 +171,24 @@ class Document extends BaseModel
     public function addCitation(DocumentCitation $citation)
     {
         $this->citations[] = $citation;
+    }    
+
+    // --------------------------------------------------------------
+
+    public function setAuthors(array $authors)
+    {
+        $this->authors = array();
+
+        foreach($authors as $author) {
+            $this->addAuthor($author);
+        }
+    }
+
+    // --------------------------------------------------------------
+
+    public function addAuthor(DocumentAuthor $author)
+    {
+        $this->authors[] = $author;
     }    
 }
 

@@ -48,11 +48,10 @@ abstract class Model implements IteratorAggregate, Countable
         $arr = array();
 
         foreach(get_object_vars($this) as $k => $v) {
-            if ($k{0} != '_') {
+            if ($k{0} != '_' && $k != 'iterator') {
                 $arr[$k] = $v;
             }
         }
-
         return $arr;
     } 
 }
