@@ -2,3 +2,14 @@
 2. CURRENTLY WORKING ON: Knockout representation of document -- This URL Works:
    - http://localhost:8850/xtractpdf/dev.php/library/fd6ffef8028de9b6db576142c3a77af2?response_format=json
    - Look for assets/library-single.js for Knockout model
+3. Command-line junk:
+   - Rename the extract command so that it makes more sense ('build') and option for what builder to use
+   - Commands for managing the collection: dump (dumps using a renderer), search, list, etc.
+   - In the end, we should have:
+         doc:build [builder] [params]
+         doc:render [id]
+         doc:delete [id]
+         docs:find   -query {querystring}
+         docs:list   -order {order} -l {limit}
+         docs:delete [ids,ids,etc]
+         docs:clear
