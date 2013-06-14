@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% block page_header_content %}
+    <div id='doc-actions'>
+        <a href='#' class='btn btn-mini'><i class='icon-check-empty'></i> Mark Complete</a>
+        <a href='#' class='btn btn-mini'><i class='icon-save'></i> Save</a>
+        <a href='#' class='btn btn-mini'><i class='icon-download-alt'></i> Export as JATs</a>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+<div id='single-doc-editor'>
+    <div class='pane' id='left-pdfview'>
+        
+        {# Temporary - for testing #}
+        <iframe id='left-pdfview-iframe' src='{{ url('viewpdf', { id: 'fd6ffef8028de9b6db576142c3a77af2' }) }}'></iframe>
+
+    </div>
+
+    <div class='pane' id='right-workform'>
+        <div class='workform-container'>
+        <fieldset>
+            <legend>Bibliographic Metadata</legend>
+
+            <ul class='form-rows'>
+                <li class='form-row'>
+                    <label>
+                        <span class='input-label'>Title</span>
+                        <span class='input-item'>
+                            <input type='text' />
+                        </span>
+
+                        <span class='input-actions'>
+                            <i class='icon-move'></i>
+                            <i class='icon-remove'></i>  
+                            <i class='icon-plus-sign'></i>
+                        </span>
+
+                    </label>
+                </li>
+
+                <li class='form-row'>
+                    <label>
+                        <span class='input-label'>Title</span>
+                        <span class='input-item'>
+                            <input type='text' placeholder='e.g. Some Article Title' />
+                        </span>
+
+                        <span class='input-actions'>
+                            <i class='icon-move'></i>
+                            <i class='icon-remove'></i>  
+                            <i class='icon-plus-sign'></i>
+                        </span>
+
+                    </label>
+                </li>
+
+                <li class='form-row'>
+                    <label>
+                        <span class='input-label'>DOI</span>
+                        <span class='input-item'>
+                            <input type='text' placeholder='e.g. 10.23408234/abc023' />
+                        </span>
+
+                        <span class='input-actions'>
+                            <i class='icon-move'></i>
+                            <i class='icon-remove'></i>  
+                            <i class='icon-plus-sign'></i>
+                        </span>
+
+                    </label>
+                </li>
+
+                {% for i in range(1, 100) %}
+                <li class='form-row'>
+                    <label>
+                        <span class='input-label'>Other Thing</span>
+                        <span class='input-item'>
+                            <textarea placeholder='e.g. other thing'></textarea>
+                        </span>
+
+                        <span class='input-actions'>
+                            <i class='icon-move'></i>
+                            <i class='icon-remove'></i>  
+                            <i class='icon-plus-sign'></i>
+                        </span>
+
+                    </label>
+                </li>                     
+                {% endfor %}
+
+            </ul>
+
+        </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock %}

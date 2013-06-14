@@ -70,15 +70,16 @@ class About extends Controller
     public function aboutAction($subPage = '')
     {
         $pageName = ($subPage)
-            ? 'about'
-            : 'about-' . $subPage;
+            ? 'about-' . $subPage
+            : 'about';
 
-        try {
-            return $this->twig->render('pages/' . $pageName . '.html.twig');
-        }
-        catch (Twig_Error $e) {
-            return $this->abort(404, "Page Not Found");
-        }
+        return $this->twig->render('pages/' . $pageName . '.html.twig');
+        // try {
+        //     return $this->twig->render('pages/' . $pageName . '.html.twig');
+        // }
+        // catch (Twig_Error $e) {
+        //     return $this->abort(404, "Page Not Found");
+        // }
     }
 }
 

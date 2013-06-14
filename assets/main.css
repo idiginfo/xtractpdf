@@ -7,29 +7,43 @@ body {
     overflow: hidden;
 }
 
-body.workspace {
-    background-color: #F5F5F5;
-}
-
 /* Header and Page Content --------------------------------------- */
 
 #main-header {
-    position: relative;
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     margin: 0;
     padding: 0;
-    height: 80px;
+    height: 52px;
     overflow: hidden;
-    background-color: #D4D4D4;
+    background-color: #252525;
+    box-shadow: 2px 0px 4px rgba(0,0,0,0.5);
 }
 
 #page_content {
-    position: relative;
-    margin: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 52px 0 0 0;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+body.workspace #page_content {
+    overflow-y: hidden;
+    background-color: #F1F1F1;
 }
 
 /* Header Styles ------------------------------------------------- */
+
+#main-header {
+    color: #fff;
+}
 
 #main-header #header-left,
 #main-header #header-right {
@@ -40,19 +54,205 @@ body.workspace {
 }
 
 #main-header .header-content {
-    padding: 5px 10px;
+    padding: 5px 20px;
     margin: 0;
 }
 
 #main-header h1#main-title {
-    font-size: 24px;
+    font-size: 1.4em;
     float: left;
+    margin: 0;
 }
 
-#main-header ul#main-nav {
+#main-header #main-nav {
     float: left;
+    margin-left: 2em;
+    margin-top: 3px;
+    font-size: 0.9em;
 }
 
-/* Workspace ------------------------------------------------- */
+
+#main-header #main-nav a {
+    color: #fff;
+}
+
+#main-header #main-nav a:hover {
+    color: #000;
+}
+
+/* SINGLE DOC EDITOR: Layout --------------------------------------- */
+
+#single-doc-editor {
+    height: 100%;
+}
+
+#single-doc-editor .pane {
+    margin: 0;
+    padding: 0;
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+#single-doc-editor #left-pdfview.pane {
+    background-color: #999;
+}
+
+#single-doc-editor #left-pdfview.pane iframe {
+    width: 100%;
+    height: 100%;
+    border-right: 1px solid #111;
+}
+
+#single-doc-editor #right-workform.pane {
+    overflow-y: scroll;
+    overflow-x: hidden;
+} 
+
+/* SINGLE DOC EDITOR: Actions in Header -------------------------- */
+
+#doc-actions {
+    float: right;
+    margin-top: 10px;
+}
+
+#doc-actions a {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#doc-actions a:first-child {
+    margin-left: 0;
+}
+
+/* SINGLE DOC EDITOR: Form --------------------------------------- */
+
+/* Container */
+#single-doc-editor #right-workform.pane .workform-container {
+    margin-left: 4px;
+}
+
+/* Legend Rows */
+#single-doc-editor #right-workform.pane legend {
+    margin-bottom: 0;
+    font-size: 1em;
+    padding-left: 4px;
+    border-bottom: 1px solid #CCC;
+    background-color: #e4e4e4;
+    color: #666;
+    font-family: monospace;
+    font-weight: bold;
+    line-height: 2em;
+}
+
+/* List styles */
+#single-doc-editor #right-workform.pane  ul.form-rows {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#single-doc-editor #right-workform.pane li.form-row {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+    background-color: #FFF;
+}
+
+/* Label tag as block */
+#single-doc-editor #right-workform.pane li.form-row label {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* Actual Label CSS */
+#single-doc-editor #right-workform.pane li.form-row .input-label {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 110px;
+    font-size: 0.9em;
+    font-family: monospace;
+    color: #888;
+    margin: 0;
+    z-index: 1;
+    cursor: text;
+    padding: .25em 0 .25em 4px;
+}
+
+#single-doc-editor #right-workform.pane li.form-row .input-label select {
+    width: 104px;
+    font-family: monospace;
+    color: #888;            
+}
+
+#single-doc-editor #right-workform.pane li.form-row .input-label select option {
+    font-family: monospace;
+    color: #111;        
+}
+
+/* Input Items */
+#single-doc-editor #right-workform.pane li.form-row .input-item {
+    display: block;
+    z-index: 2;
+    margin: 0;
+    padding: 0 0 0 114px;
+}
+
+#single-doc-editor #right-workform.pane li.form-row .input-item input,
+#single-doc-editor #right-workform.pane li.form-row .input-item select,
+#single-doc-editor #right-workform.pane li.form-row .input-item textarea {
+    width: 100%;
+    margin: 0;
+    padding: .25em 0;
+    border: none;
+    border-radius: 0;
+    z-index: 3;
+    outline: none;
+    box-shadow: none;
+}
+
+#single-doc-editor #right-workform.pane li.form-row .input-item textarea {
+    resize: vertical;
+}
+
+#single-doc-editor #right-workform.pane li.form-row .input-item input:focus,
+#single-doc-editor #right-workform.pane li.form-row .input-item select:focus,
+#single-doc-editor #right-workform.pane li.form-row .input-item textarea:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Action Items */
+#single-doc-editor #right-workform.pane li.form-row .input-actions {
+    z-index: 4;
+    display: none;
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    background-color: rgba(241, 241, 241, 0.75);
+    border: 1px solid #F1F1F1;
+    border-radius: 10px;
+    padding: 0 4px;
+}
+
+#single-doc-editor #right-workform.pane li.form-row:hover .input-actions,
+#single-doc-editor #right-workform.pane li.form-row:focus .input-actions {
+    display: block;
+}
+
+#single-doc-editor #right-workform.pane li.form-row:hover .input-actions *[class^="icon-"] {
+    margin-left: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#single-doc-editor #right-workform.pane li.form-row:hover .input-actions *[class^="icon-"]:hover {
+    color: red;
+}
 
 /* EOF: main.css */

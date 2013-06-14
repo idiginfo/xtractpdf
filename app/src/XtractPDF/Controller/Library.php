@@ -122,7 +122,7 @@ class Library extends Controller
         }
         else { //Do HTML
             return $this->twig->render('pages/library-single.html.twig', $this->viewData);
-        }        
+        }
     }    
 
     // --------------------------------------------------------------
