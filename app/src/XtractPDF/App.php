@@ -144,10 +144,9 @@ class App extends SilexApp
         //
         // Controllers
         //
-        $app->mount('', new Controller\Uploader());
-        $app->mount('', new Controller\Workspace());
+        $app->mount('', new Controller\Library());
+        $app->mount('', new Controller\About());
         $app->mount('', new Controller\PdfViewer());
-        $app->mount('', new Controller\MainInterface());
     }
 
     // --------------------------------------------------------------
@@ -178,8 +177,11 @@ class App extends SilexApp
         });
 
         //PDFX XML Extractor
-        $app['extractor'] = $app->share(function() use ($app) {
-            return new Extractor\PDFX(new Guzzle\Service\Client());
+        $app['builders'] = $app->share(function() use ($app) {
+            return new Library\BuilderBag(array(
+                new Builder\PDFX(new Guzzle\Service\Client()),
+                new Builder\Blank()
+            ));
         });
     }
 }

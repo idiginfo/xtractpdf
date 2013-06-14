@@ -1,20 +1,33 @@
 <?php
 
+
 namespace XtractPDF\Controller;
 
 use Silex\Application;
-use XtractPDF\Core\Controller;
 use Silex\ControllerCollection;
+use XtractPDF\Core\Controller;
+use XtractPDF\Model;
+use Twig_Error;
 
 /**
- * PDF Viewer Controller Streams Raw PDF data
+ * 'About' Pages Controller
  */
-class PdfViewer extends Controller
+class About extends Controller
 {
     /**
      * @var XtractPDF\Library\DocumentMgr
      */
     private $docMgr;
+
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @var XtractPDF\Library\BuilderBag
+     */
+    private $builders;
 
     // --------------------------------------------------------------
 
@@ -30,7 +43,8 @@ class PdfViewer extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/pdf/{id}', array($this, 'renderPdfAction'))->bind('viewpdf');
+        $routes->get('/about',            array($this, 'aboutAction'));
+        $routes->get('/about/{page}',     array($this, 'aboutAction'));
     }
 
     // --------------------------------------------------------------
@@ -42,28 +56,30 @@ class PdfViewer extends Controller
      */
     protected function init(Application $app)
     {        
-        $this->docMgr = $app['doc_mgr'];
+        //Load dependencies
+        $this->twig      = $app['twig'];        
+        $this->docMgr    = $app['doc_mgr'];
+        $this->builders  = $app['builders'];
     }
-
+    
     // --------------------------------------------------------------
 
     /**
-     * Render a PDF by its unique identifier
-     *
-     * GET /pdf/{id}
-     * 
-     * @param string $id  Identifier for the document
+     * Show the desired page
      */
-    public function renderPdfAction($id)
+    public function aboutAction($subPage = '')
     {
-        //If the file is readable, then send it; else 404
-        if ($this->docMgr->checkDocumentExists($id)) {
-            return $this->stream($this->docMgr->streamPdf($id), 200, array('Content-type' => 'application/pdf'));
+        $pageName = ($subPage)
+            ? 'about'
+            : 'about-' . $subPage;
+
+        try {
+            return $this->twig->render('pages/' . $pageName . '.html.twig');
         }
-        else {
-            return $this->abort(404, "Could not find document");
+        catch (Twig_Error $e) {
+            return $this->abort(404, "Page Not Found");
         }
-    }    
+    }
 }
 
-/* EOF: PdfViewer.php */
+/* EOF: About.php */
