@@ -4,6 +4,7 @@ namespace XtractPDF\Model;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use XtractPDF\Core\Model as BaseModel;
+use InvalidArgumentException;
 
 /**
  * Document Section
@@ -12,49 +13,92 @@ use XtractPDF\Core\Model as BaseModel;
 class DocumentSection extends BaseModel
 {
     /**
-     * @var string
-     * @ODM\String
+     * @var array
      */
-    protected $title;
+    protected static $allowedTypes = array(
+        'paragraph'  => 'Paragraph',
+        'heading'    => 'Heading',
+        'subheading' => 'Subheading'
+    );
 
     /**
-     * @var array
-     * @ODM\EmbedMany(targetDocument="DocumentParagraph")
-     */
-    protected $paragraphs;
+     * @var string
+     * @ODM\String
+     */    
+    protected $content;
+
+    /**
+     * @var string
+     * @ODM\String
+     */    
+    protected $type;
 
     // --------------------------------------------------------------
 
-    public function __construct($title, array $paragraphs = array())
+    public function __construct($content, $type = 'paragraph')
     {
-        $this->title = $title;
-        $this->setParagraphs($paragraphs);
+        $this->setContent($content);
+        $this->setType($type);
     }
 
     // --------------------------------------------------------------
 
-    public function setTitle($title)
+    public function __get($item)
     {
-        $this->title = $title;
-    }
-
-    // --------------------------------------------------------------
-
-    public function setParagraphs(array $paragraphs)
-    {
-        $this->paragraphs = array();
-
-        foreach ($paragraphs as $paragraph) {
-            $this->addParagraph($paragraph);            
+        if ($item == 'typeDisp') {
+            return $this->typeDisp();
+        }
+        else {
+            return parent::__get($item);
         }
     }
 
     // --------------------------------------------------------------
 
-    public function addParagraph(DocumentParagraph $paragraph)
+    public function setType($type)
     {
-        $this->paragraphs[] = $paragraph;
+        if ( ! isset(self::$allowedTypes[$type])) {
+            throw new InvalidArgumentException(sprintf(
+                "%s is invalid type; allowed types are %s"),
+                $type,
+                implode(', ', array_keys(self::$allowedTypes)
+            ));
+        }
+
+        $this->type = $type;
+    }
+
+    // --------------------------------------------------------------
+
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    // --------------------------------------------------------------
+
+    /**
+     * Return array
+     */
+    public function getAllowedTypes()
+    {
+        return self::$allowedTypes;
+    }
+
+    // --------------------------------------------------------------
+
+    public function typeDisp()
+    {
+        return self::$allowedTypes[$this->type];
+    }
+
+    // --------------------------------------------------------------
+
+    public function __tostring()
+    {
+        return $this->content;
     }    
 }
 
-/* EOF: DocumentSection.php */
+
+/* EOF: DocumentParagraph.php */

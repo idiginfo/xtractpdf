@@ -117,8 +117,11 @@ class PDFX implements ExtractorInterface
             //Extract section
             list($title, $paras) = $this->extractSection($sec);
 
-            //Add it to the content  
-            $docContent->addSection(new Model\DocumentSection($title, $paras));
+            //Add it to the document
+            $docContent->addSection(new Model\DocumentSection($title, 'heading'));
+            foreach($paras as $para) {
+                $docContent->addSection(new Model\DocumentSection($para, 'paragraph'));
+            }
         }
         $doc->setContent($docContent);
 
@@ -128,7 +131,6 @@ class PDFX implements ExtractorInterface
                 $doc->addCitation(new Model\DocumentCitation($cit));
             }
         }
-
 
         //Return the document
         return $doc;
@@ -174,10 +176,8 @@ class PDFX implements ExtractorInterface
             }
         }
 
-        //Clean out the empties and convert them into paragraph objects
-        $paragraphs = array_map(function($ptext) {
-            return new Model\DocumentParagraph($ptext);
-        }, array_filter($paragraphs));
+        //Clean out empty paragraphs
+        $paragraphs = array_filter($paragraphs);
         
         //Return the title and paragraphs
         return array($sectionTitle, $paragraphs);

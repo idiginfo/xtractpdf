@@ -98,14 +98,13 @@ class Extract extends BaseCommand
                 $table->addRow(array($k, implode(', ', $val) ));
             }
         }
-        $output->writeln('Basic Information' . "\n" . '------------------------');
+        $output->writeln("\nBasic Information");
         $table->render($output);
 
         //Sections
-        $output->writeln("\n\n" . 'Sections' . "\n" . '------------------------');
+        $output->writeln("\n\n" . 'Content' . "\n" . '------------------------');
         foreach($doc->content->sections as $section) {
-            $output->writeln("Section: " . $section->title);
-            $output->writeln(implode("\n\n", $section->paragraphs));
+            $output->writeln($section->typeDisp . ": " . $section->content);
         } 
 
         //Citations
