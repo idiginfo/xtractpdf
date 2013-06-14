@@ -48,20 +48,21 @@ $(document).ready(function() {
         beforeSubmit: function(arr, $form, options) {
 
             arr.push({
-                name: 'content',
-                value: serializeSections($form, ':input[name="secsandparagraphs[]"]')
-            });
-            arr.push({
                 name: 'abstract',
-                value: serializeSections($form, ':input[name="abstsecsandparas[]"]')
+                value: serializeSections($form, ':input[name="abstract-sections[]"]')
+            });
+
+            arr.push({
+                name: 'content',
+                value: serializeSections($form, ':input[name="content-sections[]"]')
             });
 
             $('#workspace .ws-top #doc-saver').addClass('disabled');
-            $('#workspace .ws-top #doc-saver i').removeClass('icon-save').addClass('icon-spinner').addClass('icon-spin');
+            $('#workspace .ws-top #doc-saver i').removeClass('icon-save').addClass('icon-spinner icon-spin');
         },
         success: function(responseText, statusText, xhr, jq) {
             $('#workspace .ws-top #doc-saver').removeClass('disabled');
-            $('#workspace .ws-top #doc-saver i').removeClass('icon-spinner').removeClass('icon-spin').addClass('icon-save');
+            $('#workspace .ws-top #doc-saver i').removeClass('icon-spinner icon-spin').addClass('icon-save');
         },
         error: function(jqXHR, textStatus, errorThrown) {
             $('#workspace .ws-top #doc-saver').removeClass('disabled');            
@@ -123,7 +124,7 @@ $(document).ready(function() {
     //
     // On Paste Event
     //
-    $('#ws-form .form-rows').on('paste', '.input-item :input', function(e) {
+    $('#ws-form').on('paste', '.input-item :input', function(e) {
         var element = this;
         setTimeout(function () {
 
@@ -148,32 +149,20 @@ $(document).ready(function() {
 function serializeSections($form, identifier) {
 
     //Convert sectionsandparagraphs to JSON object
-    var secsAndParagraphs = [];
-    var thisSection = { title: '', paragraphs: []};
+    var sections = [];
 
     $.each($form.find(identifier), function(k, v) {
 
-        if ($(v).attr('class') == 'section-head') {
+        var type = $(v).parents('.form-row').find('.input-label select option:selected').val();
+        var val  = $(v).val();
 
-            //Save last section if there is any content
-            if (thisSection.title != '' || thisSection.paragraphs.length > 0) {
-                secsAndParagraphs.push(thisSection);
-            }
-            
-            //Start a new section
-            thisSection = { title: $(v).val(), paragraphs: []};
+        if (val.length > 0) {
+            sections.push({ type: type, content: val });
         }
-        else if ($(v).val().length > 0) { //its a paragraph (does it have content?)
-            thisSection.paragraphs.push($(v).val());
-        }
+
     });
 
-    //Don't foget to save the last (or only section)
-    if (thisSection.title != '' || thisSection.paragraphs.length > 0) {
-        secsAndParagraphs.push(thisSection);
-    }
-
-    return JSON.stringify(secsAndParagraphs);
+    return JSON.stringify(sections);
 }
 
 // ------------------------------------------------------------------
@@ -382,180 +371,93 @@ function submitWsForm() {
                     <ul class='form-rows sortable'>
                         {% for n, section in doc.abstract.sections %}
                         <li class='form-row'>
-                            <label>
-                                <span class='input-label'>Heading</span>
-                                <span class='input-item'>
-                                    <input type='text' placeholder='Section Title' name='abstsecsandparas[]' class='section-head' value='{{ section.title }}' />
-                                </span>
+                            <span class='input-label'>
+                                <select tabindex='-1' name='abstract-section-types[]' >
+                                    {% for typeName, typeDisp in section.allowedTypes %}
+                                    <option value='{{ typeName }}'{{ (section.type == typeName) ? " selected='selected'" : '' }}>{{typeDisp}}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                            <span class='input-item'>
+                                <textarea name='abstract-sections[]' placeholder='Content'>{{ section.content }}</textarea>
+                            </span>
 
-                                <span class='input-actions'>
-                                    <i class='icon-move' title='Move'></i>
-                                    <i class='icon-plus' title='Add Section Heading'></i>                            
-                                    <i class='icon-remove' title='Remove section heading'></i>
-                                </span>  
-                            </label>
-                        </li>
+                            <span class='input-actions'>
+                                <i class='icon-move' title='Move'></i>
+                                <i class='icon-plus' title='Add Section'></i>                            
+                                <i class='icon-remove' title='Remove Section'></i>
+                            </span>                             
+                        </li>                        
+                        {% endfor %}
 
-                            {% for np, para in section.paragraphs %}
-                            <li class='form-row'>
-                                <label>
-                                    <span class='input-label'>Paragraph</span>
-                                    <span class='input-item'>
-                                        <textarea placeholder='Content' name='abstsecsandparas[]' class='paragraph'>{{ para.content }}</textarea>
-                                    </span>
-
-                                    <span class='input-actions'>
-                                        <i class='icon-move' title='Move'></i>
-                                        <i class='icon-plus' title='Add Paragraph'></i>                            
-                                        <i class='icon-remove' title='Remove Paragraph'></i>
-                                    </span>
-                                </label>                        
-                            </li>          
-                            {% endfor %} {# Paragraphs #}
-
-                            {% if section.paragraphs|length == 0 %}
-                            <li class='form-row'>
-                                <label>
-                                    <span class='input-label'>Paragraph</span>
-                                    <span class='input-item'>
-                                        <textarea placeholder='Content' name='abstsecsandparas[]' class='paragraph'></textarea>
-                                    </span>
-
-                                    <span class='input-actions'>
-                                        <i class='icon-move' title='Move'></i>
-                                        <i class='icon-plus' title='Add Paragraph'></i>                            
-                                        <i class='icon-remove' title='Remove Paragraph'></i>
-                                    </span>
-                                </label>                        
-                            </li>   
-                            {% endif %}
-
-                        {% endfor %} {# Sections #}
-
-                        {# Blank Section #}
-                        {% if doc.abstract.sections|length == 0 %}
+                        {# Blank Row #}
                         <li class='form-row'>
-                            <label>
-                                <span class='input-label'>Heading</span>
-                                <span class='input-item'>
-                                    <input type='text' value='' name='abstsecsandparas[]' class='section-head' placeholder='Section Title' />
-                                </span>
+                            <span class='input-label'>
+                                <select tabindex='-1' name='abstract-section-types[]'>
+                                    {% for typeName, typeDisp in allowedSectionTypes %}
+                                    <option value='{{ typeName }}'{{ (section.type == typeName) ? " selected='selected'" : '' }}>{{typeDisp}}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                            
+                            <span class='input-item'>
+                                <textarea name='abstract-sections[]' placeholder='Content'></textarea>
+                            </span>
 
-                                <span class='input-actions'>
-                                    <i class='icon-move' title='Move'></i>
-                                    <i class='icon-plus' title='Add Section'></i>                            
-                                    <i class='icon-remove' title='Remove Section'></i>
-                                </span>
-                            </label>
-                        </li>
-                        <li class='form-row'>
-                            <label>
-                                <span class='input-label'>Paragraph</span>
-                                <span class='input-item'>
-                                    <textarea placeholder='Content' name='abstsecsandparas[]' class='paragraph'></textarea>
-                                </span>
-
-                                <span class='input-actions'>
-                                    <i class='icon-move' title='Move'></i>
-                                    <i class='icon-plus' title='Add Paragraph'></i>                            
-                                    <i class='icon-remove' title='Remove Paragraph'></i>
-                                </span>
-                            </label>                        
-                        </li>                           
-                        {% endif %}
+                            <span class='input-actions'>
+                                <i class='icon-move' title='Move'></i>
+                                <i class='icon-plus' title='Add Section'></i>                            
+                                <i class='icon-remove' title='Remove Section'></i>
+                            </span>  
+                        </li>                                              
                     </ul>
                 </fieldset>
 
-
-
                 {# Main Content #}
-                <fieldset class='ws-form-content'>
+               <fieldset class='ws-form-content'>
                     <legend>Content</legend>
 
                     <ul class='form-rows sortable'>
                         {% for n, section in doc.content.sections %}
                         <li class='form-row'>
-                            <label>
-                                <span class='input-label'>Heading</span>
-                                <span class='input-item'>
-                                    <input type='text' placeholder='Section Title' name='secsandparagraphs[]' class='section-head' value='{{ section.title }}' />
-                                </span>
+                            <span class='input-label'>
+                                <select tabindex='-1' name='content-section-types[]'>
+                                    {% for typeName, typeDisp in section.allowedTypes %}
+                                    <option value='{{ typeName }}'{{ (section.type == typeName) ? " selected='selected'" : '' }}>{{typeDisp}}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                            <span class='input-item'>
+                                <textarea name='content-sections[]' placeholder='Content'>{{ section.content }}</textarea>
+                            </span>
 
-                                <span class='input-actions'>
-                                    <i class='icon-move' title='Move'></i>
-                                    <i class='icon-plus' title='Add Section Heading'></i>                            
-                                    <i class='icon-remove' title='Remove section heading'></i>
-                                </span>  
-                            </label>
-                        </li>
+                            <span class='input-actions'>
+                                <i class='icon-move' title='Move'></i>
+                                <i class='icon-plus' title='Add Section'></i>                            
+                                <i class='icon-remove' title='Remove Section'></i>
+                            </span>                            
+                        </li>                        
+                        {% endfor %}
 
-                            {% for np, para in section.paragraphs %}
-                            <li class='form-row'>
-                                <label>
-                                    <span class='input-label'>Paragraph</span>
-                                    <span class='input-item'>
-                                        <textarea placeholder='Content' name='secsandparagraphs[]' class='paragraph'>{{ para.content }}</textarea>
-                                    </span>
-
-                                    <span class='input-actions'>
-                                        <i class='icon-move' title='Move'></i>
-                                        <i class='icon-plus' title='Add Paragraph'></i>                            
-                                        <i class='icon-remove' title='Remove Paragraph'></i>
-                                    </span>
-                                </label>                        
-                            </li>          
-                            {% endfor %} {# Paragraphs #}
-
-                            {% if section.paragraphs|length == 0 %}
-                            <li class='form-row'>
-                                <label>
-                                    <span class='input-label'>Paragraph</span>
-                                    <span class='input-item'>
-                                        <textarea placeholder='Content' name='secsandparagraphs[]' class='paragraph'></textarea>
-                                    </span>
-
-                                    <span class='input-actions'>
-                                        <i class='icon-move' title='Move'></i>
-                                        <i class='icon-plus' title='Add Paragraph'></i>                            
-                                        <i class='icon-remove' title='Remove Paragraph'></i>
-                                    </span>
-                                </label>                        
-                            </li>   
-                            {% endif %}
-
-                        {% endfor %} {# Sections #}
-
-                        {# Blank Section #}
-                        {% if doc.content.sections|length == 0 %}
+                        {# Blank Row #}
                         <li class='form-row'>
-                            <label>
-                                <span class='input-label'>Heading</span>
-                                <span class='input-item'>
-                                    <input type='text' value='' name='secsandparagraphs[]' class='section-head' placeholder='Section Title' />
-                                </span>
+                            <span class='input-label'>
+                                <select tabindex='-1' name='content-section-types[]'>
+                                    {% for typeName, typeDisp in allowedSectionTypes %}
+                                    <option value='{{ typeName }}'{{ (section.type == typeName) ? " selected='selected'" : '' }}>{{typeDisp}}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+                            <span class='input-item'>
+                                <textarea name='content-sections[]' placeholder='Content'></textarea>
+                            </span>
 
-                                <span class='input-actions'>
-                                    <i class='icon-move' title='Move'></i>
-                                    <i class='icon-plus' title='Add Section'></i>                            
-                                    <i class='icon-remove' title='Remove Section'></i>
-                                </span>
-                            </label>
-                        </li>
-                        <li class='form-row'>
-                            <label>
-                                <span class='input-label'>Paragraph</span>
-                                <span class='input-item'>
-                                    <textarea placeholder='Content' name='secsandparagraphs[]' class='paragraph'></textarea>
-                                </span>
-
-                                <span class='input-actions'>
-                                    <i class='icon-move' title='Move'></i>
-                                    <i class='icon-plus' title='Add Paragraph'></i>                            
-                                    <i class='icon-remove' title='Remove Paragraph'></i>
-                                </span>
-                            </label>                        
-                        </li>                           
-                        {% endif %}
+                            <span class='input-actions'>
+                                <i class='icon-move' title='Move'></i>
+                                <i class='icon-plus' title='Add Section'></i>                            
+                                <i class='icon-remove' title='Remove Section'></i>
+                            </span>  
+                        </li>                                              
                     </ul>
                 </fieldset>
 

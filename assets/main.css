@@ -374,7 +374,7 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 90px;
+    width: 110px;
     font-size: 0.9em;
     font-family: monospace;
     color: #888;
@@ -382,6 +382,17 @@ body {
     z-index: 1;
     cursor: text;
     padding: .25em 0 .25em 4px;
+}
+
+#workspace .ws-form .form-row .input-label select {
+    width: 104px;
+    font-family: monospace;
+    color: #888;            
+}
+
+#workspace .ws-form .form-row .input-label select option {
+    font-family: monospace;
+    color: #111;        
 }
 
 #workspace .ws-form .form-row .input-actions {
@@ -403,6 +414,7 @@ body {
 
 #workspace .ws-form .form-row:hover .input-actions *[class^="icon-"] {
     margin-left: 5px;
+    display: inline-block;
     cursor: pointer;
 }
 
@@ -414,7 +426,7 @@ body {
     display: block;
     z-index: 2;
     margin: 0;
-    padding: 0 0 0 90px;
+    padding: 0 0 0 114px;
 }
 
 #workspace .ws-form .form-row input,

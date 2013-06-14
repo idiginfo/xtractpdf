@@ -43,13 +43,27 @@ class DocumentSection extends BaseModel
 
     // --------------------------------------------------------------
 
+    /**
+     * Get valid section type names
+     *
+     * @return array  Keys are typenames, values are display-friendly versions
+     */
+    public static function getAllowedTypes()
+    {
+        return self::$allowedTypes;
+    }
+
+    // --------------------------------------------------------------
+
     public function __get($item)
     {
-        if ($item == 'typeDisp') {
-            return $this->typeDisp();
-        }
-        else {
-            return parent::__get($item);
+        switch ($item) {
+            case 'typeDis:':
+                return $this->typeDisp();
+            case 'allowedTypes':
+                return self::getAllowedTypes();
+            default:
+                return parent::__get($item);
         }
     }
 
@@ -73,16 +87,6 @@ class DocumentSection extends BaseModel
     public function setContent($content)
     {
         $this->content = $content;
-    }
-
-    // --------------------------------------------------------------
-
-    /**
-     * Return array
-     */
-    public function getAllowedTypes()
-    {
-        return self::$allowedTypes;
     }
 
     // --------------------------------------------------------------

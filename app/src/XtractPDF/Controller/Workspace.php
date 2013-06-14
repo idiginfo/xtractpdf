@@ -97,7 +97,12 @@ class Workspace extends Controller
             }
             
             //Process data model into Twig View
-            return $this->twig->render('p_workspace.html.twig', array('doc' => $doc));
+            $viewData = array(
+                'doc'                 => $doc,
+                'allowedSectionTypes' => Model\DocumentSection::getAllowedTypes()
+            );
+
+            return $this->twig->render('p_workspace.html.twig', $viewData);
         }
         else {
             return $this->abort(404, "Could not find document");
@@ -167,22 +172,14 @@ class Workspace extends Controller
                 //Set Abstract
                 $abstractObj = new Model\DocumentAbstract();
                 foreach($abstract as $sec) {
-                    $secObj = new Model\DocumentSection($sec->title);
-                    foreach(array_filter($sec->paragraphs) as $para) {
-                        $secObj->addParagraph(new Model\DocumentParagraph($para));
-                    }
-                    $abstractObj->addSection($secObj);
+                    $abstractObj->addSection(new Model\DocumentSection($sec->content, $sec->type));
                 }
-                $doc->setAbstract($abstractObj);                
+                $doc->setAbstract($abstractObj);
 
                 //Set content
                 $contentObj = new Model\DocumentContent();
                 foreach($content as $sec) {
-                    $secObj = new Model\DocumentSection($sec->title);
-                    foreach(array_filter($sec->paragraphs) as $para) {
-                        $secObj->addParagraph(new Model\DocumentParagraph($para));
-                    }
-                    $contentObj->addSection($secObj);
+                    $contentObj->addSection(new Model\DocumentSection($sec->content, $sec->type));
                 }
                 $doc->setContent($contentObj);
             }
