@@ -9,9 +9,11 @@
         <meta name='description' content='Convert scholarly PDFs to JATS-XML' />
         <meta name='keywords' content='PDF, TXT, JATS, XML, Portable Document Format, Convert PDF, PDF to XML, Extract PDF' />
 
-        <link href="{{ base_url }}/assets/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
-        <link href="{{ base_url }}/assets/bootstrap/css/bootstrap-responsive.css" type="text/css" rel="stylesheet" />
-        <link href="{{ base_url }}/assets/fontawesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+        {# CDN Resources #}
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">
+
+        {# Local Resources #}
         <link href="{{ base_url }}/assets/prettify-bs.css" type="text/css" rel="stylesheet" />
         <link href="{{ base_url }}/assets/main.css" type="text/css" rel="stylesheet">
         {% endblock %}
@@ -21,29 +23,46 @@
     </head>
     <body class='{{ page_class | default('normal') }}'>
         
-        {% block page_sidebar %}
-            {% include 'p_sidebar.html.twig' %}
-        {% endblock %}
+        <header id='main-header'>
+            <div id='header-left'>
+                <div class='header-content'>
+                    <h1 id='main-title'>XtractPDF</h1>
+                    <ul id='main-nav' rel='navigation' class="nav nav-pills">
+                        <li><a href='#'>Workspace</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                    <ul class="breadcrumb">
+                        <li><a href="{{ site_url }}">Library</a> <span class="divider">/</span></li>
+                    </ul>
+                </div>
+            </div>
 
+            <div id='header-right'>
+                <div class='header-content'>                
+                {% block page_header_content %}
+                {% endblock %}
+                </div>
+            </div>
+        </header>
+
+        <div id='page_content' rel='main'>
         {% block page_content %}
         {% endblock %}
+        </div>
  
         {% block base_js %}
-
-            {# Jquery #}
+            {# Jquery CDN #}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-            <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
             <script src='//code.jquery.com/ui/1.10.3/jquery-ui.min.js'></script>
-
-            {# Bootstrap #}
-            <script type='text/javascript' src='{{ base_url }}/assets/bootstrap/js/bootstrap.min.js'></script>
-
-            {# Addons #}
+            {# Bootstrap CDN #}
+            <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+            {# Knockout CDN #}
+            <script src='//cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js'></script>
+            {# Addons (local) #}
             <script type='text/javascript' src='{{ base_url }}/assets/jquery-form.js'></script>
             <script type='text/javascript' src='{{ base_url }}/assets/jquery-autosize.js'></script>
             <script type='text/javascript' src='{{ base_url }}/assets/prettify/prettify.js'></script>
-
-            {# App Scripts #}
+            {# App Scripts (local) #}
             <script type='text/javascript' src='{{ base_url }}/assets/main.js'></script>
         {% endblock %}
         

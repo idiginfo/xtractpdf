@@ -1,0 +1,467 @@
+/* Body ------------------------------------------------------------ */
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Basic Layout Sections ------------------------------------------- */
+
+#sidebar {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    background-color: #111;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    min-width: 20px;
+    color: #FFF;
+    z-index: 10;
+}
+
+#main {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 20px;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/* Sidebar  ------------------------------------------------------ */
+
+#sidebar > #sidebar-tab {
+    float: left;
+    background-color: #222;
+    position: relative;
+    height: 100%;
+    width:  20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px #000;
+}
+
+#sidebar > #sidebar-tab > p {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    position: absolute;
+    width: 20px;
+    text-align: center;
+    top: 50%;
+    font-size: 16px;
+    margin-top: -38px;
+    padding: 1px 0 0 0;
+}
+
+#sidebar > #sidebar-content {
+    display: none;    
+    position: relative;
+    height: 100%;
+    width: 200px;
+    float: left;
+    overflow: hidden;
+}
+
+
+#sidebar > #sidebar-content > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-top-list {
+    z-index: 20;
+    height: 150px;
+    width: 200px;
+    overflow: hidden;
+    position: fixed;
+    background-color: #111;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list {
+    position: absolute;
+    top: 170px;
+    bottom: 20px;
+    padding-bottom: 20px;
+}
+
+#sidebar .sidebar-scroll {
+    z-index: 20;
+    display: block;
+    background-color: #151515;
+    text-align: center;
+    cursor: pointer;
+    width: 200px;
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar #sidebar-pdf-scroll-up {
+    position: fixed;
+    top: 150px;
+    left: 0;
+}
+
+#sidebar #sidebar-pdf-scroll-down {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#sidebar #pdf-upload {
+    margin-bottom: 0;
+}
+
+#sidebar #pdf-upload label[for='pdffile-input'] {
+    display: none;
+}
+
+#sidebar #pdflist-search {
+    width: 175px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+#sidebar > #sidebar-content > ul > li {
+    padding: 5px;
+    margin: 0;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li {
+    border-bottom: 1px solid #444;
+}
+
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li.active {
+    background-color: gray;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li.active  i {
+    color: #FFF;
+}
+
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li:first-child {
+    border-top: 1px solid #444;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li > a {
+    display: block;
+    color: #FFF;
+    text-decoration: none;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li > a:hover {
+    text-decoration: none;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li > a:hover i {
+    color: #FFF;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-icon {
+    float: left;
+    font-size: 36px;
+    color: #666;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-title {
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 13px;
+    display: block;
+    margin-left: 30px;
+}
+
+#sidebar > #sidebar-content > ul#sidebar-pdf-list > li span.pdf-status {
+    display: block;
+    font-size: 12px;
+    margin-left: 30px;
+}
+
+/* Main Preview Panel -------------------------------------------- */
+
+#main > .pane {
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    float: left;
+    height: 100%;
+}
+
+#main > .pane .placeholder {
+    display: block;
+    margin: 25% 0 0 25%;
+    width: 50%;
+    text-align: center;
+    position: relative;
+    background-color: #FFF;
+    border: 4px solid #111;
+    border-radius: 10px;
+    font-size: 1.2em;
+    padding: 2em 0;
+
+}
+
+#main > .pane .placeholder .patience {
+    display: block;
+    margin-top: 0.3em;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+
+#main > .fullpane {
+    padding-top: 2em;
+}
+
+#main > .pane .placeholder.error {
+    padding: 0 0 0 0.5em;
+}
+
+#main > .pane .placeholder.error h2 {
+    font-size: 1.2em;
+    line-height: 1.25em;
+    color: #990000;
+}
+
+#main > .pane .placeholder.error ul {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#main > .pane .placeholder.error ul > li {
+    text-align: center;
+}
+
+#left.pane {
+    background-color: #C1C1C1;
+}
+
+#right.pane {
+    background-color: #FFF;
+}
+
+#left.pane .placeholder {
+    background-color: #FFF;
+    border-color: #FFF;
+}
+
+#right.pane .placeholder {
+    background-color: #C1C1C1;
+    border-color: #C1C1C1;
+}
+
+#left.pane > iframe {
+    width: 100%;
+    height: 100%;
+}
+
+#right.pane > textarea {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: monospace;
+}
+
+/* Widgets ------------------------------------------------------- */
+
+.underline {
+    margin-top: 2em;
+    margin-bottom: 0.25em;
+    border-bottom: 1px solid #BBB;
+}
+
+.table > tbody > tr:first-child > * {
+    border-top: none;
+}
+
+/* Workspace ----------------------------------------------------- */
+
+#workspace {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#workspace .ws-top {
+    background-color: #EEE;
+}
+
+#workspace .ws-top ul.nav {
+    margin-bottom: 0;
+}
+
+#workspace .ws-top .pull-right {
+    display: block;
+    margin: 5px;
+} 
+
+#workspace .ws-top .ws-mc-form {
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+
+#workspace .ws-top .ws-mc-form > label {
+    font-size: 12px;
+    display: inline-block;
+    margin: 0;
+}
+
+#workspace .ws-top .ws-mc-form > label > input[type=checkbox] {
+    margin-top: 0;
+}
+
+#workspace .ws-form {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+#workspace .ws-form legend {
+    margin-bottom: 0;
+    font-size: 1em;
+    padding-left: 4px;
+    border-bottom: 1px solid #CCC;
+    background-color: #e4e4e4;
+    color: #666;
+    font-family: monospace;
+    font-weight: bold;
+    line-height: 2em;
+}
+
+#workspace .ws-form .form-rows {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#workspace .ws-form .form-row {
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+}
+
+#workspace .ws-form .form-row .ws-form-pending {
+    position: absolute;
+    z-index: 5;
+    right: 4px;
+    top: 2px;
+    padding: 4px;
+}
+
+#workspace .ws-form .form-row label {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#workspace .ws-form .form-row .input-label {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 110px;
+    font-size: 0.9em;
+    font-family: monospace;
+    color: #888;
+    margin: 0;
+    z-index: 1;
+    cursor: text;
+    padding: .25em 0 .25em 4px;
+}
+
+#workspace .ws-form .form-row .input-label select {
+    width: 104px;
+    font-family: monospace;
+    color: #888;            
+}
+
+#workspace .ws-form .form-row .input-label select option {
+    font-family: monospace;
+    color: #111;        
+}
+
+#workspace .ws-form .form-row .input-actions {
+    z-index: 4;
+    display: none;
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    background-color: rgba(241, 241, 241, 0.5);
+    border: 1px solid #F1F1F1;
+    border-radius: 10px;
+    padding: 0 4px;
+}
+
+#workspace .ws-form .form-row:hover .input-actions,
+#workspace .ws-form .form-row:focus .input-actions {
+    display: block;
+}
+
+#workspace .ws-form .form-row:hover .input-actions *[class^="icon-"] {
+    margin-left: 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+#workspace .ws-form .form-row:hover .input-actions *[class^="icon-"]:hover {
+    color: blue;
+}
+
+#workspace .ws-form .form-row .input-item {
+    display: block;
+    z-index: 2;
+    margin: 0;
+    padding: 0 0 0 114px;
+}
+
+#workspace .ws-form .form-row input,
+#workspace .ws-form .form-row select,
+#workspace .ws-form .form-row textarea {
+    width: 100%;
+    margin: 0;
+    padding: .25em 0;
+    border: none;
+    border-radius: 0;
+    z-index: 3;
+    outline: none;
+    box-shadow: none;
+}
+
+#workspace .ws-form .form-row input:focus,
+#workspace .ws-form .form-row select:focus,
+#workspace .ws-form .form-row textarea:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#workspace .ws-form .form-row textarea {
+    resize: vertical;
+}
+
+#workspace #ws-xml-pane {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#workspace #ws-xml-pane > pre {
+    margin: 0;
+    height: 100%;
+}
