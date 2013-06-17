@@ -131,16 +131,16 @@ class Library extends Controller
         //Get the item from the database (or 404 if it doesn't exist)        
         $doc = $this->docMgr->getDocument($uniqId);
 
-        $dispOptions = array(
-            'availSecTypes'  => Model\DocumentSection::getAllowedTypes(),
-            'biblioMetaDisp' => Model\DocumentBiblioMeta::getDispInfo()            
-        );
-
-
         //If not found, abort
         if ( ! $doc) {
             return $this->abort(404, 'Document Not Found');
         }
+
+        //Display options - for building views with JS and HTML
+        $dispOptions = array(
+            'availSecTypes'  => Model\DocumentSection::getAllowedTypes(),
+            'biblioMetaDisp' => Model\DocumentBiblioMeta::getDispInfo()            
+        );      
 
         //If JSON, return the document
         if ($this->clientExpects('json')) {
@@ -197,15 +197,25 @@ class Library extends Controller
     public function updateAction($uniqId)
     {
         //Check if document exists, otherwise render a 404
+        $doc = $this->docMgr->getDocument($uniqId);
 
-        //Get the model of the document from the docMgr      
+        //If not found, abort
+        if ( ! $doc) {
+            return $this->abort(404, 'Document Not Found');
+        }
 
-        //Update the model using the fromJson builder (to be written)
+        //LEFT OFF HERE LEFT OFF HERE - HANDLE REQUEST CORRECTLY
+
+        // //Build the document from the JSON string
+        // $doc = $this->builders->get('post-request')->build('php://input', $doc);
 
         //Return a response
         if ($this->clientExpects('json')) {
             //Return JSON notification that everything went well and URL pointer to the document
-            return $this->json(array('message' => 'temp-deleteme'));            
+            return $this->json(array(
+                'message' => 'Updated Document',
+                'docUrl'  => $this->currentUrl()
+            ));
         }
         else { //Do HTML redirect
             return $this->redirect('/single/' . $uniqId);

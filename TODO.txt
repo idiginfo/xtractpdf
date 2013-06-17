@@ -1,8 +1,10 @@
-1. TODO: Write unit test that ensure that the same exact PDF uploaded twice doesn't generate two documents in the DB
-2. CURRENTLY WORKING ON: Knockout representation of document -- This URL Works:
-   - http://localhost:8850/xtractpdf/dev.php/library/fd6ffef8028de9b6db576142c3a77af2?response_format=json
-   - Look for assets/library-single.js for Knockout model
-3. Command-line junk:
+1. Currently working on refactoring builder interface so that ::build method doesn't always *require* a stream (think about this carefully)
+2. Finish POST handler for updating documents
+3. Figure out why the documentViewModel thing sends a million POST requests even once the document has been posted succesfully
+4. Rewrite upload method in library controller
+5. Write library front page
+6. Write unit test that ensure that the same exact PDF uploaded twice doesn't generate two documents in the DB
+7. Command-line junk:
    - Rename the extract command so that it makes more sense ('build') and option for what builder to use
    - Commands for managing the collection: dump (dumps using a renderer), search, list, etc.
    - In the end, we should have:
@@ -13,3 +15,4 @@
          docs:list   -order {order} -l {limit}
          docs:delete [ids,ids,etc]
          docs:clear
+8. Write JATS exporter

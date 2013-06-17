@@ -185,17 +185,17 @@ function DocumentPersister(docViewModel, docUrl, autoPersist) {
     self.lastCleanState = ko.toJSON(docViewModel);
 
     //Functions
-    self.updateDocument = function(jsonData, force) {
+    self.updateDocument = function(docData, force) {
 
-        if (self.lastCleanState.localeCompare(jsonData) != 0 || force == true) {
+        if (self.lastCleanState.localeCompare(docData) != 0 || force == true) {
             $.ajax({
                 url:      docUrl,
                 type:     "POST",
-                data:     jsonData,
+                data:     { document: docData },
                 dataType: 'json', 
                 success: function(responseData) {
-                    self.lastCleanState = jsonData;  
-                    console.log("Persisted");              
+                    self.lastCleanState = docData;  
+                    console.log("Persisted");
                 }
             });            
         }
