@@ -39,7 +39,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>Authors</legend>
+            <legend>Authors <span class='fieldset-actions'><i data-bind='click: addAuthor' class='icon-plus-sign'></i></span></legend>
             <ul class='form-rows' data-bind='sortable: { data: authors, hande: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>Author <strong data-bind='text: $index() + 1'></strong></span>
@@ -57,7 +57,7 @@
         </fieldset>  
 
         <fieldset>
-            <legend>Abstract</legend>
+            <legend>Abstract <span class='fieldset-actions'><i data-bind='click: addAbstractSection' class='icon-plus-sign'></i></span></legend>
             <ul class='form-rows' data-bind='sortable: {data: abstract, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>
@@ -77,7 +77,7 @@
         </fieldset>        
 
         <fieldset>
-            <legend>Content</legend>
+            <legend>Content <span class='fieldset-actions'><i data-bind='click: addContentSection' class='icon-plus-sign'></i></span></legend>
             <ul class='form-rows' data-bind='sortable: {data: content, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>
@@ -97,7 +97,7 @@
         </fieldset>    
 
         <fieldset>
-            <legend>Citations</legend>
+            <legend>Citations <span class='fieldset-actions'><i data-bind='click: addCitation' class='icon-plus-sign'></i></span></legend>
             <ul class='form-rows' data-bind='sortable: {data: citations, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>Citation <strong data-bind='text: $index() + 1'></strong></span>

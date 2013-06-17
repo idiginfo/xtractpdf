@@ -145,6 +145,7 @@ body.workspace #page_content {
     font-family: monospace;
     font-weight: bold;
     line-height: 2em;
+    position: relative;
 }
 
 /* List styles */
@@ -241,7 +242,8 @@ body.workspace #page_content {
 }
 
 /* Action Items */
-#single-doc-editor #right-workform.pane li.form-row .input-actions {
+#single-doc-editor #right-workform.pane li.form-row .input-actions,
+#single-doc-editor #right-workform.pane legend .fieldset-actions {
     z-index: 4;
     display: none;
     position: absolute;
@@ -253,18 +255,30 @@ body.workspace #page_content {
     padding: 0 4px;
 }
 
+#single-doc-editor #right-workform.pane legend .fieldset-actions {
+    background-color: transparent;
+    border: none;
+    padding: 0 10px 0 0;
+    color: #111;
+    top: 0;
+}
+
 #single-doc-editor #right-workform.pane li.form-row:hover .input-actions,
-#single-doc-editor #right-workform.pane li.form-row:focus .input-actions {
+#single-doc-editor #right-workform.pane li.form-row:focus .input-actions,
+#single-doc-editor #right-workform.pane legend:hover .fieldset-actions,
+#single-doc-editor #right-workform.pane legend:focus .fieldset-actions {
     display: block;
 }
 
-#single-doc-editor #right-workform.pane li.form-row:hover .input-actions *[class^="icon-"] {
+#single-doc-editor #right-workform.pane li.form-row:hover .input-actions *[class^="icon-"],
+#single-doc-editor #right-workform.pane legend .fieldset-actions *[class^="icon-"] {
     margin-left: 5px;
     display: inline-block;
     cursor: pointer;
 }
 
-#single-doc-editor #right-workform.pane li.form-row:hover .input-actions *[class^="icon-"]:hover {
+#single-doc-editor #right-workform.pane li.form-row:hover .input-actions *[class^="icon-"]:hover,
+#single-doc-editor #right-workform.pane legend .fieldset-actions *[class^="icon-"]:hover {
     color: red;
 }
 
