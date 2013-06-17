@@ -65,8 +65,8 @@ class Library extends Controller
         $routes->get('/library',          array($this, 'libraryAction'));
         $routes->get('/library/{uniqId}', array($this, 'singleAction'));
         
-        $routes->post('/library',         array($this, 'uploadAction'));
-        $routes->post('/library/{id}',    array($this, 'updateAction'));
+        $routes->post('/library',          array($this, 'uploadAction'));
+        $routes->post('/library/{uniqId}', array($this, 'updateAction'));
     }
 
     // --------------------------------------------------------------
@@ -182,6 +182,7 @@ class Library extends Controller
         //Return a response
         if ($this->clientExpects('json')) {
             //Return JSON notification that everything went well and URL pointer to the document
+
         }
         else { //Do HTML redirect
             return $this->redirect('/single/' . $uniqId);
@@ -204,6 +205,7 @@ class Library extends Controller
         //Return a response
         if ($this->clientExpects('json')) {
             //Return JSON notification that everything went well and URL pointer to the document
+            return $this->json(array('message' => 'temp-deleteme'));            
         }
         else { //Do HTML redirect
             return $this->redirect('/single/' . $uniqId);
