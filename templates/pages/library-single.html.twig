@@ -7,8 +7,8 @@
 
 {% block page_topbar_content %}
     <div id='doc-actions'>
-        <a href='#' class='btn btn-mini'><i class='icon-check-empty'></i> Mark Complete</a>
-        <a href='#' class='btn btn-mini'><i class='icon-save'></i> Save</a>
+        <button class='btn btn-mini'><i class='icon-check-empty'></i> Mark Complete</button>
+        <button class='btn btn-mini'><i class='icon-save'></i> Save</button>
         <a href='#' class='btn btn-mini'><i class='icon-download-alt'></i> Export as JATs</a>
     </div>
 {% endblock %}
@@ -31,7 +31,7 @@
                     <label>
                         <span class='input-label' data-bind='text: disp'></span>
                         <span class='input-item'>
-                            <input type='text' data-bind='value: value, attr: {placeholder: placeholder }' />
+                            <input type='text' data-bind='value: value, attr: { placeholder: placeholder }' />
                         </span>
                     </label>
                 </li>
@@ -61,7 +61,7 @@
             <ul class='form-rows' data-bind='sortable: {data: abstract, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>
-                        <select data-bind="options: $root.availSecTypes, value: type, optionsValue: 'slug', optionsText: 'name'"></select>
+                        <select data-bind="value: type, options: $root.availSecTypes, optionsValue: 'slug', optionsText: 'name'"></select>
                     </span>
                     <span class='input-item'>
                         <textarea data-bind='value: content' placeholder='Header or Section Content'></textarea>
@@ -81,7 +81,7 @@
             <ul class='form-rows' data-bind='sortable: {data: content, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>
-                        <select data-bind="options: $root.availSecTypes, value: type, optionsValue: 'slug', optionsText: 'name'"></select>
+                        <select data-bind="value: type, options: $root.availSecTypes, optionsValue: 'slug', optionsText: 'name'"></select>
                     </span>
                     <span class='input-item'>
                         <textarea data-bind='value: content' placeholder='Header or Section Content'></textarea>

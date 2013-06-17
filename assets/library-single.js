@@ -27,10 +27,6 @@ function BiblioMetaItem(name, value, disp, placeholder) {
 
 // ------------------------------------------------------------------
 
-
-
-// ------------------------------------------------------------------
-
 //
 // Define a ViewModel for a single document
 //
@@ -41,6 +37,7 @@ function DocumentViewModel(docUrl) {
     //Meta Data
     self.docId         = '';
     self.availSecTypes = ko.observableArray([]);
+    self.isComplete    = ko.observable(false);
 
     //Content Data
     self.biblioMeta = ko.observableArray([]);
@@ -90,6 +87,11 @@ function DocumentViewModel(docUrl) {
     self.removeItem = function(arr, data, event) {
         arr.remove(data);
     }
+
+    //Mark document complete
+    self.toggleMarkedComplete = function() {
+        self.isComplete = (self.isComplete == 1) ? 0 : 1;
+    }
 }
 
 // ------------------------------------------------------------------
@@ -106,8 +108,9 @@ function buildDocModel(docUrl)
         var doc      = serverData.document;
         var dispOpts = serverData.dispOptions;
 
-        //ID
-        docViewModel.docId = doc.uniqId;
+        //Basic Information
+        docViewModel.docId      = doc.uniqId;
+        docViewModel.isComplete = doc.isComplete;
 
         //Biblio Meta
         $.each(doc.biblioMeta, function (k, v) {
@@ -152,22 +155,28 @@ function buildDocModel(docUrl)
 //
 $(document).ready(function() {
 
+    //
+    // Init
+    //
+
     //Get the URL to the document info from the DOM
     var docUrl = $('#workform').data('docurl');
 
     //Build it!
-    var docViewModel = buildDocModel(docUrl);
+    docViewModel = buildDocModel(docUrl);
 
     //Apply Knockout Bindings
     ko.applyBindings(docViewModel);
 
     //Start the persist timer
-    var dp = new DocumentPersister(docViewModel, docUrl, true);
-    
+    var dp = new DocumentPersister(docViewModel, docUrl, true);    
 });
 
 // ------------------------------------------------------------------
 
+//
+// Document Persister is intelligently aware of document clean/dirty state
+//
 function DocumentPersister(docViewModel, docUrl, autoPersist) {
 
     var self = this;

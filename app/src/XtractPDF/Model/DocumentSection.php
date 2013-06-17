@@ -15,7 +15,7 @@ class DocumentSection extends BaseModel
     /**
      * @var array
      */
-    protected static $allowedTypes = array(
+    protected static $_allowedTypes = array(
         'paragraph'  => 'Paragraph',
         'heading'    => 'Heading',
         'subheading' => 'Subheading'
@@ -52,7 +52,7 @@ class DocumentSection extends BaseModel
      */
     public static function getAllowedTypes()
     {
-        return self::$allowedTypes;
+        return self::$_allowedTypes;
     }
 
     // --------------------------------------------------------------
@@ -73,11 +73,11 @@ class DocumentSection extends BaseModel
 
     public function setType($type)
     {
-        if ( ! isset(self::$allowedTypes[$type])) {
+        if ( ! isset(self::$_allowedTypes[$type])) {
             throw new InvalidArgumentException(sprintf(
                 "%s is invalid type; allowed types are %s"),
                 $type,
-                implode(', ', array_keys(self::$allowedTypes)
+                implode(', ', array_keys(self::$_allowedTypes)
             ));
         }
 
@@ -95,7 +95,7 @@ class DocumentSection extends BaseModel
 
     public function typeDisp()
     {
-        return self::$allowedTypes[$this->type];
+        return self::$_allowedTypes[$this->type];
     }
 
     // --------------------------------------------------------------

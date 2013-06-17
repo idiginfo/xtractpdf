@@ -116,12 +116,14 @@ body.workspace #page_content {
     margin-top: 10px;
 }
 
-#doc-actions a {
+#doc-actions a, 
+#doc-actions button {
     display: inline-block;
     margin-left: 10px;
 }
 
-#doc-actions a:first-child {
+#doc-actions a:first-child,
+#doc-actions button:first-child {
     margin-left: 0;
 }
 
