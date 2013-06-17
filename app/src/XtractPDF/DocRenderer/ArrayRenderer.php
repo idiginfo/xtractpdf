@@ -8,16 +8,16 @@ use XtractPDF\Core\Model;
 use Traversable;
 
 /**
- * Document Renderer Interface
+ * Document Renderer Interface as Multi-Dimensional Array
  */
-class JsonRenderer implements RendererInterface
+class ArrayRenderer implements RendererInterface
 {
     /**
      * @return string  A machine-readable name (alpha-dash)
      */
     public static function getSlug()
     {
-        return 'json';
+        return 'array';
     }
 
     // --------------------------------------------------------------
@@ -30,7 +30,7 @@ class JsonRenderer implements RendererInterface
      */
     public function render(Document $document, array $options = array())
     {   
-        return json_encode($this->objToArray($document));
+        return $this->objToArray($document);
     }
 
     // --------------------------------------------------------------
@@ -63,4 +63,4 @@ class JsonRenderer implements RendererInterface
     }
 }
 
-/* EOF: JsonRenderer.php */
+/* EOF: ArrayRenderer.php */

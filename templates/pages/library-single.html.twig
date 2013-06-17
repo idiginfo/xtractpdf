@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block page_js %}
+<script src='{{ base_url }}/assets/vendor/knockout-sortable.min.js'></script>
 <script src='{{ base_url }}/assets/library-single.js'></script>
 {% endblock %}
 
@@ -17,85 +18,102 @@
     <div class='pane' id='left-pdfview'>
         
         {# Temporary - for testing #}
-        <iframe id='left-pdfview-iframe' src='{{ url('viewpdf', { id: 'fd6ffef8028de9b6db576142c3a77af2' }) }}'></iframe>
+        <iframe id='left-pdfview-iframe' src='{{ url('viewpdf', { id: doc.uniqId }) }}'></iframe>
 
     </div>
 
     <div class='pane' id='right-workform'>
-        <div class='workform-container'>
+        <div class='workform-container' data-docurl='{{ docUrl }}' id='workform'>
         <fieldset>
             <legend>Bibliographic Metadata</legend>
-
-            <ul class='form-rows'>
+            <ul class='form-rows' data-bind='foreach: biblioMeta'>
                 <li class='form-row'>
                     <label>
-                        <span class='input-label'>Title</span>
+                        <span class='input-label' data-bind='text: disp'></span>
                         <span class='input-item'>
-                            <input type='text' />
+                            <input type='text' data-bind='attr: { value: value, placeholder: placeholder }' />
                         </span>
-
-                        <span class='input-actions'>
-                            <i class='icon-move'></i>
-                            <i class='icon-remove'></i>  
-                            <i class='icon-plus-sign'></i>
-                        </span>
-
                     </label>
                 </li>
-
-                <li class='form-row'>
-                    <label>
-                        <span class='input-label'>Title</span>
-                        <span class='input-item'>
-                            <input type='text' placeholder='e.g. Some Article Title' />
-                        </span>
-
-                        <span class='input-actions'>
-                            <i class='icon-move'></i>
-                            <i class='icon-remove'></i>  
-                            <i class='icon-plus-sign'></i>
-                        </span>
-
-                    </label>
-                </li>
-
-                <li class='form-row'>
-                    <label>
-                        <span class='input-label'>DOI</span>
-                        <span class='input-item'>
-                            <input type='text' placeholder='e.g. 10.23408234/abc023' />
-                        </span>
-
-                        <span class='input-actions'>
-                            <i class='icon-move'></i>
-                            <i class='icon-remove'></i>  
-                            <i class='icon-plus-sign'></i>
-                        </span>
-
-                    </label>
-                </li>
-
-                {% for i in range(1, 100) %}
-                <li class='form-row'>
-                    <label>
-                        <span class='input-label'>Other Thing</span>
-                        <span class='input-item'>
-                            <textarea placeholder='e.g. other thing'></textarea>
-                        </span>
-
-                        <span class='input-actions'>
-                            <i class='icon-move'></i>
-                            <i class='icon-remove'></i>  
-                            <i class='icon-plus-sign'></i>
-                        </span>
-
-                    </label>
-                </li>                     
-                {% endfor %}
-
             </ul>
-
         </fieldset>
+
+        <fieldset>
+            <legend>Authors</legend>
+            <ul class='form-rows' data-bind='sortable: { data: authors, hande: ".icon-move"}'>
+                <li class='form-row'>
+                    <span class='input-label'>Author <strong data-bind='text: $index() + 1'></strong></span>
+                    <span class='input-item'>
+                        <input type='text' data-bind='value: name' placeholder='Smith, J.E.' />
+                    </span>
+
+                    <span class='input-actions'>
+                        <i class='icon-move'></i>
+                        <i data-bind='event: { dblclick: $root.removeItem.bind($data, $root.authors) }' class='icon-remove'></i>  
+                        <i data-bind='click: $root.addAuthor.bind($data, $index())' class='icon-plus-sign'></i>
+                    </span>                    
+                </li>
+            </ul>
+        </fieldset>  
+
+        <fieldset>
+            <legend>Abstract</legend>
+            <ul class='form-rows' data-bind='sortable: {data: abstract, handle: ".icon-move"}'>
+                <li class='form-row'>
+                    <span class='input-label'>
+                        <select data-bind="options: $root.availSecTypes, value: type, optionsValue: 'slug', optionsText: 'name'"></select>
+                    </span>
+                    <span class='input-item'>
+                        <textarea data-bind='value: content' placeholder='Header or Section Content'></textarea>
+                    </span>
+
+                    <span class='input-actions'>
+                        <i class='icon-move'></i>
+                        <i data-bind='event: { dblclick: $root.removeItem.bind($data, $root.abstract) }' class='icon-remove'></i>  
+                        <i data-bind='click: $root.addAbstractSection.bind($data, $index())' class='icon-plus-sign'></i>
+                    </span>                    
+                </li>
+            </ul>
+        </fieldset>        
+
+        <fieldset>
+            <legend>Content</legend>
+            <ul class='form-rows' data-bind='sortable: {data: content, handle: ".icon-move"}'>
+                <li class='form-row'>
+                    <span class='input-label'>
+                        <select data-bind="options: $root.availSecTypes, value: type, optionsValue: 'slug', optionsText: 'name'"></select>
+                    </span>
+                    <span class='input-item'>
+                        <textarea data-bind='value: content' placeholder='Header or Section Content'></textarea>
+                    </span>
+
+                    <span class='input-actions'>
+                        <i class='icon-move'></i>
+                        <i data-bind='event: { dblclick: $root.removeItem.bind($data, $root.content) }' class='icon-remove'></i>  
+                        <i data-bind='click: $root.addContentSection.bind($data, $index())' class='icon-plus-sign'></i>
+                    </span>                    
+                </li>
+            </ul>
+        </fieldset>    
+
+        <fieldset>
+            <legend>Citations</legend>
+            <ul class='form-rows' data-bind='sortable: {data: citations, handle: ".icon-move"}'>
+                <li class='form-row'>
+                    <span class='input-label'>Citation <strong data-bind='text: $index() + 1'></strong></span>
+                    <span class='input-item'>
+                        <textarea data-bind='value: content' placeholder='e.g. Author, N. Title of Document (2010), Some Journal, Some Publisher'></textarea>
+                    </span>
+
+                    <span class='input-actions'>
+                        <i class='icon-move'></i>
+                        <i data-bind='event: { dblclick: $root.removeItem.bind($data, $root.citations) }' class='icon-remove'></i>  
+                        <i data-bind='click: $root.addCitation.bind($data, $index())' class='icon-plus-sign'></i>
+                    </span>                    
+                </li>
+            </ul>
+        </fieldset>
+
         </div>
     </div>
 </div>

@@ -197,6 +197,22 @@ abstract class Controller implements ControllerProviderInterface
 
     // --------------------------------------------------------------
 
+    protected function getCurrentUrl()
+    {
+        return $this->getSiteUrl($this->app['request']->getPathInfo());
+    }
+
+    // --------------------------------------------------------------
+
+    protected function getSiteUrl($subPath = '')
+    {
+        $siteUrl = $this->app['request']->getSchemeAndHttpHost() . $this->app['request']->getBaseUrl();
+
+        return ( ! empty($subPath)) ? $siteUrl . '/' . ltrim($subPath, '/') : $siteUrl;
+    }
+
+    // --------------------------------------------------------------
+
     /**
      * Shortcut function for sendFile
      */

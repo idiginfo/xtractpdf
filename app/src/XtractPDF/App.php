@@ -187,7 +187,7 @@ class App extends SilexApp
         //Document Renderers
         $app['renderers'] = $app->share(function() use ($app) {
             return new Library\RendererBag(array(
-                new DocRenderer\JsonRenderer()
+                new DocRenderer\ArrayRenderer()
             ));
         });
     }

@@ -183,10 +183,20 @@ body.workspace #page_content {
     padding: .25em 0 .25em 4px;
 }
 
+#single-doc-editor #right-workform.pane li.form-row .input-label strong {
+    font-weight: normal;
+}
+
 #single-doc-editor #right-workform.pane li.form-row .input-label select {
     width: 104px;
     font-family: monospace;
-    color: #888;            
+    color: #888;
+    padding: 0;
+    border: none;            
+}
+
+#single-doc-editor #right-workform.pane li.form-row .input-label select:focus {
+    border: none;
 }
 
 #single-doc-editor #right-workform.pane li.form-row .input-label select option {
@@ -217,6 +227,7 @@ body.workspace #page_content {
 
 #single-doc-editor #right-workform.pane li.form-row .input-item textarea {
     resize: vertical;
+    overflow-y: hidden;
 }
 
 #single-doc-editor #right-workform.pane li.form-row .input-item input:focus,

@@ -47,13 +47,28 @@ abstract class Model implements IteratorAggregate, Countable
     {
         $arr = array();
 
-        foreach(get_object_vars($this) as $k => $v) {
-            if ($k{0} != '_' && $k != 'iterator') {
-                $arr[$k] = $v;
-            }
+        foreach(self::getPublicProperties() as $k) {
+            $arr[$k] = $this->$k;
         }
+
         return $arr;
     } 
+
+    // --------------------------------------------------------------
+
+    public static function getPublicProperties()
+    {
+        $arr = array();
+
+        foreach(get_class_vars(get_called_class()) as $k => $v) {
+            if ($k{0} != '_' && $k != 'iterator') {
+                $arr[] = $k;
+            }
+        }
+
+        return $arr;
+    }
+
 }
 
 /* EOF: Model.php */

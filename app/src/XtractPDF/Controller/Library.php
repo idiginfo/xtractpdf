@@ -28,9 +28,9 @@ class Library extends Controller
     private $builders;
 
     /**
-     * @var XtractPDF\DocRenderer\JsonRenderer
+     * @var XtractPDF\DocRenderer\ArrayRenderer
      */
-    private $jsonRenderer;
+    private $arrayRenderer;
 
     /**
      * @var array
@@ -82,7 +82,7 @@ class Library extends Controller
         $this->twig         = $app['twig'];        
         $this->docMgr       = $app['doc_mgr'];
         $this->builders     = $app['builders'];
-        $this->jsonRenderer = $app['renderers']->get('json');
+        $this->arrayRenderer = $app['renderers']->get('array');
 
         //Set the page class for twig views
         $this->viewData['page_class'] = 'workspace';
@@ -131,6 +131,12 @@ class Library extends Controller
         //Get the item from the database (or 404 if it doesn't exist)        
         $doc = $this->docMgr->getDocument($uniqId);
 
+        $dispOptions = array(
+            'availSecTypes'  => Model\DocumentSection::getAllowedTypes(),
+            'biblioMetaDisp' => Model\DocumentBiblioMeta::getDispInfo()            
+        );
+
+
         //If not found, abort
         if ( ! $doc) {
             return $this->abort(404, 'Document Not Found');
@@ -138,12 +144,22 @@ class Library extends Controller
 
         //If JSON, return the document
         if ($this->clientExpects('json')) {
-            return $this->jsonRenderer->render($doc);
+
+            $jsonData = array();
+            $jsonData['document'] = $this->arrayRenderer->render($doc);
+
+            if ($this->getQueryParams('disp_opts')) {
+                $jsonData['dispOptions'] = $dispOptions;
+            }
+
+            return $this->json($jsonData);
         }
         else { //Load the interface
 
             //Add doc to the viewData
-            $this->viewData['doc'] = $doc;
+            $this->viewData['doc']         = $doc;
+            $this->viewData['docUrl']      = $this->getCurrentUrl();
+            $this->viewData['dispOptions'] = $dispOptions;
 
             return $this->twig->render('pages/library-single.html.twig', $this->viewData);
         }
