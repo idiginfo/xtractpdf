@@ -185,7 +185,6 @@ $(document).ready(function() {
 
     //
     // Autosize textareas
-    // @TODO: FIX THIS FOR DELEGATED TEXTAREAS
     //
     $('#right-workform .input-item textarea').autosize();
 
@@ -194,8 +193,8 @@ $(document).ready(function() {
     //
     $('#right-workform').on('paste', '.input-item textarea', function(e) {
         var element = this;
+        $(element).autosize(); //possibly re-apply autosize - doesn't seem to throw any errors
         setTimeout(function () {
-
             var text = $(element).val();
             text = text.replace(/(\r\n|\n|\r)/gm," ");
             text = text.replace(/\s{2,}/g," ");
@@ -237,12 +236,12 @@ function DocumentPersister(docViewModel, docUrl, autoPersist) {
                 },
                 success: function(responseData) {
                     self.lastCleanState = docData;  
-                    console.log("Persisted");
+                    debug("Persisted");
                 }
             });            
         }
         else {
-            console.log("Skipped persist");
+            debug("Skipped persist");
         }
     }
 
