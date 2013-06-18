@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block page_js %}
+<script>
+    doclist_url = '{{ url('library') }}';
+</script>
 <script src='{{ base_url }}/assets/library-index.js'></script>
 {% endblock %}
 
@@ -22,28 +25,29 @@
 
             </p>
 
-            <table class='table'>
+            <table class='table' id='doclist-table'>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Uploaded</th>
-                        <th>Modified</th>
-                        <th>Done?</th>
-                        <th></th>
+                        <th class='doc-id-col'>ID</th>
+                        <th class='doc-title-col'>Title</th>
+                        <th class='doc-uploaded-col'>Uploaded</th>
+                        <th class='doc-modified-col'>Modified</th>
+                        <th class='doc-done-col'>Done?</th>
+                        <th class='actions-col'></th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for doc in doclist %}
+                <tbody data-bind="foreach: docList">
                     <tr>
-                        <td><span title='{{ doc.uniqId }}'>&hellip;{{ doc.uniqId | slice(-7) }}</span></td>
-                        <td>{{ doc.biblioMeta.title ?: 'New Document' }}</td>
-                        <td>{{ doc.created  | date('Y M d H:m') }}</td>
-                        <td>{{ doc.modified | date('Y M d H:m') }}</td>
-                        <td>{{ doc.isComplete ? "<span class='badge badge-success'><i class='icon-check'></i></span>" : "<span class='badge'><i class='icon-check-empty'></i></span>" }}</td>
-                        <td><a href='{{ url('library_single', { uniqId: doc.uniqId }) }}' class='btn'>Edit</a></td> 
+                        <td class='doc-id-col'><span data-bind='text: dispId, attr: { title: id }'></span></td>
+                        <td class='doc-title-col'><span data-bind='text: title'></span></td>
+                        <td class='doc-uploaded-col'><span data-bind='text: uploaded'></span></td>
+                        <td class='doc-modified-col'><span data-bind='text: modified'></span></td>
+                        <td class='doc-done-col'>
+                            <span data-bind='if: isDone' class='badge badge-success'><i class='icon-check'></i></span>
+                            <span data-bind='if: !isDone' class='badge'><i class='icon-check-empty'></i></span>
+                        </td>
+                        <td class='actions-col'><a class='btn' data-bind='attr: { href: url }'>Edit</a></td>
                     </tr>
-                    {% endfor %}
                 </tbody>
             </table>
         </div>

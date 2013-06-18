@@ -115,7 +115,7 @@ function buildDocModel(docUrl)
             var dispOpts = serverData.dispOptions;
 
             //Basic Information
-            docViewModel.docId      = doc.uniqId;
+            docViewModel.docId = doc.uniqId;
             docViewModel.isComplete(doc.isComplete);
 
             //Biblio Meta

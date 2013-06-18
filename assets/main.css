@@ -87,6 +87,14 @@ body.workspace #page_content {
     padding-bottom: 1.5em;
 }
 
+#library-browser #doclist-table .doc-title-col {
+    max-width: 355px;
+}
+
+#library-browser #doclist-table .doc-done-col {
+    text-align: center;
+}
+
 /* LIBRARY BROWSER: Actions in Header ------------------------------ */
 
 #upload-pdf {

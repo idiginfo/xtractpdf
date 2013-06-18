@@ -119,7 +119,15 @@ class Library extends Controller
 
         //Render response
         if ($this->clientExpects('json')) {
-            return $this->json(array('docs' => $this->viewData['doclist']->toArray()));
+
+            //Prepare result
+            $arr = array();
+            foreach($this->viewData['doclist'] as $doc) {
+                $arr[] = $this->arrayRenderer->render($doc);
+            }
+
+            //Send it
+            return $this->json(array('docs' => $arr));
         }
         else { //Do HTML
             return $this->twig->render('pages/library-index.html.twig', $this->viewData);
