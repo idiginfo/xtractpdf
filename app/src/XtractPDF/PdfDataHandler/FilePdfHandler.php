@@ -1,6 +1,7 @@
 <?php
 
 namespace XtractPDF\PdfDataHandler;
+use RuntimeException;
 
 class FilePdfHandler implements PdfDataHandlerInterface
 {
