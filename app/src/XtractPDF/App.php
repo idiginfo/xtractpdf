@@ -97,7 +97,7 @@ class App extends SilexApp
         };
 
         //Add commands
-        $register(new Command\Extract());
+        $register(new Command\DocsClear());
 
         //Run it
         $consoleApp->run();

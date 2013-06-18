@@ -118,14 +118,13 @@ class DocumentMgr
 
     // --------------------------------------------------------------
 
-    public function removeDocument($uniqId, $flush = true)
+    public function removeDocument(DocumentModel $document, $flush = true)
     {
         //Delete the data from the stream
-        $this->dataHandler->del($uniqId);
+        $this->dataHandler->del($document->uniqId);
 
         //Delete the document record
-        $doc = $this->getDocument($uniqId);
-        $this->dm->remove($doc);
+        $this->dm->remove($document);
 
         if ($flush) {
             $this->dm->flush();    
@@ -175,6 +174,16 @@ class DocumentMgr
 
         //Run and return result
         return $qb->getQuery()->execute();
+    }    
+
+    // --------------------------------------------------------------
+
+    /**
+     * Only useful if you performed a bunch of operations without the 'flush' parameter
+     */
+    public function flush()
+    {
+        $this->dm->flush();
     }    
 }
 
