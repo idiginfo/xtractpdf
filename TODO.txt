@@ -1,6 +1,10 @@
 0. Make an optional configuration item for discriminator field in DocumentModel and manager so that different copies of the app can use the
    same collection in the database..
-1. UPLOAD THIS SHTUFF
+1. Audit Log - Should happen at the documentMgr level so that is irrespective of front-end API ** Make a ArrayDiff class in the Helper folder
+   - Timestamp
+   - Diff (Stackoverflow question #3876435)
+   - Action (create, update, delete)
+2. Upload
 2. Rewrite the Library/DocumentAPIHandler and rethink the builders to be more flexible.  buildFromPDFStream() and buildFromPostAPI() and
    a way of indiciating which is supported, ...or... different class interfaces altogether... or just leave it...
 3. Command-line junk:
