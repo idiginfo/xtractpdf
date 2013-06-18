@@ -43,8 +43,8 @@ class About extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/about',            array($this, 'aboutAction'));
-        $routes->get('/about/{page}',     array($this, 'aboutAction'));
+        $routes->get('/about',            array($this, 'aboutAction'))->bind('about');
+        $routes->get('/about/{page}',     array($this, 'aboutAction'))->bind('about_subpage');
     }
 
     // --------------------------------------------------------------

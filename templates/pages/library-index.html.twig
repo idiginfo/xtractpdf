@@ -41,7 +41,10 @@
                 </thead>
                 <tbody data-bind="foreach: docList">
                     <tr data-bind='css: { success: highlight }'>
-                        <td class='doc-id-col'><span data-bind='text: dispId, attr: { title: id }'></span></td>
+                        <td class='doc-id-col'>
+                            <span data-bind='text: dispId, attr: { title: id }'></span>
+                            <span data-bind='if: highlight' class='badge badge-success'>New</span>
+                        </td>
                         <td class='doc-title-col'><span data-bind='text: title'></span></td>
                         <td class='doc-uploaded-col'><span data-bind='text: uploaded'></span></td>
                         <td class='doc-modified-col'><span data-bind='text: modified'></span></td>

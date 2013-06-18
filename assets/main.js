@@ -15,7 +15,7 @@ $(document).ready(function() {
 //
 function setNotice(message, alertType)
 {
-    var noticeClass = (alertType === undefined) ? 'alert-' + alertType : 'alert-info';
+    var noticeClass = (typeof alertType === 'undefined') ? 'alert-' + alertType : 'alert-info';
 
     if ($('#notices').length > 0) {
         $('#notices').append('<div class="alert alert-block '+ noticeClass +'">'+ message + '<button type="button" class="close" data-dismiss="alert">×</button></div>');
