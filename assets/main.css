@@ -80,6 +80,13 @@ body.workspace #page_content {
     color: #000;
 }
 
+/* LIBRARY BROWSER: Layout ----------------------------------------- */
+
+#library-browser {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+}
+
 /* SINGLE DOC EDITOR: Layout --------------------------------------- */
 
 #single-doc-editor {

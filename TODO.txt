@@ -14,4 +14,7 @@
          docs:delete [ids,ids,etc]
          docs:clear
 8. Write JATS exporter
-9. In JS, if we get continous errors from the server, don't try repeating the request; figure something else out todo, but definitely alert the user.
+
+
+
+1. 'isComplete' button CSS not upadting when observable changes...

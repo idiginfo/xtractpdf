@@ -90,7 +90,7 @@ function DocumentViewModel(docUrl) {
 
     //Mark document complete
     self.toggleMarkedComplete = function() {
-        self.isComplete = (self.isComplete == 1) ? 0 : 1;
+        this.isComplete(this.isComplete() == true ? false: true);
     }
 }
 
@@ -116,7 +116,7 @@ function buildDocModel(docUrl)
 
             //Basic Information
             docViewModel.docId      = doc.uniqId;
-            docViewModel.isComplete = doc.isComplete;
+            docViewModel.isComplete(doc.isComplete);
 
             //Biblio Meta
             $.each(doc.biblioMeta, function (k, v) {
@@ -177,6 +177,11 @@ $(document).ready(function() {
 
     //Start the persist timer
     var dp = new DocumentPersister(docViewModel, docUrl, true);    
+
+    //Manual save button
+    $('#save-button').click(function() {
+        dp.updateDocument(ko.toJSON(docViewModel), true);
+    });
 });
 
 // ------------------------------------------------------------------
@@ -200,6 +205,14 @@ function DocumentPersister(docViewModel, docUrl, autoPersist) {
                 type:     "POST",
                 data:     { document: docData },
                 dataType: 'json', 
+                beforeSend: function() {
+                    $('#save-button').attr('disabled', 'disabled');
+                    $('#save-button').find('i').removeClass('').addClass('icon-spinner icon-spin');
+                },
+                complete: function() {
+                    $('#save-button').removeAttr('disabled');
+                    $('#save-button').find('i').removeClass('icon-spinner icon-spin').addClass('icon-save');
+                },
                 success: function(responseData) {
                     self.lastCleanState = docData;  
                     console.log("Persisted");
