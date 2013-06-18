@@ -116,7 +116,7 @@ class DocumentBiblioMeta extends BaseModel
      * @ODM\Collection
      *
      * \@dispName        Keywords
-     * \@dispPlaceholder e.g. comma, or; semicolon, separated, list; of, keywords
+     * \@dispPlaceholder e.g. comma, separated, list, of, keywords
      */
     protected $keywords;
 
@@ -124,6 +124,7 @@ class DocumentBiblioMeta extends BaseModel
 
     public function __construct()
     {
+        $this->title    = '';
         $this->keywords = array();
     }
 

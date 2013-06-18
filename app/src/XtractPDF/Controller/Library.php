@@ -2,6 +2,7 @@
 
 namespace XtractPDF\Controller;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Silex\Application;
 use Silex\ControllerCollection;
 use XtractPDF\Core\Controller;
@@ -38,6 +39,11 @@ class Library extends Controller
     private $arrayRenderer;
 
     /**
+     * @var Symfony\Component\HttpFoundation\Request
+     */
+    private $request;
+
+    /**
      * @var array
      */
     private $viewData;
@@ -66,12 +72,12 @@ class Library extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/',                 array($this, 'indexAction'));
-        $routes->get('/library',          array($this, 'libraryAction'));
-        $routes->get('/library/{uniqId}', array($this, 'singleAction'));
+        $routes->get('/',                 array($this, 'indexAction'))->bind('front');
+        $routes->get('/library',          array($this, 'indexAction'))->bind('library');
+        $routes->get('/library/{uniqId}', array($this, 'singleAction'))->bind('library_single');
         
-        $routes->post('/library',          array($this, 'uploadAction'));
-        $routes->post('/library/{uniqId}', array($this, 'updateAction'));
+        $routes->post('/library',          array($this, 'uploadAction'))->bind('library_upload');
+        $routes->post('/library/{uniqId}', array($this, 'updateAction'))->bind('library_update');
     }
 
     // --------------------------------------------------------------
@@ -89,6 +95,7 @@ class Library extends Controller
         $this->builders      = $app['builders'];
         $this->arrayRenderer = $app['renderers']->get('array');
         $this->apiHandler    = $app['api_builder'];
+        $this->request       = $app['request'];
 
         //Set the page class for twig views
         $this->viewData['page_class'] = 'workspace';
@@ -98,30 +105,24 @@ class Library extends Controller
 
     /**
      * GET /
+     * GET /library
      */
     public function indexAction()
     {
-        return $this->twig->render('pages/library.html.twig', $this->viewData);
-    }
+        //Determine limit, offset, search params
+        $limit  = $this->getQueryParams('limit')  ?: null;
+        $offset = $this->getQueryParams('offset') ?: 0;
+        $query  = $this->getQueryParams('query')  ?: null;
 
-    // --------------------------------------------------------------
+        //Get list of items from the docMgr
+        $this->viewData['doclist'] = $this->docMgr->listDocuments($limit, $query, $offset);
 
-    /**
-     * GET /library
-     */
-    public function libraryAction()
-    {
+        //Render response
         if ($this->clientExpects('json')) {
-
-            //Determine limit, offset, search params
-
-            //Get list of items from the docMgr
-
-            //Return it as JSON
-
+            return $this->json(array('docs' => $this->viewData['doclist']->toArray()));
         }
         else { //Do HTML
-            return $this->twig->render('pages/library.html.twig', $this->viewData);
+            return $this->twig->render('pages/library-index.html.twig', $this->viewData);
         }
     }
 
@@ -179,19 +180,42 @@ class Library extends Controller
     public function uploadAction()
     {
         //Upload the document
+        $fileInfo = $this->request->files->get('pdffile');
 
-        //Persist it with the persister
+        //Validation - Ensure file was uploaded
+        if ( ! $fileInfo instanceOf UploadedFile) {
+            return $this->json(array('msg' => 'No file uploaded!'), 400);
+        }
 
-        //Get the document id
-        $uniqId = 'whatever_the_uploaded_and_saved_doc_was';
+        //Validation - ensure it is a PDF file
+        if ($fileInfo->getMimeType() != 'application/pdf') {
+            return $this->json(array('msg' => 'Only PDF files allowed'), 400);
+        }
+
+        //Get the MD5 to use as a unique ID
+        $md5 = md5_file($fileInfo->getRealPath());
+
+        //Create the document (returns false if already exists)
+        if ($doc = $this->docMgr->createDocument($md5, $fileInfo->getRealPath())) {
+            $isNew = true;
+        }
+        else {
+            $doc   = $this->docMgr->getDocument($md5);
+            $isNew = false;
+        }
+
+        //@TODO: PDFX AUTO-EXTRACTION HERE.....
 
         //Return a response
         if ($this->clientExpects('json')) {
-            //Return JSON notification that everything went well and URL pointer to the document
-
+            return $this->json(array(
+                'doc' => $doc,
+                'url' => $this->getSiteUrl('single/' . $doc->uniqId),
+                'new' => $isNew
+            ), $isNew ? 201 : 200);
         }
         else { //Do HTML redirect
-            return $this->redirect('/single/' . $uniqId);
+            return $this->redirect('/single/' . $doc->uniqId);
         }        
     }
 

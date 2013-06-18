@@ -222,7 +222,6 @@ function DocumentPersister(docViewModel, docUrl, autoPersist) {
         else {
             console.log("Skipped persist");
         }
-
     }
 
     self.startTimer = function() {

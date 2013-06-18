@@ -99,6 +99,8 @@ class Uploader extends Controller
         //Create the document (returns false if already exists)
         $doc = $this->docMgr->createDocument($md5, $fileInfo->getRealPath());
         
+        //Do the extraction
+
         //Setup Output
         $output = array(
             'id'       => $md5,

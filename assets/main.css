@@ -87,6 +87,16 @@ body.workspace #page_content {
     padding-bottom: 1.5em;
 }
 
+/* LIBRARY BROWSER: Actions in Header ------------------------------ */
+
+#upload-pdf {
+    margin-top: 6px;
+}
+
+#upload-pdf input[type=file] {
+    display: none;
+}
+
 /* SINGLE DOC EDITOR: Layout --------------------------------------- */
 
 #single-doc-editor {

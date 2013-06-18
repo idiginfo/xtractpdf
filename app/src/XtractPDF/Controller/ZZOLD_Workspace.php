@@ -4,7 +4,7 @@ namespace XtractPDF\Controller;
 
 use Silex\Application;
 use Silex\ControllerCollection;
-use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use XtractPDF\Core\Controller;
 use XtractPDF\Model;
 

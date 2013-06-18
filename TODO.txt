@@ -1,7 +1,6 @@
 1. Currently working on refactoring builder interface so that ::build method doesn't always *require* a stream (think about this carefully)
 4. Rewrite upload method in library controller
 5. Write library front page
-6. Write unit test that ensure that the same exact PDF uploaded twice doesn't generate two documents in the DB
 7. Command-line junk:
    - Rename the extract command so that it makes more sense ('build') and option for what builder to use
    - Commands for managing the collection: dump (dumps using a renderer), search, list, etc.
@@ -14,7 +13,3 @@
          docs:delete [ids,ids,etc]
          docs:clear
 8. Write JATS exporter
-
-
-
-1. 'isComplete' button CSS not upadting when observable changes...

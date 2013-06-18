@@ -5,6 +5,7 @@ namespace XtractPDF\Library;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use XtractPDF\Model\Document as DocumentModel;
 use XtractPDF\PdfDataHandler\PdfDataHandlerInterface;
+use MongoRegex;
 
 /**
  * Manager class for interacting with Document Models (persisting, fetching, etc)
@@ -148,23 +149,31 @@ class DocumentMgr
     /**
      * List Documents
      *
-     * @param int    $limit
-     * @param string $sortField
-     * @param int    $sortDir
+     * @param int    $limit   Optional limit
+     * @param string $query   Optional query string
+     * @param int    $offset  Optional offset
      * @return Doctrine\ODM\MongoDB\Cursor
      */
-    public function listDocuments($limit = null, $sortField = 'created', $sortDir = self::DESC)
+    public function listDocuments($limit = null, $query = null, $offset = null)
     {
-        //Set sort
-        $sort = ($sortField)
-            ? array($sortField, $sortDir)
-            : array();
+        //QB
+        $qb = $this->dm->createQueryBuilder(self::DOC_CLASSNAME);
 
-        $qb = $this->dm->createQueryBuilder(self::DOC_CLASSNAME)->sort($sortField, $sortDir);
+        //Sort
+        $qb->sort('isComplete', self::ASC);
+        $qb->sort('modified', self::DESC);
+
+        //Limit
         if ($limit) {
             $qb->limit((int) $limit);
         }
 
+        //Search Query
+        if ($query) {
+            $qb->field('title')->equals(new MongoRegex("/.*(" . $query . ").*/i"));
+        }
+
+        //Run and return result
         return $qb->getQuery()->execute();
     }    
 }

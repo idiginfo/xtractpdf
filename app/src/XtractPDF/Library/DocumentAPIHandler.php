@@ -33,7 +33,7 @@ class DocumentAPIHandler
         foreach($postData->biblioMeta as $bm) {
 
             if ($bm->name == 'keywords' && is_string($bm->value)) {
-                $bm->value = array_filter(array_map('trim', explode(';', $bm->value)));
+                $bm->value = array_filter(array_map('trim', explode(',', $bm->value)));
             }
 
             $doc->setMeta($bm->name, $bm->value);

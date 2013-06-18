@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block page_js %}
+<script src='{{ base_url }}/assets/library-index.js'></script>
+{% endblock %}
+
+
+{% block page_topbar_content %}
+    <form id='upload-pdf' method='post' enctype='multipart/form-data' action='{{ url('library_upload') }}'>
+        <input type='file' name='pdffile' />
+        <button type='button' id='upload-pdf-submit' class='btn btn-primary'><i class='icon-upload-alt'></i> <span>Upload PDF</span></button>
+    </form>
+{% endblock %}
+
+{% block page_content %}
+<div class='container'>
+    <div class='row'>
+        <div class='span12' id='library-browser'>
+            <h2>Documents</h2>
+            <p class='pull-right'>
+                <span class="badge badge-inverse">{{ doclist|length }}</span> Documents
+
+            </p>
+
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Uploaded</th>
+                        <th>Modified</th>
+                        <th>Done?</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in doclist %}
+                    <tr>
+                        <td><span title='{{ doc.uniqId }}'>&hellip;{{ doc.uniqId | slice(-7) }}</span></td>
+                        <td>{{ doc.biblioMeta.title ?: 'New Document' }}</td>
+                        <td>{{ doc.created  | date('Y M d H:m') }}</td>
+                        <td>{{ doc.modified | date('Y M d H:m') }}</td>
+                        <td>{{ doc.isComplete ? "<span class='badge badge-success'><i class='icon-check'></i></span>" : "<span class='badge'><i class='icon-check-empty'></i></span>" }}</td>
+                        <td><a href='{{ url('library_single', { uniqId: doc.uniqId }) }}' class='btn'>Edit</a></td> 
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
