@@ -182,6 +182,28 @@ $(document).ready(function() {
     $('#save-button').click(function() {
         dp.updateDocument(ko.toJSON(docViewModel), true);
     });
+
+    //
+    // Autosize textareas
+    // @TODO: FIX THIS FOR DELEGATED TEXTAREAS
+    //
+    $('#right-workform .input-item textarea').autosize();
+
+    //
+    // Handle Paste Events
+    //
+    $('#right-workform').on('paste', '.input-item textarea', function(e) {
+        var element = this;
+        setTimeout(function () {
+
+            var text = $(element).val();
+            text = text.replace(/(\r\n|\n|\r)/gm," ");
+            text = text.replace(/\s{2,}/g," ");
+            $(element).val(text).trigger('autosize');
+        }, 100);
+
+    });    
+
 });
 
 // ------------------------------------------------------------------
