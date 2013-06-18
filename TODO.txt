@@ -1,15 +1,14 @@
-1. Currently working on refactoring builder interface so that ::build method doesn't always *require* a stream (think about this carefully)
-4. Rewrite upload method in library controller
-5. Write library front page
-7. Command-line junk:
-   - Rename the extract command so that it makes more sense ('build') and option for what builder to use
-   - Commands for managing the collection: dump (dumps using a renderer), search, list, etc.
+0. UPLOAD THIS SHTUFF
+1. Rewrite the Library/DocumentAPIHandler and rethink the builders to be more flexible.  buildFromPDFStream() and buildFromPostAPI() and
+   a way of indiciating which is supported, ...or... different class interfaces altogether... or just leave it...
+2. Command-line junk:
+   - Commands for managing the collection:
    - In the end, we should have:
          doc:build [builder] [params]
          doc:render [id]
          doc:delete [id]
-         docs:find   -query {querystring}
+         docs:find   -query {querystring} -order {order} -l {limit}
          docs:list   -order {order} -l {limit}
          docs:delete [ids,ids,etc]
          DONE - docs:clear 
-8. Write JATS exporter
+3. Write JATS exporter
