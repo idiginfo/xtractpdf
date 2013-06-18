@@ -218,12 +218,12 @@ class Library extends Controller
         if ($this->clientExpects('json')) {
             return $this->json(array(
                 'doc' => $this->arrayRenderer->render($doc),
-                'url' => $this->getSiteUrl('single/' . $doc->uniqId),
+                'url' => $this->getSiteUrl('library/' . $doc->uniqId),
                 'new' => $isNew
             ), $isNew ? 201 : 200);
         }
         else { //Do HTML redirect
-            return $this->redirect('/single/' . $doc->uniqId);
+            return $this->redirect('/library/' . $doc->uniqId);
         }        
     }
 

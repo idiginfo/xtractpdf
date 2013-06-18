@@ -73,7 +73,7 @@ $(document).ready(function() {
     //
     // File upload button
     //
-    $('#upload-pdf button').click(function(e) {
+    $('.upload-pdf-submit').click(function(e) {
         e.preventDefault();
         $('#upload-pdf input[name="pdffile"]').click();
     });
@@ -92,9 +92,9 @@ $(document).ready(function() {
     $('#upload-pdf').ajaxForm({
         dataType:     'json',
         beforeSubmit: function(arr, $form, options) {
-            $('#upload-pdf button').attr('disabled', 'disabled').removeClass('btn-primary').addClass('btn-danger');
-            $('#upload-pdf button span').text("Processing (this will take several moments)");
-            $('#upload-pdf button i').removeClass('icon-upload-alt').addClass('icon-spinner icon-spin');
+            $('.upload-pdf-submit').attr('disabled', 'disabled').removeClass('btn-primary').addClass('btn-danger');
+            $('.upload-pdf-submit span').text("Processing (this will take several moments)");
+            $('.upload-pdf-submit i').removeClass('icon-upload-alt').addClass('icon-spinner icon-spin');
         },
         success: function(serverData, statusText, xhr, jq) {
         
@@ -111,9 +111,9 @@ $(document).ready(function() {
             console.log(jqXHR);
         },
         complete: function() {
-            $('#upload-pdf button').removeAttr('disabled').removeClass('btn-danger').addClass('btn-primary');
-            $('#upload-pdf button span').text("Upload PDF");
-            $('#upload-pdf button i').removeClass('icon-spinner icon-spin').addClass('icon-upload-alt');
+            $('.upload-pdf-submit').removeAttr('disabled').removeClass('btn-danger').addClass('btn-primary');
+            $('.upload-pdf-submit span').text("Upload PDF");
+            $('.upload-pdf-submit i').removeClass('icon-spinner icon-spin').addClass('icon-upload-alt');
         }
     });
 });
