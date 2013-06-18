@@ -1,7 +1,9 @@
-0. UPLOAD THIS SHTUFF
-1. Rewrite the Library/DocumentAPIHandler and rethink the builders to be more flexible.  buildFromPDFStream() and buildFromPostAPI() and
+0. Make an optional configuration item for discriminator field in DocumentModel and manager so that different copies of the app can use the
+   same collection in the database..
+1. UPLOAD THIS SHTUFF
+2. Rewrite the Library/DocumentAPIHandler and rethink the builders to be more flexible.  buildFromPDFStream() and buildFromPostAPI() and
    a way of indiciating which is supported, ...or... different class interfaces altogether... or just leave it...
-2. Command-line junk:
+3. Command-line junk:
    - Commands for managing the collection:
    - In the end, we should have:
          doc:build [builder] [params]
@@ -11,4 +13,4 @@
          docs:list   -order {order} -l {limit}
          docs:delete [ids,ids,etc]
          DONE - docs:clear 
-3. Write JATS exporter
+4. Write JATS exporter
