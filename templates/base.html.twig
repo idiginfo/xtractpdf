@@ -60,6 +60,7 @@
             <script type='text/javascript' src='{{ base_url }}/assets/vendor/prettify/prettify.js'></script>
 
             {# Local Application Scripts #}
+            <script> DEBUG = {{ debug_mode ? 'true' : 'false' }}</script>
             <script type='text/javascript' src='{{ base_url }}/assets/main.js'></script>
         {% endblock %}
         

@@ -53,9 +53,13 @@ class TwigServiceProvider extends SilexTwigServiceProvider implements ServicePro
             $twig->addGlobal('site_url',    $appUrl);
             $twig->addGlobal('current_url', $currentUrl);     
 
-            //debug method
+            //debug mode?
             if ($app['debug'] == true) {
                 $twig->addExtension(new Twig_Extension_Debug());
+                $twig->addGlobal('debug_mode', true);
+            }
+            else {
+                $twig->addGlobal('debug_mode', false);
             }
 
             //Is deployed?

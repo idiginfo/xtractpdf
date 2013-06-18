@@ -11,5 +11,5 @@
          docs:find   -query {querystring}
          docs:list   -order {order} -l {limit}
          docs:delete [ids,ids,etc]
-         docs:clear
+         DONE - docs:clear 
 8. Write JATS exporter

@@ -19,6 +19,9 @@
 <div class='container'>
     <div class='row'>
         <div class='span12' id='library-browser'>
+
+            <div id='notices'></div>
+
             <h2>Documents</h2>
             <p class='pull-right'>
                 <span class="badge badge-inverse">{{ doclist|length }}</span> Documents
@@ -37,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: docList">
-                    <tr>
+                    <tr data-bind='css: { success: highlight }'>
                         <td class='doc-id-col'><span data-bind='text: dispId, attr: { title: id }'></span></td>
                         <td class='doc-title-col'><span data-bind='text: title'></span></td>
                         <td class='doc-uploaded-col'><span data-bind='text: uploaded'></span></td>

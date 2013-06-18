@@ -2,15 +2,15 @@
 //
 // A document item for display in the list
 //
-function DocumentItem(data, docUrlBase, dynamicallyAdded) {
+function DocumentItem(data, docUrl, highlight) {
 
-    this.id       = data.uniqId;
-    this.title    = (data.biblioMeta.title != '') ? data.biblioMeta.title : 'Untitled Document';
-    this.uploaded = data.created.date;
-    this.modified = data.modified.date;
-    this.isDone   = data.isComplete;
-    this.url      = docUrlBase + '/' + data.uniqId;
-    this.dynamic  = (dynamicallyAdded !== undefined) ? dynamicallyAdded : false;
+    this.id        = data.uniqId;
+    this.title     = (data.biblioMeta.title != '') ? data.biblioMeta.title : 'Untitled Document';
+    this.uploaded  = data.created.date;
+    this.modified  = data.modified.date;
+    this.isDone    = data.isComplete;
+    this.url       = docUrl;
+    this.highlight = (highlight !== undefined) ? highlight : false;
 
     this.dispId = ko.computed(function() {
         return (this.id.length > 7) ? "\u2026" + this.id.substr(-7) : this.id;
@@ -46,7 +46,7 @@ function buildDocListModel(docListUrl) {
             docListViewModel.totalDocCount(serverData.docs.length);
 
             $.each(serverData.docs, function(k, v) {
-                docListViewModel.docList.push(new DocumentItem(v, docListUrl));
+                docListViewModel.docList.push(new DocumentItem(v, docListUrl + '/' + v.uniqId));
             });
         }    
     });
@@ -68,6 +68,8 @@ $(document).ready(function() {
     //Apply bindings
     ko.applyBindings(docListViewModel);
 
+    // --------------------------------------------------------------
+
     //
     // File upload button
     //
@@ -82,6 +84,8 @@ $(document).ready(function() {
         }                
     });
 
+    // --------------------------------------------------------------
+
     //
     // File upload submit
     //
@@ -92,14 +96,16 @@ $(document).ready(function() {
             $('#upload-pdf button span').text("Processing (this will take several moments)");
             $('#upload-pdf button i').removeClass('icon-upload-alt').addClass('icon-spinner icon-spin');
         },
-        success: function(responseText, statusText, xhr, jq) {
+        success: function(serverData, statusText, xhr, jq) {
         
             //Add the item to the table as new item and increment total document count
-            if (responseText.new == true) {
+            if (serverData.new == true) {
+                docListViewModel.docList.unshift(new DocumentItem(serverData.doc, serverData.url, true));
+                setNotice("Uploaded the document", 'success');
             }
-            else { //Bring the item to the top of the table and keep document count the same
+            else { //set notice that document exists, and provide a link to it.
+                setNotice("That document already exists.  <a href='" + serverData.url + "' title='Edit the Document'></a>");
             }
-
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(jqXHR);

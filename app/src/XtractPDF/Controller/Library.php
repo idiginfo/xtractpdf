@@ -217,7 +217,7 @@ class Library extends Controller
         //Return a response
         if ($this->clientExpects('json')) {
             return $this->json(array(
-                'doc' => $doc,
+                'doc' => $this->arrayRenderer->render($doc),
                 'url' => $this->getSiteUrl('single/' . $doc->uniqId),
                 'new' => $isNew
             ), $isNew ? 201 : 200);
