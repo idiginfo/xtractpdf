@@ -31,34 +31,47 @@ class DocumentAPIHandler
 
         //Set biblio meta
         foreach($postData->biblioMeta as $bm) {
+
+            if ($bm->name == 'keywords' && is_string($bm->value)) {
+                $bm->value = array_filter(array_map('trim', explode(';', $bm->value)));
+            }
+
             $doc->setMeta($bm->name, $bm->value);
         }
 
         //Set authors
         $authorList = array();
         foreach($postData->authors as $author) {
-            $authorList[] = new Model\DocumentAuthor($author->name);
+            if (isset($author->name)) {
+                $authorList[] = new Model\DocumentAuthor($author->name);
+            }
         }
         $doc->setAuthors($authorList);
 
         //Set Abstract
         $sections = array();
         foreach($postData->abstract as $sec) {
-            $sections[] = new Model\DocumentSection($sec->content, $sec->type);
+            if (isset($sec->content)) {
+                $sections[] = new Model\DocumentSection($sec->content, $sec->type);
+            }
         }
         $doc->setAbstract(new Model\DocumentAbstract($sections));
 
         //Set Content
         $sections = array();
         foreach($postData->content as $sec) {
-            $sections[] = new Model\DocumentSection($sec->content, $sec->type);
+            if (isset($sec->content)) {
+                $sections[] = new Model\DocumentSection($sec->content, $sec->type);
+            }
         }
         $doc->setContent(new Model\DocumentContent($sections));
 
         //Set Citations
         $citationList = array();
         foreach($postData->citations as $cite) {
-            $citationList[] = new Model\DocumentCitation($cite->content);
+            if (isset($cite->content)) {
+                $citationList[] = new Model\DocumentCitation($cite->content);
+            }
         }
         $doc->setCitations($citationList);
 
