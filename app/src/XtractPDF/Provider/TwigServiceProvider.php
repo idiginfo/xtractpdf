@@ -62,10 +62,7 @@ class TwigServiceProvider extends SilexTwigServiceProvider implements ServicePro
                 $twig->addGlobal('debug_mode', false);
             }
 
-            //Is deployed?
-            $isDeployed = (boolean) $app['config']->deployed;
-            $twig->addGlobal('deployed', $isDeployed);
-
+            //Return it
             return $twig;
         }));           
     }
