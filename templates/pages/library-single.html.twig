@@ -61,7 +61,7 @@
             <ul class='form-rows' data-bind='sortable: {data: abstract, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>
-                        <select data-bind="value: type, options: $root.availSecTypes, optionsValue: 'slug', optionsText: 'name'"></select>
+                        <select data-bind="options: $root.availSecTypes, optionsValue: 'type', optionsText: 'dispName', value: type"></select>
                     </span>
                     <span class='input-item'>
                         <textarea data-bind='value: content' placeholder='Header or Section Content'></textarea>
@@ -81,7 +81,7 @@
             <ul class='form-rows' data-bind='sortable: {data: content, handle: ".icon-move"}'>
                 <li class='form-row'>
                     <span class='input-label'>
-                        <select data-bind="value: type, options: $root.availSecTypes, optionsValue: 'slug', optionsText: 'name'"></select>
+                        <select data-bind="options: $root.availSecTypes, optionsValue: 'type', optionsText: 'dispName', value: type"></select>
                     </span>
                     <span class='input-item'>
                         <textarea data-bind='value: content' placeholder='Header or Section Content'></textarea>

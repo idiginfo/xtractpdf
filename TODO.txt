@@ -1,6 +1,4 @@
 1. Currently working on refactoring builder interface so that ::build method doesn't always *require* a stream (think about this carefully)
-2. Finish POST handler for updating documents
-3. Figure out why the documentViewModel thing sends a million POST requests even once the document has been posted succesfully
 4. Rewrite upload method in library controller
 5. Write library front page
 6. Write unit test that ensure that the same exact PDF uploaded twice doesn't generate two documents in the DB
@@ -16,3 +14,4 @@
          docs:delete [ids,ids,etc]
          docs:clear
 8. Write JATS exporter
+9. In JS, if we get continous errors from the server, don't try repeating the request; figure something else out todo, but definitely alert the user.

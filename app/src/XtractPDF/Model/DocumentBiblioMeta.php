@@ -197,7 +197,7 @@ class DocumentBiblioMeta extends BaseModel
                     throw new InvalidArgumentException("Use " . get_called_class() . "::setAuthors() or " . get_called_class() . "::addAuthor() to set authors");
                 break;
                 case 'keywords':
-                    if ( ! is_array($keywords)) {
+                    if ( ! is_array($val)) {
                         throw new InvalidArgumentException( sprintf("%s::keywords must be an array!", get_called_class() ));
                     }
                 break;

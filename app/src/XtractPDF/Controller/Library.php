@@ -28,6 +28,11 @@ class Library extends Controller
     private $builders;
 
     /**
+     * @var XtractPDF\Library\DocumentAPIHandler
+     */
+    private $apiHandler;
+
+    /**
      * @var XtractPDF\DocRenderer\ArrayRenderer
      */
     private $arrayRenderer;
@@ -79,10 +84,11 @@ class Library extends Controller
     protected function init(Application $app)
     {        
         //Load dependencies
-        $this->twig         = $app['twig'];        
-        $this->docMgr       = $app['doc_mgr'];
-        $this->builders     = $app['builders'];
+        $this->twig          = $app['twig'];        
+        $this->docMgr        = $app['doc_mgr'];
+        $this->builders      = $app['builders'];
         $this->arrayRenderer = $app['renderers']->get('array');
+        $this->apiHandler    = $app['api_builder'];
 
         //Set the page class for twig views
         $this->viewData['page_class'] = 'workspace';
@@ -193,6 +199,8 @@ class Library extends Controller
 
     /**
      * POST /library/{uniqId}
+     *
+     * @param $uniqId  The identifier for a document object
      */
     public function updateAction($uniqId)
     {
@@ -204,17 +212,26 @@ class Library extends Controller
             return $this->abort(404, 'Document Not Found');
         }
 
-        //LEFT OFF HERE LEFT OFF HERE - HANDLE REQUEST CORRECTLY
+        //Check for expectd POST data
+        $postDoc = $this->getPostParams('document');
 
-        // //Build the document from the JSON string
-        // $doc = $this->builders->get('post-request')->build('php://input', $doc);
+        if ( ! $postDoc) {
+            return $this->abort(400, 'Missing required request parameters');
+        }
+
+        //Set document data from POST request
+        $doc = $this->apiHandler->build($postDoc, $doc);
+
+        //Persist document
+        $this->docMgr->updateDocument($doc);
 
         //Return a response
         if ($this->clientExpects('json')) {
+
             //Return JSON notification that everything went well and URL pointer to the document
             return $this->json(array(
                 'message' => 'Updated Document',
-                'docUrl'  => $this->currentUrl()
+                'docUrl'  => $this->getCurrentUrl()
             ));
         }
         else { //Do HTML redirect

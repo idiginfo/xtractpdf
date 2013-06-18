@@ -103,46 +103,53 @@ function buildDocModel(docUrl)
 {
     var docViewModel = new DocumentViewModel();
 
-    $.getJSON(docUrl, { disp_opts: 'true' }, function(serverData) {
-        
-        var doc      = serverData.document;
-        var dispOpts = serverData.dispOptions;
+    $.ajax({
+        url:      docUrl,
+        type:     "get",
+        data:     { disp_opts: 'true'},
+        async:    false,  //IMPORTANT!! Per: http://goo.gl/Xv6VY
+        dataType: "json",
+        success: function(serverData) {
+    
+            var doc      = serverData.document;
+            var dispOpts = serverData.dispOptions;
 
-        //Basic Information
-        docViewModel.docId      = doc.uniqId;
-        docViewModel.isComplete = doc.isComplete;
+            //Basic Information
+            docViewModel.docId      = doc.uniqId;
+            docViewModel.isComplete = doc.isComplete;
 
-        //Biblio Meta
-        $.each(doc.biblioMeta, function (k, v) {
-            var dispName = dispOpts.biblioMetaDisp[k].dispName;
-            var dispPH   = dispOpts.biblioMetaDisp[k].dispPlaceholder;
-            docViewModel.biblioMeta.push(new BiblioMetaItem(k, v, dispName, dispPH));
-        });
+            //Biblio Meta
+            $.each(doc.biblioMeta, function (k, v) {
+                var dispName = dispOpts.biblioMetaDisp[k].dispName;
+                var dispPH   = dispOpts.biblioMetaDisp[k].dispPlaceholder;
+                docViewModel.biblioMeta.push(new BiblioMetaItem(k, v, dispName, dispPH));
+            });
 
-        //Authors
-        $.each(doc.authors, function(k, v) {
-            docViewModel.authors.push(v);
-        });
+            //Authors
+            $.each(doc.authors, function(k, v) {
+                docViewModel.authors.push(v);
+            });
 
-        //Abstract
-        $.each(doc.abstract.sections, function(k, v) {
-            docViewModel.abstract.push(new ContentItem(v));
-        });
+            //Abstract
+            $.each(doc.abstract.sections, function(k, v) {
+                docViewModel.abstract.push(new ContentItem(v));
+            });
 
-        //Content
-        $.each(doc.content.sections, function(k, v) {
-            docViewModel.content.push(new ContentItem(v));
-        });
+            //Content
+            $.each(doc.content.sections, function(k, v) {
+                docViewModel.content.push(new ContentItem(v));
+            });
 
-        //Citations
-        $.each(doc.citations, function(k, v) {
-            docViewModel.citations.push(new ContentItem(v));
-        });
+            //Citations
+            $.each(doc.citations, function(k, v) {
+                docViewModel.citations.push(new ContentItem(v));
+            });
 
-        //Content Types
-        $.each(dispOpts.availSecTypes, function(k, v) {
-            docViewModel.availSecTypes.push({ slug: k, name: v });
-        });
+            //Content Types
+            $.each(dispOpts.availSecTypes, function(k, v) {
+                docViewModel.availSecTypes.push({ type: k, dispName: v });
+            });
+        }
     });
 
     return docViewModel;

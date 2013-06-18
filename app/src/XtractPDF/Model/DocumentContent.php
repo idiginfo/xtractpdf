@@ -34,7 +34,7 @@ class DocumentContent extends BaseModel
 
         //Add everything
         foreach($sections as $sec) {
-            $this->addSection($section);
+            $this->addSection($sec);
         }
     }
 

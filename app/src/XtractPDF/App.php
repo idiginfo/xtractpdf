@@ -180,9 +180,12 @@ class App extends SilexApp
         $app['builders'] = $app->share(function() use ($app) {
             return new Library\BuilderBag(array(
                 new DocBuilder\PDFX(new Guzzle\Service\Client()),
-                new DocBuilder\PostRequest(),
                 new DocBuilder\Blank()
             ));
+        });
+
+        $app['api_builder'] = $app->share(function() use ($app) {
+            return new Library\DocumentAPIHandler();
         });
 
         //Document Renderers

@@ -75,9 +75,9 @@ class DocumentSection extends BaseModel
     {
         if ( ! isset(self::$_allowedTypes[$type])) {
             throw new InvalidArgumentException(sprintf(
-                "%s is invalid type; allowed types are %s"),
+                "%s is invalid type; allowed types are %s",
                 $type,
-                implode(', ', array_keys(self::$_allowedTypes)
+                implode(', ', array_keys(self::$_allowedTypes))
             ));
         }
 

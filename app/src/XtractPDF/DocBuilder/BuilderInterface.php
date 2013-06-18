@@ -26,7 +26,6 @@ interface BuilderInterface
     static function getDescription();
 
     // --------------------------------------------------------------
-    
 
     /**
      * Build a model from the raw PDF data
