@@ -222,7 +222,7 @@ class DocumentMgr
     public function streamPdf($uniqId)
     {  
         $dataHandler =& $this->dataHandler;
-        
+
         $streamer = function() use ($uniqId, $dataHandler) {
             $dataHandler->stream($uniqId);
         };
@@ -245,9 +245,10 @@ class DocumentMgr
         //QB
         $qb = $this->dm->createQueryBuilder(self::DOC_CLASSNAME);
 
-        //Sort
-        $qb->sort('isComplete', self::ASC);
-        $qb->sort('modified', self::DESC);
+        //@TODO: Re-enable the dynamic sort - Disabled per Kelsie
+        // $qb->sort('isComplete', self::ASC);
+        // $qb->sort('modified', self::DESC);
+        $qb->sort('uniqId', self::ASC);
 
         //Limit
         if ($limit) {
