@@ -1,3 +1,4 @@
 app/vendor
 uploads/*.pdf
+logs/*.log
 config/config.yml
