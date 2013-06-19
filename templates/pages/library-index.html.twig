@@ -60,7 +60,8 @@
                 </tbody>
             </table>
 
-            <div class="hero-unit" data-bind='if: docList().length == 0'>
+            <div data-bind='if: docList().length == 0'>
+            <div class="hero-unit">
                 <p>There are no documents in the system yet.</p>
                 <p>
                     <button class="upload-pdf-submit btn btn-primary btn-large">
@@ -68,6 +69,7 @@
                         <span>Upload a PDF</span>
                     </button>
                 </p>
+            </div>
             </div>
         </div>
     </div>

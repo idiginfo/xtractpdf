@@ -96,9 +96,6 @@ class Library extends Controller
         $this->arrayRenderer = $app['renderers']->get('array');
         $this->apiHandler    = $app['api_builder'];
         $this->request       = $app['request'];
-
-        //Set the page class for twig views
-        $this->viewData['page_class'] = 'workspace';
     }
 
     // --------------------------------------------------------------
@@ -176,6 +173,8 @@ class Library extends Controller
             $this->viewData['docUrl']      = $this->getCurrentUrl();
             $this->viewData['dispOptions'] = $dispOptions;
 
+            //Set the page class for twig views
+            $this->viewData['page_class'] = 'workspace';
             return $this->twig->render('pages/library-single.html.twig', $this->viewData);
         }
     }    
