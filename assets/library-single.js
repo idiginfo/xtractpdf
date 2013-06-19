@@ -183,6 +183,14 @@ $(document).ready(function() {
         dp.updateDocument(ko.toJSON(docViewModel), true);
     });
 
+    //Control-S to trigger manual save
+    document.addEventListener("keydown", function(e) {
+      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        e.preventDefault();
+        dp.updateDocument(ko.toJSON(docViewModel), true);
+      }
+    }, false);    
+
     //
     // Autosize textareas
     //
@@ -227,11 +235,11 @@ function DocumentPersister(docViewModel, docUrl, autoPersist) {
                 data:     { document: docData },
                 dataType: 'json', 
                 beforeSend: function() {
-                    $('#save-button').attr('disabled', 'disabled');
+                    $('#save-button').attr('disabled', 'disabled').addClass('btn-info');
                     $('#save-button').find('i').removeClass('').addClass('icon-spinner icon-spin');
                 },
                 complete: function() {
-                    $('#save-button').removeAttr('disabled');
+                    $('#save-button').removeAttr('disabled').removeClass('btn-info');
                     $('#save-button').find('i').removeClass('icon-spinner icon-spin').addClass('icon-save');
                 },
                 success: function(responseData) {
