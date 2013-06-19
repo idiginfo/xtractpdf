@@ -54,7 +54,7 @@ class BuilderBag extends Pimple
 
     // --------------------------------------------------------------
 
-    public function get($slug = null)
+    public function get($slug)
     {
         return $this->bag[$slug];
     }

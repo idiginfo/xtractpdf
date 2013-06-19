@@ -22,7 +22,8 @@ interface PdfDataHandlerInterface
     /**
      * Stream the data for the PDF
      *
-     * @param string $identifier  An identifier
+     * @param string   $identifier  An identifier
+     * @return string  Location that can be opened by fopen('...', 'r');
      */
     function stream($identifier);
 }

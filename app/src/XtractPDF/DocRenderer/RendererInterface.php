@@ -14,6 +14,19 @@ interface RendererInterface
      */
     static function getSlug();
 
+    // --------------------------------------------------------------
+    
+    /**
+     * @return string  A human-friendly name
+     */
+    static function getName();
+
+    // --------------------------------------------------------------
+    
+    static function getDescription();
+
+    // --------------------------------------------------------------
+
     /**
      * Render a document
      *
@@ -21,6 +34,19 @@ interface RendererInterface
      * @return mixed  A representation of the Document
      */
     function render(Document $document, array $options = array());
+
+    // --------------------------------------------------------------
+
+    /**
+     * Serialize the rendered version of the document
+     *
+     * Typically does the same thing as render(), except in certain cases
+     *
+     * @param XtractPDF\Model\Document
+     * @return string  A serialized representation of the rendered Document
+     */
+    function serialize(Document $document, array $optoins = array());
+
 }
 
 /* EOF: RendererInterface.php */

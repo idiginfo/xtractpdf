@@ -21,6 +21,23 @@ class ArrayRenderer implements RendererInterface
     }
 
     // --------------------------------------------------------------
+    
+    /**
+     * @return string  A human-friendly name
+     */
+    static function getName()
+    {
+        return "Array";
+    }
+
+    // --------------------------------------------------------------
+    
+    static function getDescription()
+    {
+        return "Renders the document model as a PHP array";
+    }
+
+    // --------------------------------------------------------------
 
     /**
      * Render a document
@@ -31,6 +48,19 @@ class ArrayRenderer implements RendererInterface
     public function render(Document $document, array $options = array())
     {   
         return $this->objToArray($document);
+    }
+
+    // --------------------------------------------------------------
+
+    /**
+     * Serialize a rendered document
+     *
+     * @param XtractPDF\Model\Document
+     * @return string
+     */
+    public function serialize(Document $document, array $options = array())
+    {   
+        return var_export($this->render($document, $options));
     }
 
     // --------------------------------------------------------------

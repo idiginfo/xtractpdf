@@ -101,6 +101,10 @@ class App extends SilexApp
         };
 
         //Add commands
+        $register(new Command\Info());
+        $register(new Command\DocsBuild());
+        $register(new Command\DocsList());
+        $register(new Command\DocsDelete());
         $register(new Command\DocsClear());
 
         //Run it

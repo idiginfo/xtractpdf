@@ -83,6 +83,9 @@ class AuditLogger
                 return;
             }
         }
+        else {
+            $diff = array();
+        }
 
         //Create the entry and save it
         $entry = new AuditLogEntry($actionName, $doc, $diff, $this->context);

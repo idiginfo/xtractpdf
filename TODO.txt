@@ -1,22 +1,11 @@
 CURRENTLY:
-2. Need the discriminator field (see below), but need to think about how to handle duplicate uploads across different
-   subcollections... do we show an error or allow the upload?  If we allow it, we need to create a composite unique
-   index on the Document model made up of the discriminator field and the uniqId.
-
 ~~~~~~~~~~~~~~~~~~~~~
-
-0. Make an optional configuration item for discriminator field in DocumentModel and manager so that different copies of the app can use the
-   same collection in the database..
-2. Rewrite the Library/DocumentAPIHandler and rethink the builders to be more flexible.  buildFromPDFStream() and buildFromPostAPI() and
-   a way of indiciating which is supported, ...or... different class interfaces altogether... or just leave it...
-3. Command-line junk:
+1. Command-line junk:
    - Commands for managing the collection:
-   - In the end, we should have:
-         doc:build [builder] [params]
-         doc:render [id]
-         doc:delete [id]
-         docs:find   -query {querystring} -order {order} -l {limit}
-         docs:list   -order {order} -l {limit}
-         docs:delete [ids,ids,etc]
+         DONE - info
+         doc:render [renderer] [id]
+         DONE - docs:build -r [renderer] [builder] [params]         
+         DONE - docs:list   -order {order} -l {limit}
+         DONE - docs:delete [ids,ids,etc]
          DONE - docs:clear 
-4. Write JATS exporter
+2. Write JATS exporter

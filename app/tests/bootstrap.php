@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Sighthound PHPUnit Bootstrap File
+ * XtractPDF PHPUnit Bootstrap File
  */
 
 //List of files to ensure exist
@@ -16,8 +16,5 @@ foreach($checkFiles as $file) {
 
 //Include the Composer autoloader
 $autoload = require_once $checkFiles['autoload'];
-
-//Manually Require Some Files (may fix this later)
-require_once(__DIR__ . '/XtractPDF/XtractPDFControllerTestCase.php');
 
 /* EOF: bootstrap.php */
