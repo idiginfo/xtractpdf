@@ -2,10 +2,5 @@ CURRENTLY:
 ~~~~~~~~~~~~~~~~~~~~~
 1. Command-line junk:
    - Commands for managing the collection:
-         DONE - info
-         doc:render [renderer] [id]
-         DONE - docs:build -r [renderer] [builder] [params]         
-         DONE - docs:list   -order {order} -l {limit}
-         DONE - docs:delete [ids,ids,etc]
-         DONE - docs:clear 
+         docs:export AND corresponding docs:import (pipe-able)
 2. Write JATS exporter
