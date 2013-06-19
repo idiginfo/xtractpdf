@@ -126,7 +126,7 @@ class DocsBuild extends BaseCommand
         $uniqId = md5_file($filePath);
 
         //Generate a display-friendly version of the filename
-        $dispName = strlen(basename($filePath) > 25) 
+        $dispName = (strlen(basename($filePath)) > 25)
             ? substr(basename($filePath), 0, 25) . "..."
             : basename($filePath);
 
