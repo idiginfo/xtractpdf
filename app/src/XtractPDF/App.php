@@ -79,6 +79,8 @@ class App extends SilexApp
         //     $this['whoops']->pushHandler(new JsonResponseHandler());
         // }
 
+        $this['audit_logger']->setContext(array('interface' => 'web'));
+
         //Run it!
         return $this->run();
     }
@@ -89,6 +91,8 @@ class App extends SilexApp
     {
         $consoleApp = new ConsoleApp('XtractPDF');
         $app =& $this;
+
+        $this['audit_logger']->setContext(array('interface' => 'web'));
 
         //Registration function
         $register = function(Core\Command $command) use ($consoleApp, $app) {
@@ -171,9 +175,9 @@ class App extends SilexApp
         //Upload Filepath
         $app['pdf_filepath'] = $this->resolvePath($app['config']->uploads);
 
-        //Document Manager
-        $app['doc_mgr'] = $app->share(function() use ($app) {
-            return new Library\DocumentMgr($app['mongo'], new PdfDataHandler\FilePdfHandler($app['pdf_filepath']));
+        //API Data Handler
+        $app['api_builder'] = $app->share(function() use ($app) {
+            return new Library\DocumentAPIHandler();
         });
 
         //Document Builders
@@ -184,16 +188,27 @@ class App extends SilexApp
             ));
         });
 
-        $app['api_builder'] = $app->share(function() use ($app) {
-            return new Library\DocumentAPIHandler();
-        });
-
         //Document Renderers
         $app['renderers'] = $app->share(function() use ($app) {
             return new Library\RendererBag(array(
                 new DocRenderer\ArrayRenderer()
             ));
         });
+
+        //Audit Log Manager
+        $app['audit_logger'] = $app->share(function() use ($app) {
+            return new Library\AuditLogger($app['mongo'], $app['renderers']->get('array'));
+        });
+
+        //Document Manager
+        $app['doc_mgr'] = $app->share(function() use ($app) {
+            return new Library\DocumentMgr(
+                $app['mongo'], 
+                new PdfDataHandler\FilePdfHandler($app['pdf_filepath']),
+                $app['audit_logger']
+            );
+        });
+
     }
 }
 

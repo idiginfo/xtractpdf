@@ -15,7 +15,7 @@ class ArrayDifferator
      * @param array $aArray1
      * @param array $aArray2
      */
-    public static function arrayRecursiveDiff($aArray1, $aArray2)
+    public static function arrayRecDiff($aArray1, $aArray2)
     {
         $clsName = get_called_class();
         $that = new $clsName;
@@ -38,7 +38,7 @@ class ArrayDifferator
 
             if (array_key_exists($mKey, $aArray2)) {
                 if (is_array($mValue)) {
-                    $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]);
+                    $aRecursiveDiff = $this->arrayRecursiveDiff($mValue, $aArray2[$mKey]);
                     if (count($aRecursiveDiff)) { 
                         $aReturn[$mKey] = $aRecursiveDiff; 
                     }

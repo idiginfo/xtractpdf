@@ -5,7 +5,6 @@ namespace XtractPDF\Library;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use XtractPDF\Model\Document as DocumentModel;
 use XtractPDF\PdfDataHandler\PdfDataHandlerInterface;
-use XtractPDF\Helper\ArrayDifferator;
 use MongoRegex;
 
 /**
@@ -81,10 +80,12 @@ class DocumentMgr
             return false;
         }
 
-        //Persist it
+        //Save the PDF
         $this->dataHandler->save($uniqId, $streamId);
+
+        //Create and save a new Document Model
         $doc = new DocumentModel($uniqId);
-        $this->updateDocument($doc);
+        $this->saveDocument($doc);
 
         //Log it
         $this->log('create', $doc);
@@ -111,9 +112,11 @@ class DocumentMgr
             return false;
         }
 
-        //Persist it
+        //Save the PDF
         $this->dataHandler->save($document->uniqId, $streamId);
-        $this->updateDocument($document);
+
+        //Save the document model
+        $this->saveDocument($document);
 
         //Log it
         $this->log('create', $document);
@@ -127,25 +130,41 @@ class DocumentMgr
     /**
      * Update Document
      *
-     * @param XtractPDF\Model\Document $document  Document to update
-     * @param array                    $diff      Optional diff from old document to log
-     * @param boolean                  $flush     Flush the change instantly? (default = true)
+     * @param XtractPDF\Model\Document $doc    Document to update
+     * @param boolean                  $flush  Flush the change instantly? (default = true)
      */
-    public function updateDocument(DocumentModel $document, array $diff = array(), $flush = true)
+    public function updateDocument(DocumentModel $doc, $flush = true)
     {
-        $document->markModified();
-        $this->dm->persist($document);
+        //1. Get comparison document
 
-        if ($flush) {
-            $this->dm->flush();
-        }
+        //Detach new document
+        $this->dm->detach($doc);
 
-        //Log it
-        $this->log('update', $doc, $diff);
+        //Do a query to get the db document of the same ID
+        $oldDoc = $this->getDocument($doc->uniqId);
+
+        //detach that document
+        $this->dm->detach($oldDoc);
+
+        //Reattach new document
+        $this->dm->merge($doc);
+
+        //2. Save the document
+        $this->saveDocument($doc, $flush);
+
+        //3. Log it
+        $this->log('update', $doc, $oldDoc);
+
     }
 
     // --------------------------------------------------------------
 
+    /**
+     * Check if a document uniqId exists
+     *
+     * @param string $uniqId
+     * @return boolean
+     */
     public function checkDocumentExists($uniqId)
     {
         return (boolean) $this->getDocument($uniqId);
@@ -153,6 +172,14 @@ class DocumentMgr
 
     // --------------------------------------------------------------
 
+    /**
+     * Retrieve a single document by its uniqId
+     *
+     * Returns null if document not found
+     *
+     * @param string $uniqId
+     * @return XtractPDF\Model\Document|null
+     */
     public function getDocument($uniqId)
     {
         return $this->dm
@@ -162,6 +189,12 @@ class DocumentMgr
 
     // --------------------------------------------------------------
 
+    /**
+     * Remove a document
+     *
+     * @param XtractPDF\Model\Document $document
+     * @param boolean $flush
+     */
     public function removeDocument(DocumentModel $document, $flush = true)
     {
         //Delete the data from the stream
@@ -171,7 +204,7 @@ class DocumentMgr
         $this->dm->remove($document);
 
         //Log it
-        $this->log('remove', $doc);
+        $this->log('remove', $document);
 
         if ($flush) {
             $this->dm->flush();    
@@ -180,6 +213,12 @@ class DocumentMgr
 
     // --------------------------------------------------------------
 
+    /**
+     * Get URI to stream PDF data for a document
+     *
+     * @param string   $uniqId
+     * @return string  Path to stream
+     */
     public function streamPdf($uniqId)
     {  
         $obj =& $this;
@@ -226,6 +265,24 @@ class DocumentMgr
     // --------------------------------------------------------------
 
     /**
+     * Save a document
+     *
+     * @param XtractPDF\Model\Document $doc
+     * @param boolean $flush
+     */
+    protected function saveDocument(DocumentModel $doc, $flush = true)
+    {
+        $doc->markModified();
+        $this->dm->persist($doc);
+
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    // --------------------------------------------------------------
+
+    /**
      * Only useful if you performed a bunch of operations without the 'flush' parameter
      */
     public function flush()
@@ -240,12 +297,12 @@ class DocumentMgr
      *
      * @param string $action
      * @param XtractPDF\Model\Document $doc
-     * @param array $diff
+     * @param XtractPDF\Model\Document $oldDoc  Optional previous representation of document
      */
-    protected function log($action, DocumentModel $doc, $diff = array())
+    protected function log($action, DocumentModel $doc, DocumentModel $oldDoc = null)
     {
         if ($this->auditLogger) {
-            $this->auditLogger->log($action, $doc, $diff);
+            $this->auditLogger->log($action, $doc, $oldDoc);
         }
     }
 }

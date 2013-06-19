@@ -21,7 +21,7 @@ class AuditLogEntry extends BaseModel
      * @var XtractPDF\Model\Document
      * @ODM\ReferenceOne(targetDocument="Document")
      */
-    protected $docId;
+    protected $document;
 
     /**
      * @var DateTime
@@ -52,7 +52,7 @@ class AuditLogEntry extends BaseModel
     public function __construct($actionName, Document $doc, $diff = null, $context = array())
     {
         $this->timestamp  = new DateTime();
-        $this->docId      = $doc->uniqId;
+        $this->document   = $doc;
         $this->actionName = $actionName;
         $this->diff       = (is_string($diff)) ? $diff : json_encode($diff);
         $this->context    = $context;
