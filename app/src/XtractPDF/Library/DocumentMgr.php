@@ -5,6 +5,7 @@ namespace XtractPDF\Library;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use XtractPDF\Model\Document as DocumentModel;
 use XtractPDF\PdfDataHandler\PdfDataHandlerInterface;
+use XtractPDF\Helper\ArrayDifferator;
 use MongoRegex;
 
 /**
@@ -24,6 +25,16 @@ class DocumentMgr
      */
     private $dm;
 
+    /**
+     * @var XtractPDF\PdfDataHandler\PdfDataHandlerInterface
+     */
+    private $dataHandler;
+
+    /**
+     * @var XtractPDF\Library\AuditLogger 
+     */
+    private $auditLogger;
+
     // --------------------------------------------------------------
 
     /**
@@ -32,10 +43,26 @@ class DocumentMgr
      * @param Doctrine\ODM\MongoDB\DocumentManager $dm
      * @param XtractPDF\PdfDataHandler\PdfDataHandlerInterface $dataHandler
      */
-    public function __construct(DocumentManager $dm, PdfDataHandlerInterface $dataHandler)
+    public function __construct(DocumentManager $dm, PdfDataHandlerInterface $dataHandler, AuditLogger $auditLogger = null)
     {
         $this->dm          = $dm;
         $this->dataHandler = $dataHandler;
+
+        if ($auditLogger) {
+            $this->setAuditLogger($auditLogger);
+        }
+    }
+
+    // --------------------------------------------------------------
+
+    /**
+     * Set an optional audit logger
+     *
+     * @param XtractPDF\Library\AuditLogger $auditLogger
+     */
+    public function setAuditLogger(AuditLogger $auditLogger)
+    {
+        $this->auditLogger = $auditLogger;
     }
 
     // --------------------------------------------------------------
@@ -59,6 +86,9 @@ class DocumentMgr
         $doc = new DocumentModel($uniqId);
         $this->updateDocument($doc);
 
+        //Log it
+        $this->log('create', $doc);
+
         //Return it
         return $doc;
     }
@@ -66,7 +96,9 @@ class DocumentMgr
     // --------------------------------------------------------------
 
     /**
-     * Save a new document - Same as create document, but does not dispense a new document object
+     * Save a new document
+     *
+     * Same as create document, but assumes that a DocumentModel has already been created
      *
      * @param XtractPDF\Model\Document  $document  Document Object
      * @param string                    $streamId  Stream location to be sent to fopen('', 'r')
@@ -81,15 +113,25 @@ class DocumentMgr
 
         //Persist it
         $this->dataHandler->save($document->uniqId, $streamId);
-        $this->updateDocument($doc);
+        $this->updateDocument($document);
+
+        //Log it
+        $this->log('create', $document);
 
         //Return the saved version
-        return $doc;
+        return $document;
     }
 
     // --------------------------------------------------------------
 
-    public function updateDocument(DocumentModel $document, $flush = true)
+    /**
+     * Update Document
+     *
+     * @param XtractPDF\Model\Document $document  Document to update
+     * @param array                    $diff      Optional diff from old document to log
+     * @param boolean                  $flush     Flush the change instantly? (default = true)
+     */
+    public function updateDocument(DocumentModel $document, array $diff = array(), $flush = true)
     {
         $document->markModified();
         $this->dm->persist($document);
@@ -97,8 +139,10 @@ class DocumentMgr
         if ($flush) {
             $this->dm->flush();
         }
-    }
 
+        //Log it
+        $this->log('update', $doc, $diff);
+    }
 
     // --------------------------------------------------------------
 
@@ -125,6 +169,9 @@ class DocumentMgr
 
         //Delete the document record
         $this->dm->remove($document);
+
+        //Log it
+        $this->log('remove', $doc);
 
         if ($flush) {
             $this->dm->flush();    
@@ -185,6 +232,22 @@ class DocumentMgr
     {
         $this->dm->flush();
     }    
+
+    // --------------------------------------------------------------
+
+    /**
+     * Log changes to the document
+     *
+     * @param string $action
+     * @param XtractPDF\Model\Document $doc
+     * @param array $diff
+     */
+    protected function log($action, DocumentModel $doc, $diff = array())
+    {
+        if ($this->auditLogger) {
+            $this->auditLogger->log($action, $doc, $diff);
+        }
+    }
 }
 
 /* EOF: DocumentMgr.php */
