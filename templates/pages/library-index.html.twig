@@ -42,6 +42,7 @@
                     </tr>
                 </thead>
                 <tbody data-bind="foreach: docList">
+                    <tr data-bind='if: $index() % 25 == 0' class='info'><td colspan='6'></td><tr>
                     <tr data-bind='css: { success: highlight }'>
                         <td class='doc-id-col'>
                             <span data-bind='text: dispId, attr: { title: id }'></span>
