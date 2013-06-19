@@ -48,6 +48,11 @@ function buildDocListModel(docListUrl) {
             $.each(serverData.docs, function(k, v) {
                 docListViewModel.docList.push(new DocumentItem(v, docListUrl + '/' + v.uniqId));
             });
+
+            //Remove main loading indicator
+            if ($('#main-loading').length > 0) {
+                $('#main-loading').remove();
+            }
         }    
     });
 

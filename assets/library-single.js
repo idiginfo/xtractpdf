@@ -149,6 +149,11 @@ function buildDocModel(docUrl)
             $.each(dispOpts.availSecTypes, function(k, v) {
                 docViewModel.availSecTypes.push({ type: k, dispName: v });
             });
+
+            //Remove main loading indicator
+            if ($('#main-loading').length > 0) {
+                $('#main-loading').remove();
+            }            
         }
     });
 
