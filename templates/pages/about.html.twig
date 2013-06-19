@@ -8,17 +8,46 @@
 {% block about_content %} 
 
     {# Sample Content - Delete me #}
-    <h2>Oh Hai</h2>
-    {% for i in range(0, 30) %}
+    <h2>About XtractPDF</h2>
     <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        XtractPDF is a tool for getting information out of PDF articles and curating it.  It automatically
+        attempts to extract and classify content into structured data, but also provides a handy interface
+        for humans to clean-up and perfect the data.  Documents can then be exported to 
+        <a href='http://dtd.nlm.nih.gov/' title='Journal Archiving Tag Suite'>JATS-XML</a>.
     </p>
-    {% endfor %}
+
+    <p>
+        XtractPDF currently acts as a client to <a href='http://pdfx.cs.man.ac.uk/' title='PDFX Homepage'>PDFX</a>
+        for automatic conversion, but can be extended to support other libraries and APIs.
+    </p>
+
+    <h3>Technologies</h3>
+
+    <p>XtractPDF is built entirely on open source technologies (with the exception of PDFX):
+
+    <ul>
+        <li>PHP Silex Framework</li>
+        <li>Monolog</li>
+        <li>Guzzle</li>
+        <li>MongoDB &amp; Doctrine ODM</li>
+        <li>Jquery</li>
+        <li>KnockoutJS</li>
+        <li>PDFX</li>
+        <li>Jquery Autosize</li>
+        <li>Jquery Form</li>
+        <li>Prettify</li>
+        <li>Twitter Bootstrap</li>
+        <li>Fontawesome</li>
+    </ul>
+
+    <h3>Author</h3>
+
+    <p>
+        XtractPDF was written by <a href='http://caseymclaughlin.com' title='Casey Homepage'>Casey McLaughlin</a>
+        at the <a href='http://idiginfo.org' title='FSU iDigInfo'>iDigInfo Institute</a> at 
+        <a href='http://fsu.edu' title='FSU Homepage'>Florida State University</a> for work on projects related to the 
+        <a href='http://pdfjailbreak.com' title='Jailbreaking Homepage'>Jailbreaking the PDF</a> collaboration.
+    </p>
 
 {% endblock %}
 </div>
