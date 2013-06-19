@@ -12,6 +12,7 @@ use XtractPDF\Model\Document as DocumentModel;
 use XtractPDF\Helper\FancyFileIterator;
 use RuntimeException, InvalidArgumentException;
 use Silex\Application;
+use Exception;
 
 /**
  * List Documents
@@ -87,18 +88,33 @@ class DocsBuild extends BaseCommand
 
         //Count of files processed
         $count = 0;
+        $skip  = 0;
 
-
-
+        //Do it!
         foreach($iterator as $file) {
-            $this->buildDocument($output, $file->getRealPath(), $persist, $builder, $renderer);
-            $count++;
+            $result = $this->buildDocument($output, $file->getRealPath(), $persist, $builder, $renderer);
+            ($result) ? $count++ : $skip++;
         }
 
-        $msg = ($count > 0)
-            ? sprintf("<fg=green>Done.  Processed %s files</fg=green>", number_format($count))
-            : "No documents found to persist at path: " . realpath($path);
+        //Formulate "done" message
+        if ($count > 0 OR $skip > 0) {
+            $msg = sprintf(
+                "<fg=%s>Done.  Processed %s files.</fg=%s>",
+                ($count > 0) ? 'green' : 'yellow',
+                number_format($count),
+                ($count > 0) ? 'green' : 'yellow'
+            );
 
+            if ($skip > 0) {
+                $msg .= sprintf(" <fg=yellow>Skipped %s files.</fg=yellow>", number_format($skip));
+            }
+
+        }
+        else {
+            $msg = "No documents found to persist at path: " . realpath($path);
+        }
+            
+        //Write out done message
         $output->writeln($msg);
     }
 
@@ -106,28 +122,61 @@ class DocsBuild extends BaseCommand
 
     private function buildDocument($output, $filePath, $persist, $builder, $renderer)
     {
-        //Build the new document
+        //Get the UniqID based on the file MD5
+        $uniqId = md5_file($filePath);
+
+        //Generate a display-friendly version of the filename
+        $dispName = strlen(basename($filePath) > 25) 
+            ? substr(basename($filePath), 0, 25) . "..."
+            : basename($filePath);
+
+
+        //If persist mode on, check to ensure we haven't already built
+        //it before we take the time to do that
+        if ($persist && $this->docMgr->getDocument($uniqId)) {
+            $output->writeln("<fg=yellow>Skipping " . $dispName . " (already exists)</fg=yellow>");
+            return false;
+        }
+
+        //Build Message
         $output->write(sprintf(
             "Building <fg=yellow>%s</fg=yellow> with <fg=yellow>%s</fg=yellow> (may take a moment)...",
-            basename($filePath),
+            $dispName,
             $builder->getName()
         ));
-        $doc = $builder->build($filePath, new DocumentModel(md5_file($filePath)));
 
-        //Persist it?
-        if ($persist) {
+        //Build result, or die trying
+        try {
+            $doc = $builder->build($filePath, new DocumentModel($uniqId));
+            $output->write("<fg=green>Done</fg=green>");
+        }
+        catch (Exception $e) {
+            $output->write(sprintf("<fg=red>Error: %s</fg=red>", $e->getMessage()));
+            return false;
+        }
+
+        //Persist message
+        if (isset($doc) && $persist) {
             $output->write(" Persisting...");
-            $result = $this->docMgr->saveNewDocument($doc, $filePath);
-            $output->writeln($result ? "<fg=green>Done</fg=green>" : "<fg=yellow>Skipped (already exists)</fg=yellow>");
-        }
-        else {
-            $output->writeln('');
-        }
 
-        //Render it
+            try {
+                $this->docMgr->saveNewDocument($doc, $filePath);
+                $output->write("<fg=green>Done</fg=green>");
+            }
+            catch (Exception $e) {
+                $output->write(sprintf("<fg=red>Error: %s</fg=red>", $e->getMessage()));
+            }
+        }
+        
+        //Newline
+        $output->writeln('');
+
+        //Render it if we've elected to do so
         if ($renderer) {
             $output->writeln($renderer->serialize($doc));
         }
+
+        return true;
     }
 }
 /* EOF: DocsBuild.php */
