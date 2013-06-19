@@ -1,5 +1,4 @@
 CURRENTLY:
-1. Created AuditLogEntry, AuditLogger, and added log interface to DocumentManager - Time to connect em through the App
 2. Need the discriminator field (see below), but need to think about how to handle duplicate uploads across different
    subcollections... do we show an error or allow the upload?  If we allow it, we need to create a composite unique
    index on the Document model made up of the discriminator field and the uniqId.
