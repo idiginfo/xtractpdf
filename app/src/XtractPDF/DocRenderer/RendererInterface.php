@@ -28,6 +28,13 @@ interface RendererInterface
     // --------------------------------------------------------------
 
     /**
+     * @return string  The MIME type to use in case the rendering is transmitted via HTTP
+     */
+    static function getMime();
+
+    // --------------------------------------------------------------
+
+    /**
      * Render a document
      *
      * @param XtractPDF\Model\Document
@@ -46,7 +53,6 @@ interface RendererInterface
      * @return string  A serialized representation of the rendered Document
      */
     function serialize(Document $document, array $optoins = array());
-
 }
 
 /* EOF: RendererInterface.php */

@@ -2,10 +2,7 @@
 
 namespace XtractPDF\DocRenderer;
 
-use Doctrine\Common\Collections\Collection;
 use XtractPDF\Model\Document;
-use XtractPDF\Core\Model;
-use Traversable;
 
 /**
  * Document Renderer Interface as Multi-Dimensional Array
@@ -37,6 +34,13 @@ class ArrayRenderer implements RendererInterface
         return "Renders the document model as a PHP array";
     }
 
+    // --------------------------------------------------------------
+
+    static function getMime()
+    {
+        return 'text/plain';
+    }
+    
     // --------------------------------------------------------------
 
     /**
