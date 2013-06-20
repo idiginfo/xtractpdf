@@ -222,6 +222,12 @@ body.workspace #page_content {
     background-color: #FFF;
 }
 
+#single-doc-editor #right-workform.pane li.form-row.change-pending,
+#single-doc-editor #right-workform.pane li.form-row.change-pending .input-item input,
+#single-doc-editor #right-workform.pane li.form-row.change-pending .input-item textarea {
+    background-color: #f5fafd;
+}
+
 /* Label tag as block */
 #single-doc-editor #right-workform.pane li.form-row label {
     display: block;
@@ -303,7 +309,7 @@ body.workspace #page_content {
 /* Action Items */
 #single-doc-editor #right-workform.pane li.form-row .input-actions,
 #single-doc-editor #right-workform.pane legend .fieldset-actions {
-    z-index: 4;
+    z-index: 5;
     display: none;
     position: absolute;
     right: 4px;

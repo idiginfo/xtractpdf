@@ -212,9 +212,13 @@ $(document).ready(function() {
             text = text.replace(/(\r\n|\n|\r)/gm," ");
             text = text.replace(/\s{2,}/g," ");
             $(element).val(text).trigger('autosize');
+            $(element).trigger('change');
         }, 100);
-
     });    
+
+    $('#right-workform').on('change', '.input-item :input', function(e) {
+        $(this).parents('li.form-row').addClass('change-pending');
+    });
 
 });
 
@@ -256,6 +260,8 @@ function DocumentPersister(docViewModel, docUrl, autoPersist) {
         else {
             debug("Skipped persist");
         }
+
+        $('li.form-row').removeClass('change-pending');
     }
 
     self.startTimer = function() {
