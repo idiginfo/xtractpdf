@@ -131,29 +131,16 @@ class DocumentMgr
      * Update Document
      *
      * @param XtractPDF\Model\Document $doc    Document to update
+     * @param array                    $diff   Diff of document for logging purposes
      * @param boolean                  $flush  Flush the change instantly? (default = true)
      */
-    public function updateDocument(DocumentModel $doc, $flush = true)
+    public function updateDocument(DocumentModel $doc, array $diff, $flush = true)
     {
-        //1. Get comparison document
-
-        //Detach new document
-        $this->dm->detach($doc);
-
-        //Do a query to get the db document of the same ID
-        $oldDoc = $this->getDocument($doc->uniqId);
-
-        //detach that document
-        $this->dm->detach($oldDoc);
-
-        //Reattach new document
-        $this->dm->merge($doc);
-
-        //2. Save the document
+        //Save the document
         $this->saveDocument($doc, $flush);
 
-        //3. Log it
-        $this->log('update', $doc, $oldDoc);
+        //Log it
+        $this->log('update', $doc, array('diff' => $diff));
 
     }
 
@@ -299,12 +286,12 @@ class DocumentMgr
      *
      * @param string $action
      * @param XtractPDF\Model\Document $doc
-     * @param XtractPDF\Model\Document $oldDoc  Optional previous representation of document
+     * @param array                    $extraData  Optional extra data
      */
-    protected function log($action, DocumentModel $doc, DocumentModel $oldDoc = null)
+    protected function log($action, DocumentModel $doc, array $extraData = array())
     {
         if ($this->auditLogger) {
-            $this->auditLogger->log($action, $doc, $oldDoc);
+            $this->auditLogger->log($action, $doc, $extraData);
         }
     }
 }

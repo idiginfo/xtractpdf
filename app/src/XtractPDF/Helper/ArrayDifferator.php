@@ -15,7 +15,7 @@ class ArrayDifferator
      * @param array $aArray1
      * @param array $aArray2
      */
-    public static function arrayRecDiff($aArray1, $aArray2)
+    public static function recursiveDiff($aArray1, $aArray2)
     {
         $clsName = get_called_class();
         $that = new $clsName;

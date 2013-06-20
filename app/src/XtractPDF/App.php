@@ -201,7 +201,7 @@ class App extends SilexApp
 
         //Audit Log Manager
         $app['audit_logger'] = $app->share(function() use ($app) {
-            return new Library\AuditLogger($app['mongo'], $app['renderers']->get('array'));
+            return new Library\AuditLogger($app['mongo']);
         });
 
         //Document Manager

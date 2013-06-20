@@ -20,6 +20,7 @@ class DocumentAPIHandler
      */
     public function build($data, Model\Document $doc)
     {
+        //Decode the data from POST
         $postData = json_decode($data);
 
         if ( ! $postData) {

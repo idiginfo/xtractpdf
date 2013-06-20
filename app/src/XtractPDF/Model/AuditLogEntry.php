@@ -36,10 +36,10 @@ class AuditLogEntry extends BaseModel
     protected $actionName;
 
     /**
-     * @var string  JSON-encoded diff
-     * @ODM\String
+     * @var array  Any additional data 
+     * @ODM\Hash
      */
-    protected $diff;
+    protected $extraInfo;
 
     /**
      * @var array
@@ -49,14 +49,28 @@ class AuditLogEntry extends BaseModel
 
     // --------------------------------------------------------------
 
-    public function __construct($actionName, Document $doc, $diff = null, $context = array())
+    public function __construct($actionName, Document $doc, array $extraInfo = null, $context = array())
     {
         $this->timestamp  = new DateTime();
         $this->document   = $doc;
         $this->actionName = $actionName;
-        $this->diff       = (is_string($diff)) ? $diff : json_encode($diff);
+        $this->extraInfo  = $extraInfo;
         $this->context    = $context;
     }
+
+    // --------------------------------------------------------------
+
+    /** 
+     * Function to run when encountering 'diff' field from older version of this document
+     * 
+     * @ODM\AlsoLoad("diff") 
+     */
+    public function populateOldDiff($diff)
+    {
+        $this->extraInfo['diff'] = json_decode($diff, true);
+    }
+
+
 }
 
 /* EOF: AuditLogEntry.php */

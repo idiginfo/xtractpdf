@@ -5,6 +5,7 @@ namespace XtractPDF\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Silex\Application;
 use Silex\ControllerCollection;
+use XtractPDF\Helper\ArrayDifferator;
 use XtractPDF\Core\Controller;
 use XtractPDF\Model;
 
@@ -244,17 +245,28 @@ class Library extends Controller
         }
 
         //Check for expectd POST data
-        $postDoc = $this->getPostParams('document');
+        $postData = $this->getPostParams('document');
 
-        if ( ! $postDoc) {
+        if ( ! $postData) {
             return $this->abort(400, 'Missing required request parameters');
         }
 
+        //Make a snapshot of the original document before updating
+        //@TODO: Move this into documentMgr?
+        $origDoc = $this->arrayRenderer->render($doc);
+
         //Set document data from POST request
-        $doc = $this->apiHandler->build($postDoc, $doc);
+        $doc = $this->apiHandler->build($postData, $doc);
+
+        //Compute the diff
+        //@TODO: Move this into documentMgr?
+        $diff = ArrayDifferator::recursiveDiff(
+            $origDoc,
+            $this->arrayRenderer->render($doc)
+        );
 
         //Persist document
-        $this->docMgr->updateDocument($doc);
+        $this->docMgr->updateDocument($doc, $diff);
 
         //Return a response
         if ($this->clientExpects('json')) {
