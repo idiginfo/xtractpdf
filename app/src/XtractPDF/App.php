@@ -154,7 +154,7 @@ class App extends SilexApp
         // Controllers
         //
         $app->mount('', new Controller\Library());
-        $app->mount('', new Controller\About());
+        $app->mount('', new Controller\About());                       
     }
 
     // --------------------------------------------------------------

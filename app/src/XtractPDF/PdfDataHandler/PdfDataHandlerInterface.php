@@ -23,9 +23,17 @@ interface PdfDataHandlerInterface
      * Stream the data for the PDF
      *
      * @param string   $identifier  An identifier
-     * @return string  Location that can be opened by fopen('...', 'r');
+     * @return string  Contents of the PDF
      */
     function stream($identifier);
+
+    /**
+     * Get the an identifier that can be opened by fopen('...', 'r');
+     *
+     * @param  string $identifier  An identifier
+     * @return string Location that can be opened by fopen('...', 'r');
+     */
+    function streamuri($identifier);
 }
 
 /* EOF: PdfDataHandlerInterface.php */

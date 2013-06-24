@@ -28,9 +28,16 @@ class FilePdfHandler implements PdfDataHandlerInterface
 
     // --------------------------------------------------------------
 
+    public function streamuri($identifier)
+    {
+        return $this->resolveFileName($identifier);
+    }
+
+    // --------------------------------------------------------------
+
     public function stream($identifier)
     {
-        readfile($this->resolveFileName($identifier));
+        readfile($this->streamuri($identifier));
     }
 
     // --------------------------------------------------------------

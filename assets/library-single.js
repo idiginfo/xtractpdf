@@ -219,7 +219,6 @@ $(document).ready(function() {
     $('#right-workform').on('change', '.input-item :input', function(e) {
         $(this).parents('li.form-row').addClass('change-pending');
     });
-
 });
 
 // ------------------------------------------------------------------

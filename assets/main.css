@@ -17,9 +17,10 @@ body {
     margin: 0;
     padding: 0;
     height: 52px;
-    overflow: hidden;
+    overflow: visible;
     background-color: #252525;
     box-shadow: 2px 0px 4px rgba(0,0,0,0.5);
+    z-index: 2;
 }
 
 #page_content {
@@ -32,6 +33,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 1;
 }
 
 body.workspace #page_content {
@@ -104,6 +106,10 @@ body.workspace #page_content {
     color: #000;
 }
 
+#main-header .popover {
+    color: #000;
+}
+
 /* LIBRARY BROWSER: Layout ----------------------------------------- */
 
 #library-browser {
@@ -137,6 +143,29 @@ body.workspace #page_content {
 
 #upload-pdf input[type=file] {
     display: none;
+}
+
+#upload-pdf #upload_options_toggle {
+    display: inline-block;
+    padding: 4px;
+    cursor: pointer;
+}
+
+#upload-pdf label {
+    display: inline-block;
+    margin: 0 5px 0 15px;
+}
+
+#upload-pdf select.pdfbuilder {
+    margin: 0;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    padding: 0 6px;
+    background-color: #454545;
+    font-weight: bold;
+    width: 85px;
 }
 
 /* SINGLE DOC EDITOR: Layout --------------------------------------- */

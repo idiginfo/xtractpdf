@@ -5,6 +5,9 @@
 #Uploads path (relative to application basepath, or with a preceding slash)
 uploads: uploads
 
+#Deploy Mode [private, demo]
+deploymode: private
+
 #Logpath Destination
 logpath: logs
 

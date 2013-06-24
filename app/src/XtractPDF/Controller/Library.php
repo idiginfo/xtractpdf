@@ -116,7 +116,9 @@ class Library extends Controller
         $query  = $this->getQueryParams('query')  ?: null;
 
         //Get list of items from the docMgr
-        $this->viewData['doclist'] = $this->docMgr->listDocuments($limit, $query, $offset);
+        $this->viewData['doclist']        = $this->docMgr->listDocuments($limit, $query, $offset);
+        $this->viewData['builders']       = $this->builders->getAll();
+        $this->viewData['defaultBuilder'] = 'pdfx';
 
         //Render response
         if ($this->clientExpects('json')) {
@@ -225,7 +227,14 @@ class Library extends Controller
             $isNew = false;
         }
 
-        //@TODO: PDFX AUTO-EXTRACTION HERE.....
+        //Build with builder
+        if ($this->getPostParams('builder')) {
+            $doc = $this->builders->get($this->getPostParams('builder'))->build(
+                $this->docMgr->getStreamPdfUri($doc->uniqId), 
+                $doc
+            );
+            $this->docMgr->updateDocument($doc);
+        }
 
         //Return a response
         if ($this->clientExpects('json')) {

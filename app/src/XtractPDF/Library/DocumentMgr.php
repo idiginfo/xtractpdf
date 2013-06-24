@@ -134,7 +134,7 @@ class DocumentMgr
      * @param array                    $diff   Diff of document for logging purposes
      * @param boolean                  $flush  Flush the change instantly? (default = true)
      */
-    public function updateDocument(DocumentModel $doc, array $diff, $flush = true)
+    public function updateDocument(DocumentModel $doc, array $diff = array(), $flush = true)
     {
         //Save the document
         $this->saveDocument($doc, $flush);
@@ -196,6 +196,13 @@ class DocumentMgr
         if ($flush) {
             $this->dm->flush();    
         }
+    }
+
+    // --------------------------------------------------------------
+
+    public function getStreamPdfUri($uniqId)
+    {
+        return $this->dataHandler->streamuri($uniqId);
     }
 
     // --------------------------------------------------------------
