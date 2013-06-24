@@ -95,6 +95,7 @@ class Library extends Controller
         $this->docMgr        = $app['doc_mgr'];
         $this->builders      = $app['builders'];
         $this->arrayRenderer = $app['renderers']->get('array');
+        $this->jatsRenderer  = $app['renderers']->get('jats-xml');
         $this->apiHandler    = $app['api_builder'];
         $this->request       = $app['request'];
     }
@@ -154,6 +155,12 @@ class Library extends Controller
             'availSecTypes'  => Model\DocumentSection::getAllowedTypes(),
             'biblioMetaDisp' => Model\DocumentBiblioMeta::getDispInfo()            
         );      
+
+        //If XML, download JATS-XML
+        if ($this->getQueryParams('jats')) {
+            $jatsRenderer =& $this->jatsRenderer;
+            return $this->customResponse($this->jatsRenderer->serialize($doc), 200, array('Content-type' => 'application/xml'));
+        }
 
         //If JSON, return the document
         if ($this->clientExpects('json')) {

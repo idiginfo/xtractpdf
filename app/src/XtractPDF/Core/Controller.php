@@ -6,6 +6,7 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Base controller
@@ -231,6 +232,15 @@ abstract class Controller implements ControllerProviderInterface
         return $this->app->stream($callback, $status, $headers);
     }
 
+    // --------------------------------------------------------------
+
+    /**
+     * Create a custom response, with custom headers
+     */
+    protected function customResponse($data, $status = 200, $headers = array())
+    {
+        return new Response($data, $status, $headers);
+    }
 
     // --------------------------------------------------------------
 
