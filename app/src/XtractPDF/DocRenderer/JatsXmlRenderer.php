@@ -2,7 +2,7 @@
 
 namespace XtractPDF\DocRenderer;
 
-use XtractPDF\Model\Document;
+use XtractPDF\Model;
 use SimpleXMLElement;
 
 /**
@@ -50,11 +50,11 @@ class JatsXmlRenderer implements RendererInterface
      * @param XtractPDF\Model\Document
      * @return mixed  A representation of the Document
      */
-    public function render(Document $doc, array $options = array())
+    public function render(Model\Document $doc, array $options = array())
     {   
         $xmlObj = new SimpleXMLElement('<Article></Article>');        
 
-        //Basic structure
+        //Basic front and back structure
         $front = $xmlObj->addChild('front');
         $body  = $xmlObj->addChild('body');
         $back  = $xmlObj->addChild('back');
@@ -89,10 +89,10 @@ class JatsXmlRenderer implements RendererInterface
         }
 
         //Map Abstract Sections
-        //@TODO: THIS
-
+        $this->recursizeSections($am->addChild('abstract'), $doc->abstract);
+  
         //Map content Sections
-        //@TODO: This
+        $this->recursizeSections($body, $doc->content);
 
         return $xmlObj->asXML();
     }
@@ -105,11 +105,105 @@ class JatsXmlRenderer implements RendererInterface
      * @param XtractPDF\Model\Document
      * @return string
      */
-    public function serialize(Document $document, array $options = array())
+    public function serialize(Model\Document $document, array $options = array())
     {   
         return $this->render($document, $options);
     }
 
+    // --------------------------------------------------------------
+
+    protected function recursizeSections(SimpleXMLElement $element, Model\DocumentContent $content)
+    {
+        $items = $content->sections->toArray();
+
+        $currSec    = null;
+        $currSubSec = null;
+
+        while($item = array_shift($items)) {
+            switch ($item->type) {
+                case 'heading':
+
+                    //Add existing section
+                    if ($currSec) {
+
+                        if ($currSubSec) {
+                            $this->xmlAdopt($currSec, $currSubSec);
+                        }
+
+                        $this->xmlAdopt($element, $currSec);
+                    }
+
+                    //Create new section
+                    $currSec = new SimpleXMLElement('<sec/>');
+                    $currSec->addChild('title', $item->content);
+
+                break;
+                case 'subheading':
+
+                    //If no currSection, auto add one
+                    if ( ! $currSec) {
+                        $currSec = new SimpleXMLElement('<sec/>');
+                        $currSec->addChild('title', '');
+                    }
+                    //If existing subsection, close it out
+                    elseif ($currSubSec) {
+                        $this->xmlAdopt($currSec, $currSubSec);
+                    }
+
+                    $currSubSec = new SimpleXMLElement("<sec/>");
+                    $currSubSec->addChild('title', $item->content);
+                break;
+                case 'paragraph': default:
+
+                    if ($currSubSec) {
+                        $currSubSec->addChild('p', $item->content);
+                    }
+                    elseif ($currSec) {
+                        $currSec->addChild('p', $item->content);
+                    }
+                    else {
+                        $element->addChild('p', $item->content);
+                    }
+
+                break;
+            }
+        }
+
+        //Add final section if there is one
+        if ($currSec) {
+
+            if ($currSubSec) {
+                $this->xmlAdopt($currSec, $currSubSec);
+            }
+
+            $this->xmlAdopt($element, $currSec);
+        }
+
+        return $element;
+    }
+
+    // --------------------------------------------------------------
+
+    protected function xmlAdopt($root, $new, $namespace = null)
+    {
+        // first add the new node
+        $node = $root->addChild($new->getName(), (string) $new, $namespace);
+
+        // add any attributes for the new node
+        foreach ($new->attributes() as $attr => $value) {
+            $node->addAttribute($attr, $value);
+        }
+
+        // get all namespaces, include a blank one
+        $namespaces = array_merge(array(null), $new->getNameSpaces(true));
+
+        // add any child nodes, including optional namespace
+        foreach ($namespaces as $space) {
+            foreach ($new->children($space) as $child) {
+               $this->xmlAdopt($node, $child, $space);
+            }
+        }
+    }
 }
 
 /* EOF: JatsXmlRenderer.php */
