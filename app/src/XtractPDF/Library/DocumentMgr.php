@@ -39,8 +39,9 @@ class DocumentMgr
     /**
      * Constructor
      *
-     * @param Doctrine\ODM\MongoDB\DocumentManager $dm
+     * @param Doctrine\ODM\MongoDB\DocumentManager             $dm
      * @param XtractPDF\PdfDataHandler\PdfDataHandlerInterface $dataHandler
+     * @param XtractPDF\Library\AuditLogger                    $auditLogger
      */
     public function __construct(DocumentManager $dm, PdfDataHandlerInterface $dataHandler, AuditLogger $auditLogger = null)
     {
@@ -236,6 +237,22 @@ class DocumentMgr
      */
     public function listDocuments($limit = null, $query = null, $offset = null)
     {
+        //Run and return result
+        return $this->getListDocumentsQueryBuilder($limit, $query, $offset)->getQuery()->execute();
+    }    
+
+    // --------------------------------------------------------------
+
+    /**
+     * Get Query Builder for list documents action
+     *
+     * @param int    $limit   Optional limit
+     * @param string $query   Optional query string
+     * @param int    $offset  Optional offset
+     * @return Doctrine\ODM\MongoDB\QueryBuilder
+     */
+    protected function getListDocumentsQueryBuilder($limit = null, $query = null, $offset = null)
+    {
         //QB
         $qb = $this->dm->createQueryBuilder(self::DOC_CLASSNAME);
 
@@ -252,11 +269,10 @@ class DocumentMgr
         //Search Query
         if ($query) {
             $qb->field('title')->equals(new MongoRegex("/.*(" . $query . ").*/i"));
-        }
+        }        
 
-        //Run and return result
-        return $qb->getQuery()->execute();
-    }    
+        return $qb;
+    }
 
     // --------------------------------------------------------------
 

@@ -5,6 +5,7 @@ namespace XtractPDF;
 use Silex\Application as SilexApp;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\SessionServiceProvider;
 use XtractPDF\Provider\MonologServiceProvider;
 use XtractPDF\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -139,6 +140,7 @@ class App extends SilexApp
         // Web Libraries
         //
 
+
         //Service Controller
         $app->register(new ServiceControllerServiceProvider());
 
@@ -149,6 +151,29 @@ class App extends SilexApp
         $app->register(new TwigServiceProvider(), array(
             'twig.path' => $this->resolvePath('templates')
         ));
+
+        //
+        // If deploy mode is 'demo', replace the document manager with session limited version
+        //
+        if ($app['config']->deploymode == 'demo') {
+            //$app['session']
+            $app->register(
+                new SessionServiceProvider(), array('session.storage.options' => array(
+                    'name'            => 'XtractPDF', 
+                    'cookie_lifetime' => $app['config']->session_expire ?: 7200
+                )
+            ));
+
+            //$app['doc_mgr']
+            $app['doc_mgr'] = $app->share(function() use ($app) {
+                return new Library\SessionLimitedDocumentMgr(
+                    $app['mongo'], 
+                    new PdfDataHandler\FilePdfHandler($app['pdf_filepath']),
+                    $app['audit_logger'],
+                    $app['session']
+                );
+            });
+        }
 
         //
         // Controllers
