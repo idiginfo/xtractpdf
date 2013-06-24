@@ -8,7 +8,7 @@ use SimpleXMLElement;
 /**
  * Render document model as JATS
  */
-class JatsXmlRenderer
+class JatsXmlRenderer implements RendererInterface
 {
     /**
      * @return string  A machine-readable name (alpha-dash)
@@ -65,15 +65,15 @@ class JatsXmlRenderer
         $jm->addChild('journal-title-group')->addChild('journal-title', $doc->getMeta('journal'));
         $am = $front->addChild('article-meta');
         $am->addChild('title-group')->addChild('article-title', $doc->getMeta('title'));
-        $am->addChild('article-id', $doc->getMeta('doi'))->setAttribute('pub-id-type', 'doi');
-        $am->addChild('article-id', $doc->getMeta('pmid'))->setAttribute('pub-id-type', 'pmid');
+        $am->addChild('article-id', $doc->getMeta('doi'))->addAttribute('pub-id-type', 'doi');
+        $am->addChild('article-id', $doc->getMeta('pmid'))->addAttribute('pub-id-type', 'pmid');
         $am->addChild('isbn', $doc->getMeta('isbn'));
         $am->addChild('volume', $doc->getMeta('volume'));
         $am->addChild('issue', $doc->getMeta('issue'));
         $am->addChild('fpage', $doc->getMeta('startPage'));
         $am->addChild('lpage', $doc->getMeta('endPage'));
         $pd = $am->addChild('pub-date');
-        $pd->setAttribute('pub-type', 'pub');
+        $pd->addAttribute('pub-type', 'pub');
         $pd->addChild('year', $doc->getMeta('year'));
         $kws = $am->addChild('keyword-group');
         foreach($doc->getMeta('keywords') as $kw) {
@@ -84,7 +84,7 @@ class JatsXmlRenderer
         $contribs = $am->addChild('contrib-group');
         foreach( $doc->authors as $author) {
             $auth = $contribs->addChild('contrib');
-            $auth->setAttribute('contrib-type', 'author');
+            $auth->addAttribute('contrib-type', 'author');
             $auth->addChild->addChild('string-name', $author->name);
         }
 

@@ -106,6 +106,7 @@ class App extends SilexApp
         $register(new Command\DocsList());
         $register(new Command\DocsDelete());
         $register(new Command\DocsClear());
+        $register(new Command\DocsRender());
 
         //Run it
         $consoleApp->run();
@@ -195,7 +196,8 @@ class App extends SilexApp
         //Document Renderers
         $app['renderers'] = $app->share(function() use ($app) {
             return new Library\RendererBag(array(
-                new DocRenderer\ArrayRenderer()
+                new DocRenderer\ArrayRenderer(),
+                new DocRenderer\JatsXmlRenderer()
             ));
         });
 

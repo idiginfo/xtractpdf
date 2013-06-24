@@ -28,7 +28,7 @@ class DocsBuild extends BaseCommand
 
     protected function configure()
     {
-        $this->setName('docs:build')->setDescription('List Documents in System');        
+        $this->setName('docs:build')->setDescription('Build and optional persist or render document(s) from a PDF');        
         $this->addOption('persist',   'p', InputOption::VALUE_NONE,     'Persist the document(s)');
         $this->addOption('render' ,   'r', InputOption::VALUE_REQUIRED, 'Render each document with the desired renderer after building rather than displaying a simple message');
         $this->addOption('recursive', '',  InputOption::VALUE_NONE,     'Recursively parse directory for files to build');
