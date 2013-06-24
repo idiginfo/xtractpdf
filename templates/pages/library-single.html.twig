@@ -9,7 +9,7 @@
     <div id='doc-actions'>
         <button class='btn btn-mini' data-bind="click: toggleMarkedComplete, css: {'btn-success': isComplete, '': !isComplete }"><i data-bind="css: { 'icon-check': isComplete, 'icon-check-empty': !isComplete }"></i> Mark Complete</button>
         <button class='btn btn-mini' id='save-button'><i class='icon-save'></i> Save</button>
-        <a href='#' class='btn btn-mini'><i class='icon-download-alt'></i> Export as JATs</a>
+        <a href='{{ current_url }}?response_format=jats&dl=true' class='btn btn-mini'><i class='icon-download-alt'></i> Export as JATs</a>
     </div>
 {% endblock %}
 

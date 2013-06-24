@@ -156,14 +156,18 @@ class Library extends Controller
             'biblioMetaDisp' => Model\DocumentBiblioMeta::getDispInfo()            
         );      
 
-        //If XML, download JATS-XML
-        if ($this->getQueryParams('jats')) {
-            $jatsRenderer =& $this->jatsRenderer;
-            return $this->customResponse($this->jatsRenderer->serialize($doc), 200, array('Content-type' => 'application/xml'));
+        //If XML, display or download JATS-XML
+        if (in_array($this->getQueryParams('response_format'), array('jats', 'xml'))) {
+
+            $headers = array('Content-type' => 'application/xml');
+            if ($this->getQueryParams('dl')) {
+                $headers['Content-Disposition'] = sprintf('attachment; filename="%s"', $doc->uniqId);
+            }
+            return $this->customResponse($this->jatsRenderer->serialize($doc), 200, $headers);
         }
 
         //If JSON, return the document
-        if ($this->clientExpects('json')) {
+        elseif ($this->clientExpects('json')) {
 
             $jsonData = array();
             $jsonData['document'] = $this->arrayRenderer->render($doc);
