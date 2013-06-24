@@ -79,6 +79,8 @@ class Library extends Controller
         
         $routes->post('/library',          array($this, 'uploadAction'))->bind('library_upload');
         $routes->post('/library/{uniqId}', array($this, 'updateAction'))->bind('library_update');
+
+        $routes->get('/pdf/{id}', array($this, 'renderPdfAction'))->bind('viewpdf');
     }
 
     // --------------------------------------------------------------
@@ -292,6 +294,26 @@ class Library extends Controller
             return $this->redirect('/single/' . $uniqId);
         }           
     }
+
+    // --------------------------------------------------------------
+
+    /**
+     * Render a PDF by its unique identifier
+     *
+     * GET /pdf/{id}
+     * 
+     * @param string $id  Identifier for the document
+     */
+    public function renderPdfAction($id)
+    {
+        //If the file is readable, then send it; else 404
+        if ($this->docMgr->checkDocumentExists($id)) {
+            return $this->stream($this->docMgr->streamPdf($id), 200, array('Content-type' => 'application/pdf'));
+        }
+        else {
+            return $this->abort(404, "Could not find document");
+        }
+    }        
 }    
 
 /* EOF: Library.php */

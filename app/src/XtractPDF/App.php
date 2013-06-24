@@ -155,7 +155,6 @@ class App extends SilexApp
         //
         $app->mount('', new Controller\Library());
         $app->mount('', new Controller\About());
-        $app->mount('', new Controller\PdfViewer());
     }
 
     // --------------------------------------------------------------
