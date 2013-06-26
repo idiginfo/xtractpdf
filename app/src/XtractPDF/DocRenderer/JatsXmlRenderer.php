@@ -94,6 +94,12 @@ class JatsXmlRenderer implements RendererInterface
         //Map content Sections
         $this->recursizeSections($body, $doc->content);
 
+        //Map citations
+        $refList = $back->addChild('ref-list');
+        foreach($doc->citations as $cite) {
+            $refList->addChild('ref', $cite->content);
+        }
+
         return $xmlObj->asXML();
     }
 
