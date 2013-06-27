@@ -92,7 +92,7 @@ class JatsXmlRenderer implements RendererInterface
         foreach( $doc->authors as $author) {
             $auth = $contribs->addChild('contrib');
             $auth->addAttribute('contrib-type', 'author');
-            $auth->addChild->addChild('string-name', $author->name);
+            $auth->addChild('string-name', $author->name);
         }
 
         //Map Abstract Sections
