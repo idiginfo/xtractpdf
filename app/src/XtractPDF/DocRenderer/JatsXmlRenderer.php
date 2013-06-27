@@ -104,7 +104,7 @@ class JatsXmlRenderer implements RendererInterface
         //Map citations
         $refList = $back->addChild('ref-list');
         foreach($doc->citations as $cite) {
-            $refList->addChild('ref', $cite->content);
+            $refList->ref[] = $cite->content;
         }
 
         return $xmlObj->asXML();
