@@ -109,7 +109,26 @@ class JatsXmlRenderer implements RendererInterface
             $refList->ref[] = $cite->content;
         }
 
+        //Test
+        @$this->initXMLSettings($xmlObj->asXML());
+
         return $xmlObj->asXML();
+    }
+
+    // --------------------------------------------------------------
+
+    private function initXMLSettings($xmlData)
+    {
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument("1.0", "UTF-8");
+        $dom->strictErrorChecking = false;
+        $dom->validateOnParse = false;
+        $dom->recover = true;
+        $dom->loadXML($xmlData);
+        $xml = simplexml_import_dom($dom);
+
+        libxml_clear_errors();
+        libxml_use_internal_errors(false);        
     }
 
     // --------------------------------------------------------------
