@@ -202,7 +202,8 @@ class JatsXmlRenderer implements RendererInterface
     protected function xmlAdopt($root, $new, $namespace = null)
     {
         // first add the new node
-        $node = $root->addChild($new->getName(), (string) $new, $namespace);
+        $newstring = str_replace("&", "&amp;", (string) $new); //manually escape ampersand - (dangit php)
+        $node = $root->addChild($new->getName(), $newstring, $namespace);
 
         // add any attributes for the new node
         foreach ($new->attributes() as $attr => $value) {
