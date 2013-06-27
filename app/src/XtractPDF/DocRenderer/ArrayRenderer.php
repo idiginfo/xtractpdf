@@ -43,6 +43,13 @@ class ArrayRenderer implements RendererInterface
     
     // --------------------------------------------------------------
 
+    static function getExt()
+    {
+        return 'txt';
+    }
+
+    // --------------------------------------------------------------
+
     /**
      * Render a document
      *

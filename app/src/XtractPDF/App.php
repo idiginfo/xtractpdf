@@ -108,6 +108,7 @@ class App extends SilexApp
         $register(new Command\DocsDelete());
         $register(new Command\DocsClear());
         $register(new Command\DocsRender());
+        $register(new Command\DocsRenderAll());
 
         //Run it
         $consoleApp->run();

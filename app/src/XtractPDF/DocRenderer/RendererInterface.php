@@ -35,6 +35,13 @@ interface RendererInterface
     // --------------------------------------------------------------
 
     /**
+     * @return string  Return the extension (sans dot) to use for downloading rendered documents from this method
+     */
+    static function getExt();
+
+    // --------------------------------------------------------------
+
+    /**
      * Render a document
      *
      * @param XtractPDF\Model\Document

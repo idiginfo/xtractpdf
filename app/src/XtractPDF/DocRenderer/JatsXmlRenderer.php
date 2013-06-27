@@ -44,6 +44,13 @@ class JatsXmlRenderer implements RendererInterface
 
     // --------------------------------------------------------------
 
+    static function getExt()
+    {
+        return 'xml';
+    }
+
+    // --------------------------------------------------------------
+
     /**
      * Render a document
      *
