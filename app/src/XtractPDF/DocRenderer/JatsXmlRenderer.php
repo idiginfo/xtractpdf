@@ -68,8 +68,10 @@ class JatsXmlRenderer implements RendererInterface
 
         //Map Biblio-Metadata
         $jm = $front->addChild('journal-meta');
-        $jm->addChild('issn', $doc->getMeta('issn'));
-        $jm->addChild('journal-title-group')->addChild('journal-title', $doc->getMeta('journal'));
+        $jm->issn = $doc->getMeta('issn');
+        $jtg = $jm->addChild('journal-title-group');
+        $jtg->{'journal-title'} = $doc->getMeta('journal');
+
         $am = $front->addChild('article-meta');
         $am->addChild('title-group')->addChild('article-title', $doc->getMeta('title'));
         $am->addChild('article-id', $doc->getMeta('doi'))->addAttribute('pub-id-type', 'doi');
@@ -84,7 +86,7 @@ class JatsXmlRenderer implements RendererInterface
         $pd->addChild('year', $doc->getMeta('year'));
         $kws = $am->addChild('keyword-group');
         foreach($doc->getMeta('keywords') as $kw) {
-            $kws->addChild('kwd', $kw);
+            $kws->kwd[] = $kw;
         }
 
         //Map Authors
@@ -92,7 +94,7 @@ class JatsXmlRenderer implements RendererInterface
         foreach( $doc->authors as $author) {
             $auth = $contribs->addChild('contrib');
             $auth->addAttribute('contrib-type', 'author');
-            $auth->addChild('string-name', $author->name);
+            $auth->{'string-name'} = $author->name;
         }
 
         //Map Abstract Sections
@@ -148,7 +150,7 @@ class JatsXmlRenderer implements RendererInterface
 
                     //Create new section
                     $currSec = new SimpleXMLElement('<sec/>');
-                    $currSec->addChild('title', $item->content);
+                    $currSec->title = $item->content;
 
                 break;
                 case 'subheading':
@@ -156,7 +158,7 @@ class JatsXmlRenderer implements RendererInterface
                     //If no currSection, auto add one
                     if ( ! $currSec) {
                         $currSec = new SimpleXMLElement('<sec/>');
-                        $currSec->addChild('title', '');
+                        $currSec->title = '';
                     }
                     //If existing subsection, close it out
                     elseif ($currSubSec) {
@@ -164,18 +166,18 @@ class JatsXmlRenderer implements RendererInterface
                     }
 
                     $currSubSec = new SimpleXMLElement("<sec/>");
-                    $currSubSec->addChild('title', $item->content);
+                    $currSubSec->title = $item->content;
                 break;
                 case 'paragraph': default:
 
                     if ($currSubSec) {
-                        $currSubSec->addChild('p', $item->content);
+                        $currSubSec->p[] = $item->content;
                     }
                     elseif ($currSec) {
-                        $currSec->addChild('p', $item->content);
+                        $currSec->p[] = $item->content;
                     }
                     else {
-                        $element->addChild('p', $item->content);
+                        $element->p[] = $item->content;
                     }
 
                 break;
