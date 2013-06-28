@@ -1,6 +1,5 @@
 CURRENTLY:
 ~~~~~~~~~~~~~~~~~~~~~
-1. Write JATS renderer
 2. Improve audit logging - it currently logs the old version of the changes, not the new version
 3. Improve audit logging; see if we can get the 'diff' logic out of the biblio controller and into the documentMgr
 4. Write bibjson renderer (http://www.bibjson.org/)
