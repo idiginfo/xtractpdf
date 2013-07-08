@@ -1,0 +1,6 @@
+1. Lowercase the main 'Article' -> 'article' tag
+2. Add DTD (see jats-dtd.txt)
+3. Run, on CLI: xmllint jats-output-sample.xml --valid --noout
+
+References:
+Tag Set: http://jats.nlm.nih.gov/archiving/tag-library/1.0/index.html
