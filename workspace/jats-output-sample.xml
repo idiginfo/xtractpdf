@@ -3,31 +3,17 @@
 <article>
     <front>
         <journal-meta>
-            <issn>12345-6778</issn>
             <journal-title-group>
                 <journal-title>Super Awesome Journal</journal-title>
             </journal-title-group>
+            <issn>12345-6778</issn>
         </journal-meta>
         <article-meta>
-            <title-group>
-                <article-title>Notes on Operations: Automated Metadata Harvesting:  Low-Barrier MARC Record  Generation from OAI-PMH  Repository Stores Using MarcEdit</article-title>
-            </title-group>
             <article-id pub-id-type="doi">10.1111/182</article-id>
-            <article-id pub-id-type="pmid">123456789</article-id>
-            <isbn>12345-6789X</isbn>
-            <volume>12</volume>
-            <issue>6</issue>
-            <fpage>234</fpage>
-            <lpage>238</lpage>
-            <pub-date pub-type="pub">
-                <year>2012</year>
-            </pub-date>
-            <keyword-group>
-                <kwd>marc</kwd>
-                <kwd>pdf</kwd>
-                <kwd>xml</kwd>
-                <kwd>record</kwd>
-            </keyword-group>
+            <article-id pub-id-type="pmid">123456789</article-id>            
+            <title-group>
+                <article-title>Notes on Operations: Automated Metadata Harvesting - Low-Barrier MARC Record  Generation from OAI-PMH  Repository Stores Using MarcEdit</article-title>
+            </title-group>
             <contrib-group>
                 <contrib contrib-type="author">
                     <string-name>Terry Reese</string-name>
@@ -35,10 +21,24 @@
                 <contrib contrib-type="author">
                     <string-name>Bill Clinton</string-name>
                 </contrib>
-            </contrib-group>
+            </contrib-group>            
+            <pub-date pub-type="pub">
+                <year>2012</year>
+            </pub-date>            
+            <volume>12</volume>
+            <issue>6</issue>
+            <isbn>12345-6789X</isbn>            
+            <fpage>234</fpage>
+            <lpage>238</lpage>
             <abstract>
                 <p>For libraries, the burgeoning corpus of born-digital data is becoming both a blessing and a curse. For patrons, these online resources represent the potential for extended access to materials, but for a library’s technical services department they represent an ongoing challenge, forcing staff to look for ways to capture and make use of available metadata. This challenge is exacerbated for libraries that provide access to their own digital collections. While digital repository software like DSpace, Fedora, and CONTENTdm expose bibliographic metadata through the Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH), few organizations have a simplified method for harvesting and generating MachineReadable Cataloging (MARC) records from these metadata stores. Fortunately, a number of tools have been developed that can facilitate the harvesting and generation of MARC data from these OAI-PMH metadata repositories. This paper will examine resources that enhance technical services staff’s ability to use existing metadata, with specific focus on one of these current generation tools, MarcEdit, which was developed by the author and provides a one-click harvesting process for generating MARC metadata from a variety of metadata formats</p>
-            </abstract>
+            </abstract>            
+            <kwd-group>
+                <kwd>marc</kwd>
+                <kwd>pdf</kwd>
+                <kwd>xml</kwd>
+                <kwd>record</kwd>
+            </kwd-group>
         </article-meta>
     </front>
     <body>

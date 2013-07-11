@@ -1,6 +1,11 @@
 1. Lowercase the main 'Article' -> 'article' tag
 2. Add DTD (see jats-dtd.txt)
-3. Run, on CLI: xmllint jats-output-sample.xml --valid --noout
+3. Move issn AFTER journal-title-group in journal-meta
+4. Re-order article-meta
+5. Change 'keyword-group' to 'kwd-group'
+
+
+Run, on CLI: xmllint jats-output-sample.xml --valid --noout
 
 References:
 Tag Set: http://jats.nlm.nih.gov/archiving/tag-library/1.0/index.html

@@ -74,7 +74,7 @@ class JatsXmlRenderer implements RendererInterface
      */
     public function render(Model\Document $doc, array $options = array())
     {   
-        $xmlObj = new SimpleXMLElement('<Article></Article>');        
+        $xmlObj = new SimpleXMLElement('<article></article>');        
 
         //Basic front and back structure
         $front = $xmlObj->addChild('front');
@@ -83,26 +83,14 @@ class JatsXmlRenderer implements RendererInterface
 
         //Map Biblio-Metadata
         $jm = $front->addChild('journal-meta');
-        $jm->issn = $doc->getMeta('issn');
         $jtg = $jm->addChild('journal-title-group');
         $jtg->{'journal-title'} = $doc->getMeta('journal');
+        $jm->issn = $doc->getMeta('issn');        
 
         $am = $front->addChild('article-meta');
-        $am->addChild('title-group')->addChild('article-title', $doc->getMeta('title'));
         $am->addChild('article-id', $doc->getMeta('doi'))->addAttribute('pub-id-type', 'doi');
         $am->addChild('article-id', $doc->getMeta('pmid'))->addAttribute('pub-id-type', 'pmid');
-        $am->addChild('isbn', $doc->getMeta('isbn'));
-        $am->addChild('volume', $doc->getMeta('volume'));
-        $am->addChild('issue', $doc->getMeta('issue'));
-        $am->addChild('fpage', $doc->getMeta('startPage'));
-        $am->addChild('lpage', $doc->getMeta('endPage'));
-        $pd = $am->addChild('pub-date');
-        $pd->addAttribute('pub-type', 'pub');
-        $pd->addChild('year', $doc->getMeta('year'));
-        $kws = $am->addChild('keyword-group');
-        foreach($doc->getMeta('keywords') as $kw) {
-            $kws->kwd[] = $kw;
-        }
+        $am->addChild('title-group')->addChild('article-title', $doc->getMeta('title'));
 
         //Map Authors
         $contribs = $am->addChild('contrib-group');
@@ -112,9 +100,28 @@ class JatsXmlRenderer implements RendererInterface
             $auth->{'string-name'} = $author->name;
         }
 
-        //Map Abstract Sections
+        //Pubdate
+        $pd = $am->addChild('pub-date');
+        $pd->addAttribute('pub-type', 'pub');
+        $pd->addChild('year', $doc->getMeta('year'));
+
+        //Basic Variables
+        $am->addChild('volume', $doc->getMeta('volume'));
+        $am->addChild('issue', $doc->getMeta('issue'));
+        $am->addChild('isbn', $doc->getMeta('isbn'));
+        $am->addChild('fpage', $doc->getMeta('startPage'));
+        $am->addChild('lpage', $doc->getMeta('endPage'));
+
+       //Map Abstract Sections
         $this->recursizeSections($am->addChild('abstract'), $doc->abstract);
   
+        //Keywords
+        $kws = $am->addChild('kwd-group');
+        foreach($doc->getMeta('keywords') as $kw) {
+            $kws->kwd[] = $kw;
+        }
+
+
         //Map content Sections
         $this->recursizeSections($body, $doc->content);
 
@@ -124,7 +131,7 @@ class JatsXmlRenderer implements RendererInterface
             $refList->ref[] = $cite->content;
         }
 
-        return $xmlObj->asXML();
+        return $this->addDocTypeHeader($xmlObj->asXML());
     }
 
     // --------------------------------------------------------------
@@ -235,6 +242,15 @@ class JatsXmlRenderer implements RendererInterface
             }
         }
     }
+
+    // --------------------------------------------------------------
+
+    protected function addDocTypeHeader($xmlString)
+    {
+        $xmlHeader = '<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.0 20120330//EN" "http://jats.nlm.nih.gov/archiving/1.0/JATS-archivearticle1.dtd">';
+        return preg_replace("/<article>/", $xmlHeader . "\n<article>", $xmlString, 1);
+    }
+
 }
 
 /* EOF: JatsXmlRenderer.php */
