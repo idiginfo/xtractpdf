@@ -22,6 +22,10 @@ use Silex\ControllerCollection;
 use XtractPDF\Core\Controller;
 use XtractPDF\Model;
 use Twig_Error;
+//Temporary
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
 
 /**
  * 'About' Pages Controller
@@ -86,7 +90,9 @@ class About extends Controller
         $pageName = ($subPage)
             ? 'about-' . $subPage
             : 'about';
-
+        
+        $this->debug('Monolog test!');
+        
         return $this->twig->render('pages/' . $pageName . '.html.twig');
         // try {
         //     return $this->twig->render('pages/' . $pageName . '.html.twig');
