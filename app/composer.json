@@ -10,6 +10,12 @@
             "email":    "caseyamcl@gmail.com",
             "homepage": "http://caseymclaughlin.com",
             "role":     "Developer"
+        },
+        {
+            "name":     "Mike Wabiszewski",
+            "email":    "wabice@gmail.com",
+            "homepage": "http://wabice.com",
+            "role":     "Developer"
         }
     ],
     "require": {
