@@ -34,9 +34,10 @@ XTRACT PDF
 
     Author
 
-        XtractPDF was written by Casey McLaughlin (http://caseymclaughlin.com) at the 
-        iDigInfo Institute (http://idiginfo.org) at Florida State University (http://fsu.edu) for 
-        work on projects related to the Jailbreaking the PDF (http://pdfjailbreak.com) collaboration.
+        XtractPDF was written by Casey McLaughlin (http://caseymclaughlin.com) and is actively maintained 
+        by Mike Wabiszewski (http://wabice.com) at the iDigInfo Institute (http://idiginfo.org) at Florida 
+        State University (http://fsu.edu) for work on projects related to the Jailbreaking the PDF 
+        (http://pdfjailbreak.com) collaboration.
 
 2. Requirements (in recommended order of install):
 

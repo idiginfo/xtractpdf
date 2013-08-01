@@ -32,7 +32,7 @@ class MonologServiceProvider extends BaseMonologServiceProvider
 
         //Extend it with Chrome and Firebug handlers if in debug mode
         $app['monolog'] = $app->share($app->extend('monolog', function($monolog, $app) {
-
+            
             if ($app['debug'] && class_exists('\ChromePhp')) {
                 $monolog->pushHandler(new ChromePHPHandler(), Logger::DEBUG);
             }

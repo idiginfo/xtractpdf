@@ -147,11 +147,6 @@ class App extends SilexApp
     {
         $app =& $this;
 
-        //Mode
-        if ($this->mode == self::DEVELOP) {
-            $app['debug'] = true;
-        }
-
         //
         // Web Libraries
         //
@@ -203,15 +198,20 @@ class App extends SilexApp
     private function loadCommonLibraries()
     {
         $app =& $this;
-
+        
+        //Mode
+        if ($this->mode == self::DEVELOP) {
+            $app['debug'] = true;
+        }
+        
         //Config
         $app['config'] = new Config($this->resolvePath('config'));
 
         //Monolog
         $app->register(new MonologServiceProvider(), array(
             'monolog.name'    => 'xtractpdf',
-            'monolog.logfile' => $this->resolvePath($app['config']->logpath) . '/xtractpdf.log',
-            'monolog.level'   => Logger::INFO
+            'monolog.logfile' => $app['debug'] == true ? $this->resolvePath($app['config']->logpath) . '/debug.log' : $this->resolvePath($app['config']->logpath) . '/xtractpdf.log',
+            'monolog.level'   => $app['debug'] == true ? Logger::DEBUG : Logger::ERROR
         ));
 
         //$app['mongo'] - DocumentManager
