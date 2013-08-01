@@ -91,8 +91,6 @@ class About extends Controller
             ? 'about-' . $subPage
             : 'about';
         
-        $this->debug('Monolog test!');
-        
         return $this->twig->render('pages/' . $pageName . '.html.twig');
         // try {
         //     return $this->twig->render('pages/' . $pageName . '.html.twig');
