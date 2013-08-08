@@ -20,14 +20,14 @@
 
 {% block page_js %}
 <script>
-    doclist_url = '{{ url('library') }}';
+    doclist_url = '{{ url('xtractpdf') }}';
 </script>
-<script src='{{ base_url }}/assets/library-index.js'></script>
+<script src='{{ base_url }}/assets/xtractpdf-index.js'></script>
 {% endblock %}
 
 
 {% block page_topbar_content %}
-    <form id='upload-pdf' method='post' enctype='multipart/form-data' action='{{ url('library_upload') }}'>
+    <form id='upload-pdf' method='post' enctype='multipart/form-data' action='{{ url('xtractpdf_upload') }}'>
         <input type='file' name='pdffile' />
         <button type='button' class='btn btn-primary upload-pdf-submit' class='btn btn-primary'>
             <i class='icon-upload-alt'></i>
