@@ -110,7 +110,109 @@ body.workspace #page_content {
     color: #000;
 }
 
-/* LIBRARY BROWSER: Layout ----------------------------------------- */
+/* LIBRARY PAGE: Search Pane --------------------------------------- */
+
+#doc-library #library-search-panel {
+    background-color: #e4e4e4;
+    padding: 20px 0;
+}
+
+#doc-library #big-search-form {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+#doc-library #big-search-box {
+    border: 1px solid #ddd;
+    font-size: 1.5em;
+    width: 80%;
+}
+
+#doc-library #big-search-submit {
+    font-size: 1.5em;
+}
+
+#doc-library #main-content {
+    margin: 20px 0;
+}
+
+/* LIBRARY PAGE: Search Results ---------------------------------- */
+
+#doc-library .search-results {
+    margin: 0;
+    list-style-type: none;
+}
+
+#doc-library .search-results > li {
+    display: block;
+    position: relative;
+    padding: 0;
+}
+
+#doc-library .search-results > li .doc-info {
+    display: block;
+    border: 1px solid #e4e4e4;
+    padding: 8px;
+    height: 70px;
+    overflow: hidden;
+}
+
+#doc-library .search-results > li .doc-info .icon {
+    color: #666;
+    float: left;
+}
+
+#doc-library .search-results > li .doc-info .doc-meta {
+    display: block;
+    margin-left: 20px;
+}
+
+#doc-library .search-results > li .doc-info .doc-meta .title {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+#doc-library .search-results > li .doc-options {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: table;
+}
+
+#doc-library .search-results > li .doc-options > ul {
+    display: table-row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#doc-library .search-results > li .doc-options > ul > li {
+    margin: 0;
+    padding: 0;
+    display: table-cell;
+    width: 33%;
+    border: 1px solid #e4e4e4;
+}
+
+#doc-library .search-results > li .doc-options > ul > li:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+
+#doc-library .search-results > li .doc-details {
+    margin: 0 20px;
+    padding: 10px;
+    background-color: #e4e4e4;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.9em;
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* XTRACTPDF INDEX: Layout ----------------------------------------- */
 
 #library-browser {
     padding-top: 1.5em;
@@ -135,7 +237,7 @@ body.workspace #page_content {
 }
 
 
-/* LIBRARY BROWSER: Actions in Header ------------------------------ */
+/* XTRACTPDF INDEX: Actions in Header ------------------------------ */
 
 #upload-pdf {
     margin-top: 6px;
@@ -168,7 +270,7 @@ body.workspace #page_content {
     width: 85px;
 }
 
-/* SINGLE DOC EDITOR: Layout --------------------------------------- */
+/* XTRACTPDF EDITOR: Layout --------------------------------------- */
 
 #single-doc-editor {
     height: 100%;
@@ -197,7 +299,7 @@ body.workspace #page_content {
     overflow-x: hidden;
 } 
 
-/* SINGLE DOC EDITOR: Actions in Header -------------------------- */
+/* XTRACTPDF EDITOR: Actions in Header -------------------------- */
 
 #doc-actions {
     float: right;
@@ -215,7 +317,7 @@ body.workspace #page_content {
     margin-left: 0;
 }
 
-/* SINGLE DOC EDITOR: Form --------------------------------------- */
+/* XTRACTPDF EDITOR: Form --------------------------------------- */
 
 /* Container */
 #single-doc-editor #right-workform.pane .workform-container {

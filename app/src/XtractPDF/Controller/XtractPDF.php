@@ -147,7 +147,7 @@ class XtractPDF extends Controller
             return $this->json(array('docs' => $arr));
         }
         else { //Do HTML
-            return $this->twig->render('pages/xtractpdf/library-index.html.twig', $this->viewData);
+            return $this->twig->render('pages/xtractpdf/index.html.twig', $this->viewData);
         }
     }
 
@@ -205,7 +205,7 @@ class XtractPDF extends Controller
 
             //Set the page class for twig views
             $this->viewData['page_class'] = 'workspace';
-            return $this->twig->render('pages/xtractpdf/library-single.html.twig', $this->viewData);
+            return $this->twig->render('pages/xtractpdf/single.html.twig', $this->viewData);
         }
     }    
 

@@ -1,0 +1,37 @@
+<div class='row'>
+    <div class='span4'>
+        Left Panel for displaying contextual search info
+    </div>
+    <div class='span8'>
+
+        <ul class='search-results'>
+
+            <li>
+                <div class='doc-info'>
+                    <span class='icon'><i class='icon-file'></i></span>
+                    <div class='doc-meta'>
+                        <span class='title'>The Title of the Paper Goes Here; It can be a very Long Title</span>
+                        <span class='authors'>Somebody, A.J; Another, B.J.; A Third, C.J</span>
+                        <span class='journal'>Journal of Some Science or Another</span>
+                        <span class='doi'>doi:10.1000/abc:def/ghi</span>
+                    </div>
+                </div>
+
+                <div class='doc-options'>
+                    <ul>
+                        <li>Terms related to <strong>sleep disorders</strong> <em>(5)</em></li>
+                        <li>All Topics <em>(23)</em></li>
+                        <li>View PDF</li>
+                    </ul>
+                </div>
+
+                <div class='doc-details resizable-vertical'>
+                    <div class='details-panel'>
+                        {% for i in range(1,1000) %}Info Panel Here {% endfor %}
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</div>

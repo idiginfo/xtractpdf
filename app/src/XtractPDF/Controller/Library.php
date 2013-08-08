@@ -39,7 +39,8 @@ class Library extends Controller
      */
     protected function setRoutes(ControllerCollection $routes)
     {
-        $routes->get('/library', array($this, 'indexAction'))->bind('front');
+        $routes->get('/library',        array($this, 'indexAction'))->bind('library');
+        $routes->get('/library/{id}',   array($this, 'singleAction'))->bind('library_single');
     }
 
     // --------------------------------------------------------------
@@ -52,22 +53,39 @@ class Library extends Controller
     protected function init(Application $app)
     {        
         //Load dependencies
-        $this->twig          = $app['twig'];        
-        $this->docMgr        = $app['doc_mgr'];
-        $this->builders      = $app['builders'];
-        $this->arrayRenderer = $app['renderers']->get('array');
-        $this->jatsRenderer  = $app['renderers']->get('jats-xml');
-        $this->apiHandler    = $app['api_builder'];
-        $this->request       = $app['request'];
+        $this->twig   = $app['twig'];        
+        $this->docMgr = $app['doc_mgr'];
     }
 
     // --------------------------------------------------------------
 
-    public function index()
+    public function indexAction()
     {
+        //If search query, get results and include them in the data
+
+        //Render the response
+        if ($this->clientExpects('json')) {
+            return $this->json(array('todo' => 'this'));
+        }
+        else {
+            return $this->twig->render('pages/library/index.html.twig');
+        }
+
         
     }
 
+    // --------------------------------------------------------------
+
+    public function singleAction()
+    {
+        //Render the response
+        if ($this->clientExpects('json')) {
+
+        }
+        else {
+            return $this->twig->render('pages/library/single.html.twig');
+        }
+    }
 }
 
 /* EOF: Library.php */

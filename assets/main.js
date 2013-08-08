@@ -22,6 +22,11 @@ $(document).ready(function() {
     $('a[href="#"]').click(function(e) {
         e.preventDefault();
     });
+
+    //
+    // Resizable (vertical)
+    //
+    $('.resizable-vertical').resizable({ handles: 's' });
 });
 
 // ------------------------------------------------------------------
