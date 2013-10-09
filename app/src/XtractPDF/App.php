@@ -124,6 +124,7 @@ class App extends SilexApp
         $register(new Command\DocsClear());
         $register(new Command\DocsRender());
         $register(new Command\DocsRenderAll());
+        $register(new Command\TopicsLoad());
 
         //Run it
         $consoleApp->run();
@@ -256,6 +257,10 @@ class App extends SilexApp
             );
         });
 
+        //Topic Manager
+        $app['topic_mgr'] = $app->share(function() use ($app) {
+            return new Library\TopicMgr($app['mongo']);
+        });
     }
 }
 
